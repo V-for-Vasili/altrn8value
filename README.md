@@ -39,7 +39,7 @@ What sets us apart:
 - financialmodelingprep API src:https://financialmodelingprep.com/developer/docs/
 
 ## Technological Challenges:  ##  
-- Scraping and transforming financial data in meaningful way - we anticipate the need to use 3rd partu APIs to get access to accurate and recent financial data 
+- Scraping and transforming financial data in meaningful way - we anticipate the need to use 3rd party APIs to get access to accurate and recent financial data 
 - Managing virtual portfolios based on up-to date data - the bulk of back end work will deal with keeping track of changes to virtual portfolios 
 - Data visualization - for historic performance data we will need to create 2D graphs and Pie charts on the frontend
 - Using GraphQL to query based on complex metrics entered by user  
