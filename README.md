@@ -31,12 +31,13 @@ What sets us apart:
 
 
 ## Technology To Be Used ##
-- graphQL
-- express
-- facebook login (using fb graph API).
-- JWT authorization
-- Open API (SLATE API documentation)
-- financialmodelingprep API src:https://financialmodelingprep.com/developer/docs/
+- graphQL; API defined using graph based query language
+- nodejs and express; Javascript Backend Framework
+- facebook login (using fb graph API); Optional facebook login option to be completed only if necessary
+- Open API (SLATE API documentation);  Optional Api documentation server to allow users to use our service on the client of their choice
+- financialmodelingprep API src:https://financialmodelingprep.com/developer/docs/; library for scraping finacial data
+- Google Cloud Platform; cloud hosting
+- MongoDB Atlas; cloud hosted MongoDB cluster
 
 ## Technological Challenges:  ##  
 - Scraping and transforming financial data in meaningful way - we anticipate the need to use 3rd party APIs to get access to accurate and recent financial data 
