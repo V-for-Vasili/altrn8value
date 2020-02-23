@@ -45,5 +45,5 @@ What sets us apart:
 - Data visualisation of over different time series data. 
 - Extracting  financial data in an efficent way - we anticipate the need to use 3rd party APIs to get access to accurate and updated financial data. 
 - Managing virtual portfolios based on up-to date data - the bulk of back end work will deal with keeping track of changes to virtual portfolios 
-- Data visualization - for historic performance data we will need to create 2D graphs and Pie charts on the fronten
+- Data visualization - for historic performance data we will need to create 2D graphs and charts on the fronten
 - Hosting - we will use Google Cloud Platform to host our application with a Docker container 
