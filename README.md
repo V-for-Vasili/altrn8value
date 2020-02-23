@@ -7,7 +7,14 @@
 - Vasili Skurydzin, 1002744658, skurydzi
 
 ## Project Description: ##
-A financial screening tool for investing in publicly traded stocks. Allows for the analysis, visualization, and comparison of companies histroic finacial preformance. Offers the ability to back-test and track investment selections over time.
+A financial screening tool for investing in publicly traded stocks. Allows for the analysis, visualization, and comparison of companies histroic finacial preformance.
+Users can create "virtual portfolios" with some amount of virtual money distributed across a selection of stocks and financial instruments and then track the virtual portfolio performance over time.
+Offers the ability to back-test and track investment selections over time.
+
+What sets us apart:
+- We strive to create minimalistic application which is easy to understand for a person without a deep knowledge of finance and stock market
+- Helps simulate buing selected stock portfolio vith virtual money and track its performance over time
+- We strive to make our tool easy to use, have good data visualization and be educational and informative
 
 ## Beta Version Key Features: ##
 - Select specfic stock tickers to be analyasied
