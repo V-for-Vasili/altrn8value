@@ -2,6 +2,7 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const morgan = require('morgan');
+const morganBody = require('morgan-body');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const axios = require('axios');
@@ -12,11 +13,15 @@ const { makeExecutableSchema } = require('graphql-tools');
 // Start building express app
 let app = express();
 
+// BodyParser Config
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+// serve frontend statically
+app.use(express.static('frontend'));
+
 // Enviroment Variables
 const PORT =  process.env.FACEBOOK_KEY || '8080';
 CONNECTION_URL = process.env.CONNECTION_URL || 'mongodb://myTester:123456@localhost:27017/test?retryWrites=true&w=majority';
-// BodyParser Config
-app.use(bodyParser.json());
 
 // Settup Logger
 morgan.token('id', function getId(req) {
@@ -25,7 +30,7 @@ morgan.token('id', function getId(req) {
 
 let loggerFormat = ':id [:date[web]] ":method :url" :status :response-time';
 app.use(morgan(loggerFormat));
-
+morganBody(app);
 
 
 /*
@@ -351,6 +356,12 @@ const resolvers = {
 
 let schema = makeExecutableSchema({typeDefs, resolvers});
 
+/*
+curl -X POST                                                       \
+    -H "Content-Type: application/json"                            \
+    -d '{ "query": "{ stock(symbol:\"AAPL\"){ symbol price } }" }' \
+    http://localhost:8080/graphql
+*/
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   graphiql: true,
