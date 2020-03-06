@@ -1,0 +1,24 @@
+# Content of .gitlab-ci.yml
+# Author: Davi Candido <davi@contentools.com>
+# Date: 2018-06-19
+image: docker:latest
+
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  stage: test
+  script: echo "Running tests"
+
+build:
+  stage: build
+  image: google/cloud-sdk
+  services:
+    - docker:dind
+  script:
+    - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud builds submit . --config=cloudbuild.yaml --substitutions _IMAGE_NAME=$CI_PROJECT_NAME,_VERSION=$(echo $CI_COMMIT_SHA | cut -c8-25)
