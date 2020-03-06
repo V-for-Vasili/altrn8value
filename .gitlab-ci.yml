@@ -10,7 +10,7 @@ stages:
 
 test:
   stage: test
-  script: echo "Running tests"
+  script: npm test
 
 build:
   stage: build
