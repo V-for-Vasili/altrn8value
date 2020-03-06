@@ -9,6 +9,7 @@ stages:
   - deploy
 
 test:
+  image: node:10
   stage: test
   script: npm test
 
