@@ -3,6 +3,10 @@
 # Date: 2018-06-19
 image: docker:latest
 
+variables:
+  DOCKER_HOST: tcp://localhost:2375
+
+
 stages:
   - test
   - build
