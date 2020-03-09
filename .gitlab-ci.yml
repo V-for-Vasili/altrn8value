@@ -23,5 +23,5 @@ build:
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud auth configure-docker
-    - docker build -t gcr.io/altern8/webapp:latest
+    - docker build -t gcr.io/altern8/webapp:latest .
     - docker push gcr.io/altern8/webapp:latest
