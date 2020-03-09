@@ -17,7 +17,6 @@ test:
   stage: test
   script:
     - npm install
-    - npm start
     - npm test
 
 build:
