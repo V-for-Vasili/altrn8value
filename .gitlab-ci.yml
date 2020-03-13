@@ -1,6 +1,10 @@
 # Content of .gitlab-ci.yml
-# Author: Davi Candido <davi@contentools.com>
-# Date: 2018-06-19
+# Author: Sean van Wyk(seanvanwyk41@gmail.com)
+# Date: 2020-03-13
+# This file allows the mirrored gitlab repo to trigger Automated Testing before
+# Deploying to GCP cloud build at https://altern8value.digital/ in under 5 minutes
+# This allows us to spend no time on deployment and all our time on developing great technology
+
 image: docker:latest
 
 variables:
@@ -31,6 +35,6 @@ build:
     - gcloud auth configure-docker
     - docker build -t gcr.io/altern8/webapp:latest .
     - docker push gcr.io/altern8/webapp:latest
-    - gcloud run deploy webapp --image gcr.io/altern8/webapp:latest --platform=managed --region=us-central1 
+    - gcloud run deploy webapp --image gcr.io/altern8/webapp:latest --platform=managed --region=us-central1
   only:
     - master
