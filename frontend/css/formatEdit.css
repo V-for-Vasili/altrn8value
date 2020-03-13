@@ -1,0 +1,274 @@
+.tm-mt-big {
+    margin-top: 57px;
+}
+
+.tm-mb-big {
+    margin-bottom: 60px;
+}
+
+.tm-mt-small {
+    margin-top: 20px;
+}
+
+
+
+
+
+
+
+/* Formating Of Page Title*/
+.tm-site-title {
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+
+.tm-block-avatar,.tm-block-settings {
+    max-height: none;
+}
+
+.tm-block-avatar {
+    height: auto;
+}
+
+.tm-content-row {
+    justify-content: space-between;
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+.tm-col {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 50px;
+}
+
+.tm-col-big {
+    width: 39%;
+}
+
+.tm-col-small {
+    width: 21.95%;
+}
+
+.tm-gray-circle {
+    width: 80px;
+    height: 80px;
+    background-color: #aaa;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.tm-notification-items {
+    overflow-y: scroll;
+    height: 90%;
+}
+
+.tm-notification-item {
+    padding: 15px;
+    background-color: #4e657a;
+    color: #fff;
+    font-size: 95%;
+    margin-bottom: 15px;
+}
+
+.tm-notification-item:last-child {
+    margin-bottom: 0;
+}
+
+.tm-notification-link {
+    color: #f5a623;
+}
+
+.tm-text-color-secondary {
+    color: #bdcbd8;
+}
+
+.tm-small {
+    font-size: 90%;
+}
+
+.tm-status-circle {
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    margin-top: -3px;
+}
+
+.moving {
+    background-color: #9be64d;
+    box-shadow: 0 0 8px #9be64d, inset 0 0 8px #9be64d;
+}
+
+.pending {
+    background-color: #efc54b;
+    box-shadow: 0 0 8px #efc54b, inset 0 0 8px #efc54b;
+}
+
+.cancelled {
+    background-color: #da534f;
+    box-shadow: 0 0 8px #da534f, inset 0 0 8px #da534f;
+}
+
+.tm-bg-primary-dark {
+    background-color: #435c70;
+}
+
+.tm-bg-gray {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+.tm-avatar {
+    width: 345px;
+}
+
+.tm-avatar-container {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.tm-avatar-delete-link {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    z-index: 1000;
+    padding: 14px;
+    border-radius: 50%;
+    background-color: rgba(57, 78, 100, 0.7);
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    display: none;
+    transition: all 0.2s ease;
+}
+
+.tm-avatar-container:hover .tm-avatar-delete-link {
+    display: block;
+}
+
+.tm-col-avatar {
+    max-width: 425px;
+    width: 37%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.tm-col-account-settings {
+    max-width: 822px;
+    width: 63%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.tm-hide-sm {
+    display: block;
+}
+
+.tm-list-group {
+    counter-reset: myOrderedListItemsCounter;
+    padding-left: 0;
+}
+
+.tm-list-group>li {
+    list-style-type: none;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 8px;
+}
+
+.tm-list-group>li:hover {
+    color: #0266c4;
+}
+
+.tm-list-group>li:before {
+    counter-increment: myOrderedListItemsCounter;
+    content: counter(myOrderedListItemsCounter) ".";
+    margin-right: 0.5em;
+}
+
+.tm-list {
+    padding-left: 30px;
+}
+
+.tm-list>li {
+    margin-bottom: 20px;
+}
+
+.page-item:first-child .page-link {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.page-link {
+    padding: 12px 18px;
+}
+
+.page-link,
+.page-link:hover {
+    color: #000;
+}
+
+.page-item {
+    margin-right: 18px;
+}
+
+.page-item:last-child {
+    margin-right: 0;
+}
+
+.page-item.active .page-link {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    color: #000;
+}
+
+.tm-product-img-dummy {
+    max-width: 100%;
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #aaa;
+}
+
+.tm-product-img-edit {
+    max-width: 100%;
+    position: relative;
+}
+
+.tm-product-img-edit i {
+    display: none;
+    position: absolute;
+}
+
+.tm-product-img-edit:hover i {
+    display: block;
+}
+
+.tm-login-col {
+    max-width: 470px;
+}
+
+
+
+

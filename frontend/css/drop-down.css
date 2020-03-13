@@ -1,0 +1,29 @@
+.dropdown-menu {
+    font-size: 90%;
+    color: #fff;
+    background-color: #567086;
+    border-radius: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    min-width: auto;
+    margin-top: 0;
+    border: 0;
+}
+
+.dropdown-item {
+    color: #fff;
+    padding: 15px 30px;
+}
+
+.dropdown-item, .nav-link {
+    padding: 15px 20px;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+    background-color: #567086;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+

@@ -1,0 +1,142 @@
+@media (min-width: 1200px) {
+    .navbar-expand-xl .navbar-nav .nav-link {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+    .navbar-collapse {
+        height: 100%;
+    }
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding: 15px 20px;
+    }
+}
+
+@media (max-width: 1275px) and (min-width: 1200px) {
+    .nav-item {
+        margin-right: 15px;
+    }
+}
+
+@media (max-width: 1350px) {
+    .nav-item {
+        margin-right: 1px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .tm-col-big,
+    .tm-col-small {
+        width: 49.65%;
+    }
+    .navbar-collapse {
+        padding: 0;
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 1px 1px;
+        position: absolute;
+        top: 72px;
+        right: 20px;
+        width: 200px;
+        z-index: 1000;
+    }
+    .dropdown-menu {
+        text-align: center;
+    }
+    .nav-link {
+        color: #fff;
+        background-color: #567086;
+        padding: 15px;
+        flex-direction: row;
+    }
+    .nav-link>i {
+        font-size: 1rem;
+        margin-right: 10px;
+        margin-bottom: 0;
+    }
+    .nav-item {
+        margin-right: 0;
+    }
+    .tm-block-taller {
+        max-height: 520px;
+    }
+}
+
+@media (max-width: 1199.98px) {
+    .navbar-expand-xl>.container,
+    .navbar-expand-xl>.container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .navbar-collapse {
+        right: 15px;
+    }
+}
+
+@media (max-width: 991px) {
+    .tm-col-big,
+    .tm-col-small {
+        width: 100%;
+        min-height: 383px;
+        height: auto;
+    }
+    .tm-block {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .tm-col-account-settings,
+    .tm-col-avatar {
+        width: 100%;
+        max-width: 100%;
+    }
+    .tm-block-avatar {
+        display: flex;
+        flex-direction: column;
+    }
+    .tm-avatar {
+        align-self: center;
+    }
+    .tm-hide-sm {
+        display: none;
+    }
+}
+
+@media (max-width: 633px) {
+    .page-item {
+        margin-top: 10px;
+    }
+    .custom-select {
+        background-position: 96%;
+    }
+}
+
+@media (max-width: 574px) {
+    .navbar-collapse {
+        top: 47px;
+    }
+    .navbar {
+        height: 50px;
+    }
+    .tm-site-title {
+        font-size: 1.4rem;
+        margin-left: 7px;
+    }
+    .tm-site-icon {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .tm-mt-big {
+        margin-top: 45px;
+    }
+    .tm-mb-big {
+        margin-bottom: 45px;
+    }
+    #barChart,
+    #lineChart {
+        max-height: 350px;
+    }
+}

@@ -1,0 +1,31 @@
+.tm-site-icon {
+    color: #656565;
+}
+
+.tm-logout-icon {
+    font-size: 1.5em;
+}
+
+.tm-product-delete-icon {
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.tm-trash-icon {
+    color: #6e6c6c;
+    cursor: pointer;
+}
+
+.tm-trash-icon:hover {
+    color: #9f1321;
+}
+
+.tm-upload-icon {
+    background: #455c71;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    text-align: center;
+    padding-top: 15px;
+    font-size: 22px;
+}

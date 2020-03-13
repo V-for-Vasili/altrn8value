@@ -1,0 +1,84 @@
+
+.navbar {
+    height: 100px;
+    background-color: #567086;
+    padding: 0;
+}
+.navbar-toggler {
+    border-color: #708da8;
+    box-shadow: rgba(255, 255, 255, 0.1) 0 1px 1px 2px;
+    border-radius: 0;
+    padding: 10px 15px;
+    transition: all 0.2s ease;
+}
+
+.navbar-toggler:hover {
+    border-color: #f5a623;
+    color: #f5a623;
+}
+
+.tm-nav-icon {
+    color: #fff;
+}
+
+.navbar-toggler:hover .tm-nav-icon {
+    color: #f5a623;
+}
+
+
+/* Deafult Positoning For Nav Bar*/
+.navbar .container {
+    position: relative;
+}
+
+/* Contaier For Page Title */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+/* Conatiner Tab within Nav-Bar */
+.nav-item {
+    text-align: center;
+}
+
+.nav-item:last-child {
+    margin-right: 0;
+}
+
+/* Content with Nav-Bar tab-container */
+.nav-link {
+    color: #fff;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 90%;
+}
+/* All  <i> elements within nav-link div*/
+.nav-link>i {
+    margin-bottom: 10px;
+    margin-right: 0;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .active>.nav-link, .navbar-nav .nav-link.active {
+    background-color: #f5a623;
+    color: #fff;
+}
+
+.navbar-nav .nav-link.active i {
+    color: #fff;
+}
+
+.navbar-nav a:hover, .navbar-nav a:hover i {
+    color: #f5a623;
+}
+
+.nav-item {
+    text-align: center;
+}
+
+
+
+

@@ -1,0 +1,32 @@
+.tm-block-products {
+    min-height: 325px;
+}
+
+.tm-block-product-categories {
+    min-height: 325px;
+}
+
+.tm-product-table-container {
+    max-height: 265px;
+    margin-bottom: 15px;
+    overflow-y: scroll;
+}
+
+.tm-product-table tr {
+    font-weight: 600;
+}
+
+.tm-product-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+
+
+.tm-product-delete-link:hover .tm-product-delete-icon {
+    color: #6d8ca6;
+}
+
+.custom-select:focus {
+    outline: 0;
+}
