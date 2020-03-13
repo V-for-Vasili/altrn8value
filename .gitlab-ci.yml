@@ -31,4 +31,4 @@ build:
     - gcloud auth configure-docker
     - docker build -t gcr.io/altern8/webapp:latest .
     - docker push gcr.io/altern8/webapp:latest
-    - gcloud run services update webapp --platform=managed --region=us-central1
+    - gcloud run deploy webapp --image gcr.io/altern8/webapp:latest
