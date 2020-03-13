@@ -1,0 +1,23 @@
+(1) Extract list of avalible stock names & image URL's :
+    - Using Select2 to run search bar:
+        - need to follow their formating see:  https://select2.org/data-sources/formats
+        - Can be pulled from API and converted on the fly see : https://select2.org/data-sources/ajax
+        - Can be provided by passing an array  see: https://select2.org/data-sources/arrays
+    - Do not display stocks allready within selections
+    
+
+(2) Add Functionallity to search bar when stock is clicked should be added to the list of selections
+    - Can add events to select2 bar see: https://select2.org/programmatic-control/events
+    - Clear selection upon click
+
+(3) - Add Buttons to Types of Financial Financial Statements : IS , BS, CashFlow
+
+(4) - Add Select Companey for Fiancial  Statements
+
+(4) Retrive Financial Data From API Populate Financial Statment Table
+    - For each companey in the stock selections
+    - For each companies IS,BS,CF 
+
+(5) Using graph.js or Apexcharts  create TS plot with line for each companey
+    
+    
