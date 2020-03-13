@@ -1,0 +1,40 @@
+// Imports
+const axios = require('axios');
+
+let ratingDetailTypeDef = `
+type RatingDetail {
+  type: String
+  score: Int
+  recommendation: String
+  exchange: String
+}
+`
+let ratingDetailResolver = async (obj, args, context, info) => {
+  let response = {};
+  try {
+    response = await axios.get(`https://financialmodelingprep.com/api/v3/company/rating/${obj.symbol}`);
+    response = response.data;
+  } catch (err) {
+    console.log(err);
+  }
+  if(!response) {
+    return null
+  } else {
+    let ratings = [];
+    const pb = response.ratingDetails["P/B"]
+    ratings.push({type: "P/B", score: pb.score, recommendation: pb.recommendation});
+    const roa = response.ratingDetails["ROA"]
+    ratings.push({type: "ROA", score: roa.score, recommendation: roa.recommendation});
+    const  dcf = response.ratingDetails["DCF"]
+    ratings.push({type: "DCF", score: dcf.score, recommendation: dcf.recommendation});
+    const pe = response.ratingDetails["P/E"]
+    ratings.push({type: "P/E", score: pe.score, recommendation: pe.recommendation});
+    const roe = response.ratingDetails["ROE"]
+    ratings.push({type: "ROE", score: roe.score, recommendation: roe.recommendation});
+    const ed = response.ratingDetails["D/E"]
+    ratings.push({type: "D/E", score: ed.score, recommendation: ed.recommendation});
+    return ratings;
+  }
+}
+
+module.exports = {ratingDetailTypeDef, ratingDetailResolver};
