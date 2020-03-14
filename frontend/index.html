@@ -92,13 +92,8 @@
                 <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
                     
                     <div class="tm-bg-primary-dark header-block tm-block-h-auto">
-                        <h2 class="tm-block-title">Stock Search</h2>
-                    <select id="singleSelectExample">
-                        <option value=""></option>
-                        <option value="AL">Alabama</option>
-                        <option value="AL">Abkhama</option>
-                        <option value="AL">Alyhama</option>
-                        <option value="WY">Wyoming</option>
+                        <h2 class="tm-block-title">Add Stock</h2>
+                    <select id="singleSearch">
                     </select>
                 </div>
                 </div>
@@ -112,48 +107,7 @@
                         
                         <div class="tm-product-table-container">
                             <table class="table tm-table-small tm-product-table">
-                                <tbody>
-                                    <tr>
-                                        <td class="tm-product-name">Stock A</td>
-                                        <td class="text-center">
-                                            <a href="#" class="tm-product-delete-link">
-                                                <i class="far fa-trash-alt tm-product-delete-icon"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tm-product-name">Stock B</td>
-                                        <td class="text-center">
-                                            <a href="#" class="tm-product-delete-link">
-                                                <i class="far fa-trash-alt tm-product-delete-icon"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tm-product-name">Stock C</td>
-                                        <td class="text-center">
-                                            <a href="#" class="tm-product-delete-link">
-                                                <i class="far fa-trash-alt tm-product-delete-icon"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tm-product-name">Stock D</td>
-                                        <td class="text-center">
-                                            <a href="#" class="tm-product-delete-link">
-                                                <i class="far fa-trash-alt tm-product-delete-icon"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tm-product-name">Stock E</td>
-                                        <td class="text-center">
-                                            <a href="#" class="tm-product-delete-link">
-                                                <i class="far fa-trash-alt tm-product-delete-icon"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-
+                                <tbody id="StockSelections">
                                 </tbody>
                             </table>
                         </div>
@@ -314,52 +268,7 @@
     <script src="js/bootstrap.min.js"></script>
     <!-- https://getbootstrap.com/ -->
     <script src="js/graphing.js"></script>
-    <script>
-        Chart.defaults.global.defaultFontColor = 'white';
-        let ctxLine,
-
-            optionsLine,
-
-            configLine,
-
-            lineChart;
-
-        // DOM is ready
-        $(function() {
-            drawLineChart(); // Line Chart
-            $(window).resize(function() {
-                updateLineChart();
-            });
-        })
-    </script>
-    <script>
-        $('.js-example-basic-single').select2({
-            theme: "flat",
-        });
-
-$('.js-example-basic-multiple').select2({
-  theme: "flat"
-  data: 
-  format
-});
-
-$("#singleSelectExample").select2({
-  placeholder: 'Select an option...',
-  theme: "flat",
-  allowClear: true
-});
-$(".js-example-placeholder-single").select2({
-  placeholder: 'Select an option...',
-  theme: "flat",
-  allowClear: true
-});
- 
-$(".js-example-placeholder-multiple").select2({
-  placeholder: "Select a option",
-  theme: "flat"
-});
-
-    </script>
+    <script src="js/index.js"></script>
     <script src="/js/api.js"></script>
 </body>
 
