@@ -9,7 +9,7 @@ var api = (function(){
     function do_nothing(code, err, respObj) {}
 
     // callback format: code, err, respObj
-    function send_ajax(data, callback) {
+    function send_ajax(method, url, data, callback) {
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
             if (xhr.status == 200) {
@@ -22,13 +22,27 @@ var api = (function(){
                 notifyErrorListeners(err);
             }
         };
-        xhr.open('POST', '/graphql', true);
+        xhr.open(method, url, true);
         if (!data) {
             xhr.send();
         } else{
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(data));
         }
+    }
+
+    // queries backend
+    function seng_graphql_query(data, callback) {
+        let method = 'POST';
+        let url = '/graphql';
+        send_ajax(method, url, data, callback);
+    }
+
+    // queries financialmodelingprep.com api directly
+    function send_financial_modeling_query(path, callback) {
+        let method = 'GET';
+        let url = 'https://financialmodelingprep.com/api/v3/' + path;
+        send_ajax(method, url, null, callback);
     }
 
     //
@@ -50,7 +64,35 @@ var api = (function(){
             }
         }`;
         let data = {query: query};
-        send_ajax(data, callback);
+        seng_graphql_query(data, callback);
+    };
+
+    // queries financialmodelingprep.com; Searches NASDAQ only for now
+    // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
+    module.queryListOfStocks = function(searchStr, callback=do_nothing) {
+        let path = `search?query=${searchStr}&limit=10&exchange=NASDAQ`;
+        send_financial_modeling_query(path, callback);
+    };
+
+    // queries financialmodelingprep.com;
+    // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
+    module.getQuarterIncomeStatement = function(symbol, callback=do_nothing) {
+        let path = `financials/income-statement/${symbol}?period=quarter`;
+        send_financial_modeling_query(path, callback);
+    };
+
+    // queries financialmodelingprep.com;
+    // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
+    module.getQuarterBalanceSheet = function(symbol, callback=do_nothing) {
+        let path = `financials/balance-sheet-statement/${symbol}?period=quarter`;
+        send_financial_modeling_query(path, callback);
+    };
+
+    // queries financialmodelingprep.com;
+    // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
+    module.getQuarterCashFlowStmt = function(symbol, callback=do_nothing) {
+        let path = `financials/cash-flow-statement/${symbol}?period=quarter`;
+        send_financial_modeling_query(path, callback);
     };
 
     //
