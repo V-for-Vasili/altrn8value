@@ -76,22 +76,31 @@ var api = (function(){
 
     // queries financialmodelingprep.com;
     // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
-    module.getQuarterIncomeStatement = function(symbol, callback=do_nothing) {
-        let path = `financials/income-statement/${symbol}?period=quarter`;
+    // if quarter is true, pull quarterly data
+    // if quarter is false, pull yearly data
+    module.getIncomeStatement = function(symbol, quarter=false, callback=do_nothing) {
+        let path = `financials/income-statement/${symbol}`;
+        if (quarter) path += '?period=quarter';
         send_financial_modeling_query(path, callback);
     };
 
     // queries financialmodelingprep.com;
     // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
-    module.getQuarterBalanceSheet = function(symbol, callback=do_nothing) {
-        let path = `financials/balance-sheet-statement/${symbol}?period=quarter`;
+    // if quarter is true, pull quarterly data
+    // if quarter is false, pull yearly data
+    module.getBalanceSheet = function(symbol, quarter=false, callback=do_nothing) {
+        let path = `financials/balance-sheet-statement/${symbol}`;
+        if (quarter) path += '?period=quarter';
         send_financial_modeling_query(path, callback);
     };
 
     // queries financialmodelingprep.com;
     // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
-    module.getQuarterCashFlowStmt = function(symbol, callback=do_nothing) {
-        let path = `financials/cash-flow-statement/${symbol}?period=quarter`;
+    // if quarter is true, pull quarterly data
+    // if quarter is false, pull yearly data
+    module.getCashFlowStmt = function(symbol, quarter=false, callback=do_nothing) {
+        let path = `financials/cash-flow-statement/${symbol}`;
+        if (quarter) path += '?period=quarter';
         send_financial_modeling_query(path, callback);
     };
 
