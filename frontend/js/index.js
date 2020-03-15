@@ -19,7 +19,7 @@ window.onload = (function(){
         'Net Income - Non-Controlling int',
         'Net Income - Discontinued ops',
         'Net Income',
-        'Preferred Dividends',
+        'Preferred Dividends',S
         'Net Income Com',
         'EPS',
         'EPS Diluted',
@@ -35,8 +35,39 @@ window.onload = (function(){
         'EBIT',
         'Consolidated Income',
         'Earnings Before Tax Margin',
-        'Net Profit Margin',
-        ];
+        'Net Profit Margin'
+    ];
+    let balanceSheetMetrics = [
+        "Cash and cash equivalents",
+        "Short-term investments",
+        "Cash and short-term investments",
+        "Receivables",
+        "Inventories",
+        "Total current assets",
+        "Property, Plant & Equipment Net",
+        "Goodwill and Intangible Assets",
+        "Long-term investments",
+        "Tax assets",
+        "Total non-current assets",
+        "Total assets",
+        "Payables",
+        "Short-term debt",
+        "Total current liabilities",
+        "Long-term debt",
+        "Total debt",
+        "Deferred revenue",
+        "Tax Liabilities",
+        "Deposit Liabilities",
+        "Total non-current liabilities",
+        "Total liabilities",
+        "Other comprehensive income",
+        "Retained earnings (deficit)",
+        "Total shareholders equity",
+        "Investments",
+        "Net Debt",
+        "Other Assets",
+        "Other Liabilities"
+    ];
 
     // Initate Blank Canvas Where Historic Price Data will be loaded
     var options = {
@@ -179,8 +210,6 @@ window.onload = (function(){
         $("#singleSearch").val(null).trigger("change");
     });
 
-
-
     // add error listeners to show error messages to the user
     api.onError(function(err) {
         console.log(err);
@@ -191,41 +220,51 @@ window.onload = (function(){
         document.querySelector('#metrics_table_div').style.visibility = 'visible';
     }
 
-    // populates fin statements table
-    function load_fin_statements(companyName) {
+    function getInfoByYear(respObj) {
+        let infoByYear = {};
+        respObj.financials.forEach(function(item) {
+            let year = item.date.split('-', 1)[0];
+            infoByYear[year] = item;
+        });
+        // if info for some year is not present, substitute it with empty object
+        for (let year of years) {
+            if (!infoByYear[year]) infoByYear[year] = {};
+        }
+        return infoByYear;
+    }
+
+    function populateMetricsTable(infoByYear, metrics, title) {
+        let table = document.querySelector('#metrics_table_tbody');
+        // populate table
+        table.innerHTML = '';
+        for (let idx in metrics) {
+            let m = metrics[idx];
+            let tr = document.createElement('tr');
+            tr.innerHTML = `<th scope="row"><b>${m}</b></th>`;
+            for (let idx1 in years) {
+                let year = years[idx1];
+                let info = infoByYear[year][m];
+                info = parseFloat(info);
+                info = info.toFixed(2);
+                if (idx1 == 0) info = `<b>${info}</b>`;
+                tr.innerHTML += `<td>${info}</td>`;
+            }
+            table.appendChild(tr);
+        }
+    }
+
+    // Functions to populate metrics table
+    function metrics_table_show_income_statements(companyName) {
         // get yearly statements from api
         api.getIncomeStatement(companyName, false, function(code, err, respObj) {
             if (code !== 200) return api.notifyErrorListeners(err);
-            let infoByYear = {};
-            respObj.financials.forEach(function(item) {
-                let year = item.date.split('-', 1)[0];
-                infoByYear[year] = item;
-            });
-            // if info for some year is not present, substitute it with empty object
-            for (let year of years) {
-                if (!infoByYear[year]) infoByYear[year] = {};
-            }
-            let table = document.querySelector('#metrics_table_tbody');
-            // populate table
-            table.innerHTML = '';
-            for (let idx in incomeStatementMetrics) {
-                let m = incomeStatementMetrics[idx];
-                let tr = document.createElement('tr');
-                tr.innerHTML = `<th scope="row"><b>${m}</b></th>`;
-                for (let idx1 in years) {
-                    let year = years[idx1];
-                    let info = infoByYear[year][m];
-                    info = parseFloat(info);
-                    info = info.toFixed(2);
-                    if (idx1 == 0) info = `<b>${info}</b>`;
-                    tr.innerHTML += `<td>${info}</td>`;
-                }
-                table.appendChild(tr);
-            }
+            let infoByYear = getInfoByYear(respObj);
+            populateMetricsTable(infoByYear, incomeStatementMetrics, "Income Statements");
             showMetricsTable();
         });
     }
 
-    // load_fin_statements('TSLA');
+    showMetricsTable();
+    //metrics_table_show_income_statements('TSLA');
 
 })();
