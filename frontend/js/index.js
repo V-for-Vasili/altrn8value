@@ -182,8 +182,22 @@ window.onload = (function(){
             </td>`;
         $('#StockSelections').prepend(tr);
         tr.querySelector('i').addEventListener('click',function(e){
-            tr.parentElement.removeChild(tr);
-            chart.options
+          tr.parentElement.removeChild(tr);
+          let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != data.symbol || obj.name == null) );
+          console.log("After Del sereis is",ser);
+          if (ser.length > 0){
+            ser = ser.map(obj => {
+                let rObj ={};
+              rObj.name=obj.name;
+              rObj.data = obj.data;
+              return rObj;
+            });
+            chart.updateSeries(ser);
+          }
+          else chart.updateSeries();
+          console.log("delete Sereies");
+          console.log(chart);
+
         });
         var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + data.symbol +"?serietype=line";
         $.getJSON(url, function(response) {
@@ -194,10 +208,17 @@ window.onload = (function(){
                 rObj.y = obj.close;
                 return rObj;
             });
-            chart.appendSeries({
-                name: name,
-                data: data
-            });
+            if (chart.w.globals.initialSeries.length == 0){
+              chart.updateSeries([{name: name,data: data}]);
+            }
+            else{
+              chart.appendSeries({
+                  name: name,
+                  data: data
+              });
+            }
+            console.log("Add Sereies");
+            console.log(chart);
         });
         $("#singleSearch").val(null).trigger("change");
     });
