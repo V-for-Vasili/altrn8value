@@ -240,6 +240,10 @@ window.onload = (function(){
     });
     ////////////////////////////////////////////////////////////////////////
 
+    function addStockToList(symbol) {}
+
+    function deleteStockFromList(symbol) {}
+
     // generates columns for metrics table
     function generateMetricTableColumns() {
         let content = '';
