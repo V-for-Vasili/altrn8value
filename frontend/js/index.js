@@ -195,7 +195,6 @@ window.onload = (function(){
       placeholder: 'Select A Stock',
       theme: "flat",
       allowClear: true,
-
     });
 
     // Behavoiour For when a stock is selected from the drop down list
@@ -211,7 +210,6 @@ window.onload = (function(){
                 </a>
             </td>`;
         $('#StockSelections').prepend(tr);
-
 
 
         // Behaviour For When Stock is removed from selections
@@ -269,11 +267,28 @@ window.onload = (function(){
     $('#companeySelect').on('select2:select', function (e) {
         let name = e.params.name;
         let sym = e.params.symbol;
+        addStockToDisplayList(sym);
     });
 
-    function addStockToDisplayList(symbol) {}
+    function addStockToDisplayList(symbol) {
+        if (PAGE_INFO.stockDisplayList.includes(symbol)) return;
+        PAGE_INFO.stockDisplayList.push(symbol);
+        if (!PAGE_INFO.metricTableCurrStock) PAGE_INFO.metricTableCurrStock = symbol;
+        reloadPageContent();
+    }
 
-    function deleteStockFromDisplayList(symbol) {}
+    function deleteStockFromDisplayList(symbol) {
+        // remove symbol from list of stocks
+        let index = PAGE_INFO.stockDisplayList.indexOf(symbol);
+        if (index == -1)
+            return api.notifyErrorListeners(`Cannot deleteStockFromDisplayList - ${symbol} is not in the list.`);
+        PAGE_INFO.stockDisplayList.splice(index, 1);
+        // if list is empty, reset PAGE_INFO
+        if (PAGE_INFO.stockDisplayList == 0) return initPageInfo();
+        if (PAGE_INFO.metricTableCurrStock && PAGE_INFO.metricTableCurrStock.localeCompare(symbol) == 0)
+            PAGE_INFO.metricTableCurrStock = PAGE_INFO.stockDisplayList[0];
+        reloadPageContent();
+    }
 
     // generates columns for metrics table
     function generateMetricTableColumns() {
@@ -402,21 +417,16 @@ window.onload = (function(){
         console.log('-- populate Stock Selections box --');
     });
 
-    // On stock display change, refresh Historic Performance Graph
+    // On stock display change, reload Stock Selector for metrics table
     api.onStockDisplayChange(function() {
-        // populates Historic Performance graph based on the content of PAGE_INFO
+        // populates Stock Selections box based on the content of PAGE_INFO
         // TODO
-        console.log('-- populate Historic Performance graph --');
+        console.log('-- reload Stock Selector for metrics table --');
     });
 
     function reloadPageContent() {
         api.notifyStockDisplayListeners();
     }
-
-    /* to test:
-    PAGE_INFO.stockDisplayList.push('TSLA');
-    PAGE_INFO.metricTableCurrStock = 'TSLA';
-    */
 
     // refresh when index.js file is loaded
     reloadPageContent();
