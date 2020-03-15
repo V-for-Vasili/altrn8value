@@ -384,6 +384,11 @@ window.onload = (function(){
         populateMetricsTable(api.getCashFlowStmt, companyName, getCashFlowStmtMetrics, "Cash Flow Statement");
     }
 
+    function metricsTableChangeCurrStock(symbol) {
+        PAGE_INFO.metricTableCurrStock = symbol;
+        reloadPageContent();
+    }
+
     // attach events to go between different tabs in metrics table
     document.querySelector('#IS_tab_btn').addEventListener('click', function() {
         PAGE_INFO.metricTableCurrTab = 0;
