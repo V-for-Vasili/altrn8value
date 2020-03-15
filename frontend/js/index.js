@@ -220,7 +220,7 @@ window.onload = (function(){
           $('#companeySelect').find("option[value='"+symbol+"']").remove();
           //$('#companeySelect').trigger('change');
 
-          let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != symbol || obj.name == null) );
+          let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != symbol) );
           if (ser.length > 0){
             ser = ser.map(obj => {
                 let rObj ={};
@@ -231,6 +231,7 @@ window.onload = (function(){
             chart.updateSeries(ser);
           }
           else chart.updateSeries();
+          
         });
 
         // Retrive time sereies for added stock and add to plot
@@ -247,7 +248,7 @@ window.onload = (function(){
           }
           else{
             chart.appendSeries({
-                name: name,
+                name: symbol,
                 data: data
             });
           }  
