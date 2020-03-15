@@ -1,8 +1,7 @@
 .fiancialStatementHeader{
     display: flex;
-    flex:1 1 auto;
-    flex-direction: row;
     flex-wrap: nowrap;
+    flex-basis: auto;
     justify-content: space-between;
 
 }
