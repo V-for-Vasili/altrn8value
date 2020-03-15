@@ -19,7 +19,7 @@ window.onload = (function(){
         'Net Income - Non-Controlling int',
         'Net Income - Discontinued ops',
         'Net Income',
-        'Preferred Dividends',S
+        'Preferred Dividends',
         'Net Income Com',
         'EPS',
         'EPS Diluted',
@@ -67,6 +67,23 @@ window.onload = (function(){
         "Net Debt",
         "Other Assets",
         "Other Liabilities"
+    ];
+    let getCashFlowStmtMetrics = [
+        "Depreciation & Amortization",
+        "Stock-based compensation",
+        "Operating Cash Flow",
+        "Capital Expenditure",
+        "Acquisitions and disposals",
+        "Investment purchases and sales",
+        "Investing Cash flow",
+        "Issuance (repayment) of debt",
+        "Issuance (buybacks) of shares",
+        "Dividend payments",
+        "Financing Cash Flow",
+        "Effect of forex changes on cash",
+        "Net cash flow / Change in cash",
+        "Free Cash Flow",
+        "Net Cash/Marketcap"
     ];
 
     // Initate Blank Canvas Where Historic Price Data will be loaded
@@ -151,12 +168,6 @@ window.onload = (function(){
             cache: true
         }
     });
-    $("#companeySelect").select2({
-      placeholder: 'Select A Stock',
-      theme: "flat",
-      
-    });
-
 
     // Behavoiour For when a stock is selected from the drop down list
     $("#singleSearch").on('select2:select', function (e) {
@@ -171,20 +182,8 @@ window.onload = (function(){
             </td>`;
         $('#StockSelections').prepend(tr);
         tr.querySelector('i').addEventListener('click',function(e){
-          tr.parentElement.removeChild(tr);
-          let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != data.symbol || obj.name == null) );
-          if (ser.length > 0){
-            ser = ser.map(obj => {
-                let rObj ={};
-              rObj.name=obj.name;
-              rObj.data = obj.data;
-              return rObj;
-            });
-            chart.updateSeries(ser);
-          }
-          else chart.updateSeries();
-
-
+            tr.parentElement.removeChild(tr);
+            chart.options
         });
         var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + data.symbol +"?serietype=line";
         $.getJSON(url, function(response) {
@@ -195,18 +194,11 @@ window.onload = (function(){
                 rObj.y = obj.close;
                 return rObj;
             });
-            if (chart.w.globals.initialSeries.length == 0){
-              chart.updateSeries([{name: name,data: data}]);
-            }
-            else{
-              chart.appendSeries({
-                  name: name,
-                  data: data
-              });
-            }
+            chart.appendSeries({
+                name: name,
+                data: data
+            });
         });
-        let opt = new Option(data.name,null,false,false);
-        $('#companeySelect').append(opt).trigger('change');
         $("#singleSearch").val(null).trigger("change");
     });
 
@@ -233,38 +225,51 @@ window.onload = (function(){
         return infoByYear;
     }
 
-    function populateMetricsTable(infoByYear, metrics, title) {
-        let table = document.querySelector('#metrics_table_tbody');
-        // populate table
-        table.innerHTML = '';
-        for (let idx in metrics) {
-            let m = metrics[idx];
-            let tr = document.createElement('tr');
-            tr.innerHTML = `<th scope="row"><b>${m}</b></th>`;
-            for (let idx1 in years) {
-                let year = years[idx1];
-                let info = infoByYear[year][m];
-                info = parseFloat(info);
-                info = info.toFixed(2);
-                if (idx1 == 0) info = `<b>${info}</b>`;
-                tr.innerHTML += `<td>${info}</td>`;
-            }
-            table.appendChild(tr);
-        }
-    }
-
-    // Functions to populate metrics table
-    function metrics_table_show_income_statements(companyName) {
-        // get yearly statements from api
-        api.getIncomeStatement(companyName, false, function(code, err, respObj) {
+    // calls appropriate api function, populates metrics table with information
+    function populateMetricsTable(apiFunction, companyName, metrics, title) {
+        // set title
+        document.querySelector('#metrics_table_title').innerHTML = title;
+        // get info statements from api
+        apiFunction(companyName, false, function(code, err, respObj) {
             if (code !== 200) return api.notifyErrorListeners(err);
             let infoByYear = getInfoByYear(respObj);
-            populateMetricsTable(infoByYear, incomeStatementMetrics, "Income Statements");
+            let table = document.querySelector('#metrics_table_tbody');
+            // populate table
+            table.innerHTML = '';
+            for (let idx in metrics) {
+                let m = metrics[idx];
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<th scope="row"><b>${m}</b></th>`;
+                for (let idx1 in years) {
+                    let year = years[idx1];
+                    let info = infoByYear[year][m];
+                    info = parseFloat(info);
+                    info = info.toFixed(2);
+                    if (idx1 == 0) info = `<b>${info}</b>`;
+                    tr.innerHTML += `<td>${info}</td>`;
+                }
+                table.appendChild(tr);
+            }
             showMetricsTable();
         });
     }
 
+    // Functions to populate metrics table
+    function metricsTableShowIncomeStatements(companyName) {
+        populateMetricsTable(api.getIncomeStatement, companyName, incomeStatementMetrics, "Income Statement");
+    }
+
+    function metricsTableShowBalanceSheetInfo(companyName) {
+        populateMetricsTable(api.getBalanceSheet, companyName, balanceSheetMetrics, "Balance Sheet");
+    }
+
+    function metricsTableShowCashFlowStatements(companyName) {
+        populateMetricsTable(api.getCashFlowStmt, companyName, getCashFlowStmtMetrics, "Cash Flow Statement");
+    }
+
     showMetricsTable();
-    //metrics_table_show_income_statements('TSLA');
+    //metricsTableShowIncomeStatements('TSLA');
+    //metricsTableShowBalanceSheetInfo('TSLA');
+    //metricsTableShowCashFlowStatements('TSLA');
 
 })();
