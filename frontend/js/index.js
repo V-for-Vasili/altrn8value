@@ -2,6 +2,42 @@
 window.onload = (function(){
     "use strict";
 
+    // years for which we show financial statements
+    let years = ['2019', '2018', '2017', '2016', '2015', '2014'];
+    let incomeStatementMetrics = [
+        'Revenue',
+        'Revenue Growth',
+        'Cost of Revenue',
+        'Gross Profit',
+        'R&D Expenses',
+        'SG&A Expense',
+        'Operating Expenses',
+        'Operating Income',
+        'Interest Expense',
+        'Earnings before Tax',
+        'Income Tax Expense',
+        'Net Income - Non-Controlling int',
+        'Net Income - Discontinued ops',
+        'Net Income',
+        'Preferred Dividends',
+        'Net Income Com',
+        'EPS',
+        'EPS Diluted',
+        'Weighted Average Shs Out',
+        'Weighted Average Shs Out (Dil)',
+        'Dividend per Share',
+        'Gross Margin',
+        'EBITDA Margin',
+        'EBIT Margin',
+        'Profit Margin',
+        'Free Cash Flow margin',
+        'EBITDA',
+        'EBIT',
+        'Consolidated Income',
+        'Earnings Before Tax Margin',
+        'Net Profit Margin',
+        ];
+
     // Initate Blank Canvas Where Historic Price Data will be loaded
     var options = {
         series: [],
@@ -65,44 +101,6 @@ window.onload = (function(){
     };
     var chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();   
-
-
-
-    // years for which we show financial statements
-    let years = ['2019', '2018', '2017', '2016', '2015', '2014'];
-    let incomeStatementMetrics = [
-        'Revenue',
-        'Revenue Growth',
-        'Cost of Revenue',
-        'Gross Profit',
-        'R&D Expenses',
-        'SG&A Expense',
-        'Operating Expenses',
-        'Operating Income',
-        'Interest Expense',
-        'Earnings before Tax',
-        'Income Tax Expense',
-        'Net Income - Non-Controlling int',
-        'Net Income - Discontinued ops',
-        'Net Income',
-        'Preferred Dividends',
-        'Net Income Com',
-        'EPS',
-        'EPS Diluted',
-        'Weighted Average Shs Out',
-        'Weighted Average Shs Out (Dil)',
-        'Dividend per Share',
-        'Gross Margin',
-        'EBITDA Margin',
-        'EBIT Margin',
-        'Profit Margin',
-        'Free Cash Flow margin',
-        'EBITDA',
-        'EBIT',
-        'Consolidated Income',
-        'Earnings Before Tax Margin',
-        'Net Profit Margin',
-        ];
 
     // Sets Up the Add Stock Bar at top of page
     $("#singleSearch").select2({
