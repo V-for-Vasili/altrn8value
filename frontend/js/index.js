@@ -120,6 +120,13 @@ window.onload = (function(){
             cache: true
         }
     });
+    $("#companeySelect").select2({
+      placeholder: 'Select A Stock',
+      theme: "flat",
+      allowClear: true,
+      data:[]
+    });
+
 
     // Behavoiour For when a stock is selected from the drop down list
     $("#singleSearch").on('select2:select', function (e) {
@@ -153,6 +160,8 @@ window.onload = (function(){
         });
         $("#singleSearch").val(null).trigger("change");
     });
+
+
 
     // add error listeners to show error messages to the user
     api.onError(function(err) {
