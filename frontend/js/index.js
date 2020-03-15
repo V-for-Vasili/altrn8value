@@ -239,6 +239,24 @@ window.onload = (function(){
       let name = e. params.text;
     });
     ////////////////////////////////////////////////////////////////////////
+
+    // generates columns for metrics table
+    function generateMetricTableColumns() {
+        let content = '';
+        for (let year of years) {
+            content += `<th scope="col">${year}</th>`;
+        }
+        return content;
+    }
+
+    // Show metric table thead
+    document.querySelector('#metrics_table_thead').innerHTML = `
+        <tr>
+            <th scope="col">Metric:</th>
+            ${generateMetricTableColumns()}
+        </tr>
+    `;
+
     // add error listeners to show error messages to the user
     api.onError(function(err) {
         console.log(err);
@@ -304,8 +322,7 @@ window.onload = (function(){
         populateMetricsTable(api.getCashFlowStmt, companyName, getCashFlowStmtMetrics, "Cash Flow Statement");
     }
 
-    showMetricsTable();
-    //metricsTableShowIncomeStatements('TSLA');
+    metricsTableShowIncomeStatements('TSLA');
     //metricsTableShowBalanceSheetInfo('TSLA');
     //metricsTableShowCashFlowStatements('TSLA');
 
