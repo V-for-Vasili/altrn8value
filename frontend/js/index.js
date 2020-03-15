@@ -19,7 +19,7 @@ window.onload = (function(){
         'Net Income - Non-Controlling int',
         'Net Income - Discontinued ops',
         'Net Income',
-        'Preferred Dividends',S
+        'Preferred Dividends',
         'Net Income Com',
         'EPS',
         'EPS Diluted',
@@ -173,6 +173,7 @@ window.onload = (function(){
         tr.querySelector('i').addEventListener('click',function(e){
           tr.parentElement.removeChild(tr);
           let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != data.symbol || obj.name == null) );
+          console.log("After Del sereis is",ser);
           if (ser.length > 0){
             ser = ser.map(obj => {
                 let rObj ={};
@@ -183,7 +184,8 @@ window.onload = (function(){
             chart.updateSeries(ser);
           }
           else chart.updateSeries();
-
+          console.log("delete Sereies");
+          console.log(chart);
 
         });
         var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + data.symbol +"?serietype=line";
@@ -204,6 +206,8 @@ window.onload = (function(){
                   data: data
               });
             }
+            console.log("Add Sereies");
+            console.log(chart);
         });
         let opt = new Option(data.name,null,false,false);
         $('#companeySelect').append(opt).trigger('change');
