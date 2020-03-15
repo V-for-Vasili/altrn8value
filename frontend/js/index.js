@@ -2,6 +2,72 @@
 window.onload = (function(){
     "use strict";
 
+    // Initate Blank Canvas Where Historic Price Data will be loaded
+    var options = {
+        series: [],
+        noData: {
+            text: 'No Stocks Selected'
+          },
+        chart: {
+        type: 'area',
+        stacked: false,
+        height: 350,
+        zoom: {
+          type: 'x',
+          enabled: true,
+          autoScaleYaxis: true
+        },
+        toolbar: {
+          autoSelected: 'zoom'
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      markers: {
+        size: 0,
+      },
+      title: {
+        text: 'Stock Price Movement',
+        align: 'left'
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          inverseColors: false,
+          opacityFrom: 0.5,
+          opacityTo: 0,
+          stops: [0, 90, 100]
+        },
+      },
+      yaxis: {
+        labels: {
+          formatter: function (val) {
+            return (val);
+          },
+        },
+        title: {
+          text: 'Price'
+        },
+      },
+      xaxis: {
+        type: 'datetime',
+      },
+      tooltip: {
+        shared: false,
+        y: {
+          formatter: function (val) {
+            return (val);
+          }
+        }
+      }
+    };
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();   
+
+
+
     // years for which we show financial statements
     let years = ['2019', '2018', '2017', '2016', '2015', '2014'];
     let incomeStatementMetrics = [
@@ -44,7 +110,7 @@ window.onload = (function(){
         theme: "flat",
         allowClear: true,
         ajax: {
-            url:'https://financialmodelingprep.com/api/v3/search?query=&limit=10',
+            url:'https://financialmodelingprep.com/api/v3/search?query=AA&limit=10',
             processResults: function (ajaxData){
                 let data = $.map(ajaxData, function (obj,index){
                     obj.id = obj.id || index + 1;
@@ -70,6 +136,21 @@ window.onload = (function(){
         $('#StockSelections').prepend(tr);
         tr.querySelector('i').addEventListener('click',function(e){
            tr.parentElement.removeChild(tr);
+           chart.options
+        });
+        var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + data.symbol +"?serietype=line";
+        $.getJSON(url, function(response) {
+            let name = response.symbol;
+            let data = response.historical.map(obj =>{
+            let rObj = {};
+            rObj.x = obj.date;
+            rObj.y = obj.close;
+            return rObj;
+             });
+            chart.appendSeries({
+                name: name,
+                data: data
+            });
         });
         $("#singleSearch").val(null).trigger("change");
     });
