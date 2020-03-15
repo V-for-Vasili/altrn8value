@@ -100,7 +100,7 @@ window.onload = (function(){
       }
     };
     var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();   
+    chart.render();
 
     // Sets Up the Add Stock Bar at top of page
     $("#singleSearch").select2({
@@ -114,8 +114,8 @@ window.onload = (function(){
                     obj.id = obj.id || index + 1;
                     obj.text = obj.text || obj.symbol; // replace name with the property used for the text
                     return obj;
-                 });
-                 return {results: data};
+                });
+                return {results: data};
             },
             cache: true
         }
@@ -125,26 +125,27 @@ window.onload = (function(){
     $("#singleSearch").on('select2:select', function (e) {
         let data = e.params.data;
         let tr = document.createElement('tr');
-        tr.innerHTML = `<td class="tm-product-name">${data.name}</td>
-        <td class="text-center">
-            <a class="tm-product-delete-link">
-                <i class="far fa-trash-alt tm-product-delete-icon"></i>
-            </a>
-        </td>`;
+        tr.innerHTML = `
+            <td class="tm-product-name">${data.name}</td>
+            <td class="text-center">
+                <a class="tm-product-delete-link">
+                    <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                </a>
+            </td>`;
         $('#StockSelections').prepend(tr);
         tr.querySelector('i').addEventListener('click',function(e){
-           tr.parentElement.removeChild(tr);
-           chart.options
+            tr.parentElement.removeChild(tr);
+            chart.options
         });
         var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + data.symbol +"?serietype=line";
         $.getJSON(url, function(response) {
             let name = response.symbol;
             let data = response.historical.map(obj =>{
-            let rObj = {};
-            rObj.x = obj.date;
-            rObj.y = obj.close;
-            return rObj;
-             });
+                let rObj = {};
+                rObj.x = obj.date;
+                rObj.y = obj.close;
+                return rObj;
+            });
             chart.appendSeries({
                 name: name,
                 data: data
