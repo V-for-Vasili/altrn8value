@@ -171,15 +171,18 @@ window.onload = (function(){
     $("#companeySelect").select2({
       placeholder: 'Select A Stock',
       theme: "flat",
+      allowClear: true,
 
     });
 
     // Behavoiour For when a stock is selected from the drop down list
     $("#singleSearch").on('select2:select', function (e) {
-        let data = e.params.data;
+      console.log("single search e:",e);
+        let name = e.params.data.name;
+        let symbol = e.params.data.symbol;
         let tr = document.createElement('tr');
         tr.innerHTML = `
-            <td class="tm-product-name">${data.name}</td>
+            <td class="tm-product-name">${name}</td>
             <td class="text-center">
                 <a class="tm-product-delete-link">
                     <i class="far fa-trash-alt tm-product-delete-icon"></i>
@@ -188,7 +191,7 @@ window.onload = (function(){
         $('#StockSelections').prepend(tr);
         tr.querySelector('i').addEventListener('click',function(e){
           tr.parentElement.removeChild(tr);
-          let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != data.symbol || obj.name == null) );
+          let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != symbol || obj.name == null) );
           console.log("After Del sereis is",ser);
           if (ser.length > 0){
             ser = ser.map(obj => {
@@ -204,9 +207,8 @@ window.onload = (function(){
           console.log(chart);
 
         });
-        var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + data.symbol +"?serietype=line";
+        var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol +"?serietype=line";
         $.getJSON(url, function(response) {
-            let name = response.symbol;
             let data = response.historical.map(obj =>{
                 let rObj = {};
                 rObj.x = obj.date;
@@ -214,7 +216,7 @@ window.onload = (function(){
                 return rObj;
             });
             if (chart.w.globals.initialSeries.length == 0){
-              chart.updateSeries([{name: name,data: data}]);
+              chart.updateSeries([{name: symbol,data: data}]);
             }
             else{
               chart.appendSeries({
@@ -225,11 +227,18 @@ window.onload = (function(){
             console.log("Add Sereies");
             console.log(chart);
         });
-        let opt = new Option(data.name,null,false,false);
+        let opt = new Option(name,symbol,false,false);
         $('#companeySelect').append(opt).trigger('change');
         $("#singleSearch").val(null).trigger("change");
     });
-
+    //////////////////////////////////////////////////////////////////////
+    // This is called when companey is selected:
+    $('#companeySelect').on('select2:select', function (e) {
+      console.log("selected");
+      let symbol = e.params.id;
+      let name = e. params.text;
+    });
+    ////////////////////////////////////////////////////////////////////////
     // add error listeners to show error messages to the user
     api.onError(function(err) {
         console.log(err);
