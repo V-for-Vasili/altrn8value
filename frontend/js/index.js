@@ -89,6 +89,10 @@ window.onload = (function(){
                 let year = item.date.split('-', 1)[0];
                 infoByYear[year] = item;
             });
+            // if info for some year is not present, substitute it with empty object
+            for (let year of years) {
+                if (!infoByYear[year]) infoByYear[year] = {};
+            }
             let table = document.querySelector('#fin_statements_table_tbody');
             // populate table
             table.innerHTML = '';
@@ -99,6 +103,8 @@ window.onload = (function(){
                 for (let idx1 in years) {
                     let year = years[idx1];
                     let info = infoByYear[year][m];
+                    info = parseFloat(info);
+                    info = info.toFixed(2);
                     if (idx1 == 0) info = `<b>${info}</b>`;
                     tr.innerHTML += `<td>${info}</td>`;
                 }
@@ -109,7 +115,7 @@ window.onload = (function(){
 
     // populates all page content with data
     function refresh_page_content() {
-        load_fin_statements('AAPL');
+        load_fin_statements('TSLA');
     }
 
     // refresh page on load
