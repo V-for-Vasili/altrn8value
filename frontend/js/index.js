@@ -133,22 +133,43 @@ window.onload = (function(){
         </td>`;
         $('#StockSelections').prepend(tr);
         tr.querySelector('i').addEventListener('click',function(e){
+        
            tr.parentElement.removeChild(tr);
-           chart.options
+           let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != data.symbol || obj.name == null) );
+           console.log("ser is ",ser);
+           if (ser.length > 0){
+            ser = ser.map(obj => {
+                let rObj ={};
+                rObj.name=obj.name;
+                rObj.data = obj.data;
+                return rObj;
+            });
+            chart.updateSeries(ser);
+           }
+           else chart.updateSeries();
+           
+           
         });
         var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + data.symbol +"?serietype=line";
         $.getJSON(url, function(response) {
             let name = response.symbol;
             let data = response.historical.map(obj =>{
-            let rObj = {};
-            rObj.x = obj.date;
-            rObj.y = obj.close;
-            return rObj;
+                let rObj = {};
+                rObj.x = obj.date;
+                rObj.y = obj.close;
+                return rObj;
              });
-            chart.appendSeries({
-                name: name,
-                data: data
-            });
+            if (chart.w.globals.initialSeries.length == 0){
+                chart.updateSeries([{name: name,data: data}]);
+            }
+            else{
+                chart.appendSeries({
+                    name: name,
+                    data: data
+                });
+            }
+            
+            
         });
         $("#singleSearch").val(null).trigger("change");
     });
