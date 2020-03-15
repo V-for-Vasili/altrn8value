@@ -211,7 +211,6 @@ window.onload = (function(){
             </td>`;
         $('#StockSelections').prepend(tr);
 
-
         // Behaviour For When Stock is removed from selections
         tr.querySelector('i').addEventListener('click',function(e){
           tr.parentElement.removeChild(tr);
@@ -230,6 +229,8 @@ window.onload = (function(){
           }
           else chart.updateSeries();
           
+          // delete the stock from list of displayed stocks
+          deleteStockFromDisplayList(symbol)
         });
 
         // Retrive time sereies for added stock and add to plot
@@ -284,9 +285,15 @@ window.onload = (function(){
             return api.notifyErrorListeners(`Cannot deleteStockFromDisplayList - ${symbol} is not in the list.`);
         PAGE_INFO.stockDisplayList.splice(index, 1);
         // if list is empty, reset PAGE_INFO
-        if (PAGE_INFO.stockDisplayList == 0) return initPageInfo();
-        if (PAGE_INFO.metricTableCurrStock && PAGE_INFO.metricTableCurrStock.localeCompare(symbol) == 0)
-            PAGE_INFO.metricTableCurrStock = PAGE_INFO.stockDisplayList[0];
+        if (PAGE_INFO.stockDisplayList == 0) {
+            // hide metric table, reset PAGE_INFO to default value
+            hideMetricsTable();
+            initPageInfo();
+        } else {
+            if (PAGE_INFO.metricTableCurrStock &&
+                PAGE_INFO.metricTableCurrStock.localeCompare(symbol) == 0)
+                PAGE_INFO.metricTableCurrStock = PAGE_INFO.stockDisplayList[0];
+        }
         reloadPageContent();
     }
 
@@ -408,20 +415,6 @@ window.onload = (function(){
         if (PAGE_INFO.metricTableCurrTab == 2)
             return metricsTableShowCashFlowStatements(companyName);
         api.notifyErrorListeners('PAGE_INFO.metricTableCurrTab contains invalid number.');
-    });
-
-    // On stock display change, refresh Stock Selections
-    api.onStockDisplayChange(function() {
-        // populates Stock Selections box based on the content of PAGE_INFO
-        // TODO
-        console.log('-- populate Stock Selections box --');
-    });
-
-    // On stock display change, reload Stock Selector for metrics table
-    api.onStockDisplayChange(function() {
-        // populates Stock Selections box based on the content of PAGE_INFO
-        // TODO
-        console.log('-- reload Stock Selector for metrics table --');
     });
 
     function reloadPageContent() {
