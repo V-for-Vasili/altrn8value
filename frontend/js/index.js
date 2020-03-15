@@ -182,7 +182,6 @@ window.onload = (function(){
 
     // Behavoiour For when a stock is selected from the drop down list
     $("#singleSearch").on('select2:select', function (e) {
-      console.log("single search e:",e);
         let name = e.params.data.name;
         let symbol = e.params.data.symbol;
         let tr = document.createElement('tr');
@@ -194,10 +193,16 @@ window.onload = (function(){
                 </a>
             </td>`;
         $('#StockSelections').prepend(tr);
+
+
+
+        // Behaviour For When Stock is removed from selections
         tr.querySelector('i').addEventListener('click',function(e){
           tr.parentElement.removeChild(tr);
+          $('#companeySelect').find("option[value='"+symbol+"']").remove();
+          //$('#companeySelect').trigger('change');
+
           let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != symbol || obj.name == null) );
-          console.log("After Del sereis is",ser);
           if (ser.length > 0){
             ser = ser.map(obj => {
                 let rObj ={};
@@ -208,40 +213,45 @@ window.onload = (function(){
             chart.updateSeries(ser);
           }
           else chart.updateSeries();
-          console.log("delete Sereies");
-          console.log(chart);
-
         });
+
+        // Retrive time sereies for added stock and add to plot
         var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol +"?serietype=line";
         $.getJSON(url, function(response) {
-            let data = response.historical.map(obj =>{
-                let rObj = {};
-                rObj.x = obj.date;
-                rObj.y = obj.close;
-                return rObj;
+          let data = response.historical.map(obj =>{
+              let rObj = {};
+              rObj.x = obj.date;
+              rObj.y = obj.close;
+              return rObj;
+          });
+          if (chart.w.globals.initialSeries.length == 0 || chart.w.globals.initialSeries[0].data.length == 0){
+            chart.updateSeries([{name: symbol,data: data}]);
+          }
+          else{
+            chart.appendSeries({
+                name: name,
+                data: data
             });
-            if (chart.w.globals.initialSeries.length == 0){
-              chart.updateSeries([{name: symbol,data: data}]);
-            }
-            else{
-              chart.appendSeries({
-                  name: name,
-                  data: data
-              });
-            }
-            console.log("Add Sereies");
-            console.log(chart);
+          }  
         });
-        let opt = new Option(name,symbol,false,false);
-        $('#companeySelect').append(opt).trigger('change');
+        // Add Selected Comaney to FS select companey bar
+        let opt = new Option(name,symbol,false,true);
+        $('#companeySelect').append(opt).trigger('change').trigger(
+          {type: 'select2:select',
+          params: {
+              name: name,
+              symbol: symbol
+        }});
+        // Clear Stock Select Bar
         $("#singleSearch").val(null).trigger("change");
     });
+
     //////////////////////////////////////////////////////////////////////
-    // This is called when companey is selected:
+    // This is called when companey is selected: Use to call function to populate FS
     $('#companeySelect').on('select2:select', function (e) {
-      console.log("selected");
-      let symbol = e.params.id;
-      let name = e. params.text;
+     let name = e.params.name;
+     let sym = e.params.symbol;
+      
     });
     ////////////////////////////////////////////////////////////////////////
 
