@@ -164,8 +164,8 @@ window.onload = (function(){
         document.querySelector('#metrics_table_div').style.visibility = 'visible';
     }
 
-    // populates fin statements table
-    function load_fin_statements(companyName) {
+    // populates metrics table
+    function metrics_table_show_fin_statements(companyName) {
         // get yearly statements from api
         api.getIncomeStatement(companyName, false, function(code, err, respObj) {
             if (code !== 200) return api.notifyErrorListeners(err);
@@ -199,6 +199,6 @@ window.onload = (function(){
         });
     }
 
-    // load_fin_statements('TSLA');
+    showMetricsTable();
 
 })();
