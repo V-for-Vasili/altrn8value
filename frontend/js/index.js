@@ -168,6 +168,11 @@ window.onload = (function(){
             cache: true
         }
     });
+    $("#companeySelect").select2({
+      placeholder: 'Select A Stock',
+      theme: "flat",
+
+    });
 
     // Behavoiour For when a stock is selected from the drop down list
     $("#singleSearch").on('select2:select', function (e) {
@@ -220,6 +225,8 @@ window.onload = (function(){
             console.log("Add Sereies");
             console.log(chart);
         });
+        let opt = new Option(data.name,null,false,false);
+        $('#companeySelect').append(opt).trigger('change');
         $("#singleSearch").val(null).trigger("change");
     });
 
