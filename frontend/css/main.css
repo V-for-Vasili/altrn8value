@@ -81,3 +81,7 @@ button:focus {
 .tm-footer-link:focus {
     color: #aacbea;
 }
+
+.hidden {
+    display: none;
+}

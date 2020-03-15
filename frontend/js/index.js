@@ -100,7 +100,7 @@ window.onload = (function(){
       }
     };
     var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();   
+    chart.render();
 
     // Sets Up the Add Stock Bar at top of page
     $("#singleSearch").select2({
@@ -114,8 +114,8 @@ window.onload = (function(){
                     obj.id = obj.id || index + 1;
                     obj.text = obj.text || obj.symbol; // replace name with the property used for the text
                     return obj;
-                 });
-                 return {results: data};
+                });
+                return {results: data};
             },
             cache: true
         }
@@ -125,30 +125,17 @@ window.onload = (function(){
     $("#singleSearch").on('select2:select', function (e) {
         let data = e.params.data;
         let tr = document.createElement('tr');
-        tr.innerHTML = `<td class="tm-product-name">${data.name}</td>
-        <td class="text-center">
-            <a class="tm-product-delete-link">
-                <i class="far fa-trash-alt tm-product-delete-icon"></i>
-            </a>
-        </td>`;
+        tr.innerHTML = `
+            <td class="tm-product-name">${data.name}</td>
+            <td class="text-center">
+                <a class="tm-product-delete-link">
+                    <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                </a>
+            </td>`;
         $('#StockSelections').prepend(tr);
         tr.querySelector('i').addEventListener('click',function(e){
-        
-           tr.parentElement.removeChild(tr);
-           let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != data.symbol || obj.name == null) );
-           console.log("ser is ",ser);
-           if (ser.length > 0){
-            ser = ser.map(obj => {
-                let rObj ={};
-                rObj.name=obj.name;
-                rObj.data = obj.data;
-                return rObj;
-            });
-            chart.updateSeries(ser);
-           }
-           else chart.updateSeries();
-           
-           
+            tr.parentElement.removeChild(tr);
+            chart.options
         });
         var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + data.symbol +"?serietype=line";
         $.getJSON(url, function(response) {
@@ -158,18 +145,11 @@ window.onload = (function(){
                 rObj.x = obj.date;
                 rObj.y = obj.close;
                 return rObj;
-             });
-            if (chart.w.globals.initialSeries.length == 0){
-                chart.updateSeries([{name: name,data: data}]);
-            }
-            else{
-                chart.appendSeries({
-                    name: name,
-                    data: data
-                });
-            }
-            
-            
+            });
+            chart.appendSeries({
+                name: name,
+                data: data
+            });
         });
         $("#singleSearch").val(null).trigger("change");
     });
@@ -178,6 +158,11 @@ window.onload = (function(){
     api.onError(function(err) {
         console.log(err);
     });
+
+    function showMetricsTable() {
+        document.querySelector('#metrics_table_div').style.display = 'block';
+        document.querySelector('#metrics_table_div').style.visibility = 'visible';
+    }
 
     // populates fin statements table
     function load_fin_statements(companyName) {
@@ -193,7 +178,7 @@ window.onload = (function(){
             for (let year of years) {
                 if (!infoByYear[year]) infoByYear[year] = {};
             }
-            let table = document.querySelector('#fin_statements_table_tbody');
+            let table = document.querySelector('#metrics_table_tbody');
             // populate table
             table.innerHTML = '';
             for (let idx in incomeStatementMetrics) {
@@ -210,15 +195,10 @@ window.onload = (function(){
                 }
                 table.appendChild(tr);
             }
+            showMetricsTable();
         });
     }
 
-    // populates all page content with data
-    function refresh_page_content() {
-        load_fin_statements('TSLA');
-    }
-
-    // refresh page on load
-    refresh_page_content();
+    // load_fin_statements('TSLA');
 
 })();
