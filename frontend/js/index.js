@@ -2,6 +2,11 @@
 window.onload = (function(){
     "use strict";
 
+    // Contains symbols of stocks that are currently displayed on the page.
+    // No need for local storage because we start with blank page every time we
+    // refresh.
+    let DisplayList = [];
+
     // years for which we show financial statements
     let years = ['2019', '2018', '2017', '2016', '2015', '2014'];
     let incomeStatementMetrics = [
@@ -240,9 +245,9 @@ window.onload = (function(){
     });
     ////////////////////////////////////////////////////////////////////////
 
-    function addStockToList(symbol) {}
+    function addStockToDisplayList(symbol) {}
 
-    function deleteStockFromList(symbol) {}
+    function deleteStockFromDisplayList(symbol) {}
 
     // generates columns for metrics table
     function generateMetricTableColumns() {
