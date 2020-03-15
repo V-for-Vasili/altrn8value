@@ -108,16 +108,28 @@ var api = (function(){
     // Listeners for different events
     //
 
+    let stockDisplayListeners = [];
     let errorListeners = [];
 
-    // notifyErrorListeners, module.onError from lab 6
-    function notifyErrorListeners(err){
-        errorListeners.forEach(function(listener){
+    module.notifyStockDisplayListeners = function() {
+        stockDisplayListeners.forEach(function(listener) {
+            listener();
+        });
+    }
+
+    // notifyErrorListeners from lab 6
+    module.notifyErrorListeners  = function(err) {
+        errorListeners.forEach(function(listener) {
             listener(err);
         });
     }
 
-    module.onError = function(listener){
+    module.onStockDisplayChange = function(listener) {
+        stockDisplayListeners.push(listener);
+    };
+
+    // module.onError from lab 6
+    module.onError = function(listener) {
         errorListeners.push(listener);
     };
 

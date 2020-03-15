@@ -2,10 +2,28 @@
 window.onload = (function(){
     "use strict";
 
-    // Contains symbols of stocks that are currently displayed on the page.
+    //
+    // PAGE_INFO is informaton about what we are displaying on the page
+    //
+
     // No need for local storage because we start with blank page every time we
     // refresh.
-    let DisplayList = [];
+    let PAGE_INFO = null;
+    function initPageInfo() {
+        PAGE_INFO = {
+            stockDisplayList: [],           // list of stocks that are displayed;
+
+            metricTableCurrStock: null,     // stock currenttly displayed in metric table
+
+            metricTableCurrTab: 0,          // tab currenttly displayed in metric table
+                                            // 0,1,2 = IS, BS, CF respectively
+        };
+    }
+    initPageInfo();
+
+    //
+    // Selected metrics that we need to display
+    //
 
     // years for which we show financial statements
     let years = ['2019', '2018', '2017', '2016', '2015', '2014'];
@@ -246,14 +264,11 @@ window.onload = (function(){
         $("#singleSearch").val(null).trigger("change");
     });
 
-    //////////////////////////////////////////////////////////////////////
     // This is called when companey is selected: Use to call function to populate FS
     $('#companeySelect').on('select2:select', function (e) {
-     let name = e.params.name;
-     let sym = e.params.symbol;
-      
+        let name = e.params.name;
+        let sym = e.params.symbol;
     });
-    ////////////////////////////////////////////////////////////////////////
 
     function addStockToDisplayList(symbol) {}
 
@@ -284,6 +299,11 @@ window.onload = (function(){
     function showMetricsTable() {
         document.querySelector('#metrics_table_div').style.display = 'block';
         document.querySelector('#metrics_table_div').style.visibility = 'visible';
+    }
+
+    function hideMetricsTable() {
+        document.querySelector('#metrics_table_div').style.display = 'none';
+        document.querySelector('#metrics_table_div').style.visibility = 'hidden';
     }
 
     function getInfoByYear(respObj) {
@@ -341,8 +361,63 @@ window.onload = (function(){
         populateMetricsTable(api.getCashFlowStmt, companyName, getCashFlowStmtMetrics, "Cash Flow Statement");
     }
 
-    metricsTableShowIncomeStatements('TSLA');
-    //metricsTableShowBalanceSheetInfo('TSLA');
-    //metricsTableShowCashFlowStatements('TSLA');
+    // attach events to go between different tabs in metrics table
+    document.querySelector('#IS_tab_btn').addEventListener('click', function() {
+        PAGE_INFO.metricTableCurrTab = 0;
+        reloadPageContent();
+    });
+    document.querySelector('#BS_tab_btn').addEventListener('click', function() {
+        PAGE_INFO.metricTableCurrTab = 1;
+        reloadPageContent();
+    });
+    document.querySelector('#CF_tab_btn').addEventListener('click', function() {
+        PAGE_INFO.metricTableCurrTab = 2;
+        reloadPageContent();
+    });
+
+    // On stock display change, refresh metric table
+    api.onStockDisplayChange(function() {
+        if (PAGE_INFO.stockDisplayList.length == 0) {
+            // no stocks in display list
+            initPageInfo();
+            // hide metrics table
+            hideMetricsTable();
+            return;
+        }
+        let companyName = PAGE_INFO.metricTableCurrStock;
+        if (PAGE_INFO.metricTableCurrTab == 0)
+            return metricsTableShowIncomeStatements(companyName);
+        if (PAGE_INFO.metricTableCurrTab == 1)
+            return metricsTableShowBalanceSheetInfo(companyName);
+        if (PAGE_INFO.metricTableCurrTab == 2)
+            return metricsTableShowCashFlowStatements(companyName);
+        api.notifyErrorListeners('PAGE_INFO.metricTableCurrTab contains invalid number.');
+    });
+
+    // On stock display change, refresh Stock Selections
+    api.onStockDisplayChange(function() {
+        // populates Stock Selections box based on the content of PAGE_INFO
+        // TODO
+        console.log('-- populate Stock Selections box --');
+    });
+
+    // On stock display change, refresh Historic Performance Graph
+    api.onStockDisplayChange(function() {
+        // populates Historic Performance graph based on the content of PAGE_INFO
+        // TODO
+        console.log('-- populate Historic Performance graph --');
+    });
+
+    function reloadPageContent() {
+        api.notifyStockDisplayListeners();
+    }
+
+    /* to test:
+    PAGE_INFO.stockDisplayList.push('TSLA');
+    PAGE_INFO.metricTableCurrStock = 'TSLA';
+    */
+
+    // refresh when index.js file is loaded
+    reloadPageContent();
 
 })();
