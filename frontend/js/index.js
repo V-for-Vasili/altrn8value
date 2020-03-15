@@ -133,43 +133,22 @@ window.onload = (function(){
         </td>`;
         $('#StockSelections').prepend(tr);
         tr.querySelector('i').addEventListener('click',function(e){
-        
            tr.parentElement.removeChild(tr);
-           let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != data.symbol || obj.name == null) );
-           console.log("ser is ",ser);
-           if (ser.length > 0){
-            ser = ser.map(obj => {
-                let rObj ={};
-                rObj.name=obj.name;
-                rObj.data = obj.data;
-                return rObj;
-            });
-            chart.updateSeries(ser);
-           }
-           else chart.updateSeries();
-           
-           
+           chart.options
         });
         var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + data.symbol +"?serietype=line";
         $.getJSON(url, function(response) {
             let name = response.symbol;
             let data = response.historical.map(obj =>{
-                let rObj = {};
-                rObj.x = obj.date;
-                rObj.y = obj.close;
-                return rObj;
+            let rObj = {};
+            rObj.x = obj.date;
+            rObj.y = obj.close;
+            return rObj;
              });
-            if (chart.w.globals.initialSeries.length == 0){
-                chart.updateSeries([{name: name,data: data}]);
-            }
-            else{
-                chart.appendSeries({
-                    name: name,
-                    data: data
-                });
-            }
-            
-            
+            chart.appendSeries({
+                name: name,
+                data: data
+            });
         });
         $("#singleSearch").val(null).trigger("change");
     });
@@ -178,6 +157,11 @@ window.onload = (function(){
     api.onError(function(err) {
         console.log(err);
     });
+
+    function showMetricsTable() {
+        document.querySelector('#metrics_table_div').style.display = 'block';
+        document.querySelector('#metrics_table_div').style.visibility = 'visible';
+    }
 
     // populates fin statements table
     function load_fin_statements(companyName) {
@@ -193,7 +177,7 @@ window.onload = (function(){
             for (let year of years) {
                 if (!infoByYear[year]) infoByYear[year] = {};
             }
-            let table = document.querySelector('#fin_statements_table_tbody');
+            let table = document.querySelector('#metrics_table_tbody');
             // populate table
             table.innerHTML = '';
             for (let idx in incomeStatementMetrics) {
@@ -210,15 +194,10 @@ window.onload = (function(){
                 }
                 table.appendChild(tr);
             }
+            showMetricsTable();
         });
     }
 
-    // populates all page content with data
-    function refresh_page_content() {
-        load_fin_statements('TSLA');
-    }
-
-    // refresh page on load
-    refresh_page_content();
+    // load_fin_statements('TSLA');
 
 })();
