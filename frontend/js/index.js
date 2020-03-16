@@ -111,6 +111,16 @@ window.onload = (function(){
 
     // Initate Blank Canvas Where Historic Price Data will be loaded
     var options = {
+        theme: {
+            mode: 'light', 
+            palette: 'palette1', 
+            monochrome: {
+                enabled: false,
+                color: '#255aee',
+                shadeTo: 'light',
+                shadeIntensity: 0.65
+            },
+        },
         series: [],
         noData: {
             text: 'No Stocks Selected'
@@ -136,7 +146,13 @@ window.onload = (function(){
       },
       title: {
         text: 'Stock Price Movement',
-        align: 'left'
+        align: 'left',
+        style: {
+            fontSize:  '20px',
+            fontWeight:  'bold',
+            fontFamily:  'Roboto, Helvetica, Arial, sans-serif',
+            color:  '#fff'
+          }
       },
       fill: {
         type: 'gradient',
@@ -150,12 +166,27 @@ window.onload = (function(){
       },
       yaxis: {
         labels: {
+            style: {
+                colors: '#fff',
+                fontSize: '12px',
+                fontFamily: 'Helvetica, Arial, sans-serif',
+                fontWeight: 400,
+                cssClass: 'apexcharts-yaxis-label',
+            },  
           formatter: function (val) {
             return (val);
-          },
+          }
+          
         },
         title: {
-          text: 'Price'
+          text: 'Price',
+          style: {
+            color: '#fff',
+            fontSize: '12px',
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+            fontWeight: 600,
+            cssClass: 'apexcharts-yaxis-title',
+        },
         },
       },
       xaxis: {
