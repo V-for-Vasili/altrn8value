@@ -5,7 +5,7 @@
  Select Bar
  ********************/ 
 .select2-container {
-    min-width: 10rem;
+    min-width: 15rem;
     font-family: Roboto, Helvetica;
 }
 

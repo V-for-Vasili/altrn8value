@@ -1,4 +1,4 @@
-.fiancialStatementHeader{
+.statementHeader{
     display: flex;
     flex-wrap: nowrap;
     flex-basis: auto;

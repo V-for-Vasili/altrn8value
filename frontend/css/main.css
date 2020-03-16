@@ -85,3 +85,17 @@ button:focus {
 .hidden {
     display: none;
 }
+.errBox {
+    display: flex;
+    width: 100%
+    
+}
+.errBox textarea {
+    margin-top: 10px;
+    width: 100%;
+    background-color: #4e657a;
+    color: #f5a623;
+    resize: none;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-style: oblique;
+}
