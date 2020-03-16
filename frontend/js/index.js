@@ -178,8 +178,14 @@ window.onload = (function(){
         placeholder: 'Select A Stock',
         theme: "flat",
         allowClear: true,
+        minimumInputLength: 1,
         ajax: {
-            url:'https://financialmodelingprep.com/api/v3/search?query=AA&limit=10',
+            delay: 250,
+            url:'https://financialmodelingprep.com/api/v3/search',
+            data: function(params){
+                var Q = {query: params.term};
+                return Q;
+            },
             processResults: function (ajaxData){
                 let data = $.map(ajaxData, function (obj,index){
                     obj.id = obj.id || index + 1;
