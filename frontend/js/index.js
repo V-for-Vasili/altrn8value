@@ -191,7 +191,7 @@ window.onload = (function(){
       },
       xaxis: {
         type: 'datetime',
-      },
+        labels: {style: {colors: '#fff'}}},
       tooltip: {
         shared: false,
         y: {
