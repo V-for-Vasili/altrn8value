@@ -230,7 +230,7 @@ window.onload = (function(){
           else chart.updateSeries();
           
           // delete the stock from list of displayed stocks
-          deleteStockFromDisplayList(symbol)
+          deleteStockFromDisplayList(symbol);
         });
 
         // Retrive time sereies for added stock and add to plot
@@ -257,8 +257,7 @@ window.onload = (function(){
         $('#companeySelect').append(opt).trigger('change').trigger(
           {type: 'select2:select',
           params: {
-              name: name,
-              symbol: symbol
+             data: {name: name,id:symbol}
         }});
         // Clear Stock Select Bar
         $("#singleSearch").val(null).trigger("change");
@@ -266,9 +265,11 @@ window.onload = (function(){
 
     // This is called when companey is selected: Use to call function to populate FS
     $('#companeySelect').on('select2:select', function (e) {
-        let name = e.params.name;
-        let sym = e.params.symbol;
+        
+        let sym = e.params.data.id;
+        metricsTableChangeCurrStock(sym);
         addStockToDisplayList(sym);
+        
     });
 
     function addStockToDisplayList(symbol) {
