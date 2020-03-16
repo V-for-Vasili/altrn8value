@@ -49,6 +49,13 @@ var api = (function(){
     // api methods
     //
 
+    // queries financialmodelingprep.com;
+    // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
+    module.getCompanyProfile = function(symbol, callback=do_nothing) {
+        let path = `company/profile/${symbol}`;
+        send_financial_modeling_query(path, callback);
+    };
+
     // does not include the following fields:
     // rating, rating_details, company_profile, quote, history
     module.getStockData = function(symbol, callback=do_nothing) {
