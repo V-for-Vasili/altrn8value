@@ -1,0 +1,12 @@
+.statementHeader{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-basis: auto;
+    justify-content: space-between;
+
+}
+#statementBtnGroup{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-basis: auto;
+}

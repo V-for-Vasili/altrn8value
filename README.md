@@ -1,5 +1,5 @@
 # project-altrn8-value
-(Pronounced: "Alternate Value)
+(Pronounced: "Alternate Value")
 
 ## Team Mebers: ##
 - Sean van Wyk, 1003228946, vanwykse
