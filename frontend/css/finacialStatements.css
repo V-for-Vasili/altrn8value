@@ -5,3 +5,8 @@
     justify-content: space-between;
 
 }
+#statementBtnGroup{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-basis: auto;
+}
