@@ -199,6 +199,15 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
         "Net Cash/Marketcap"
     ];
 
+    function formatState (state) {
+        if (!state.id) {
+          return state.text;
+        }
+        var baseUrl = "https://financialmodelingprep.com/images-New-jpg/" + state.text;
+        var $state = $('<span><img src="' + baseUrl +'.jpg" class="search-icon" /> ' + state.text + ' | '+ state.name + '</span>');
+        return $state;
+    }
+
  
 
     // Sets Up the Add Stock Bar at top of page
@@ -218,12 +227,16 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
                 let data = $.map(ajaxData, function (obj,index){
                     obj.id = obj.id || index + 1;
                     obj.text = obj.text || obj.symbol; // replace name with the property used for the text
+                    obj.name = obj.name;
                     return obj;
                 });
                 return {results: data};
             },
             cache: true
-        }
+        },
+        templateResult: formatState,
+        templateSelection: formatState
+
     });
     $("#companeySelect").select2({
       placeholder: 'Select A Stock',

@@ -138,4 +138,9 @@
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
 }
+.search-icon {
+  height: 35px;
+  width: 35px;
+  
+}
 
