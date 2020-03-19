@@ -108,13 +108,16 @@ app.post('/api/signin/', function (req, res, next) {
       {_id: user._id,
        exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60)},
        secret);
-      return res.status(201).send({_id: user._id, token, username});
+      return res.status(200).send({_id: user._id, token, username});
   });
 })
 
-
-
-
+/*
+curl -X POST                                                       \
+    -H "Content-Type: application/json"                            \
+    -d '{ "query": "{ stock(symbol:\"AAPL\"){ symbol price } }" }' \
+    http://localhost:8080/graphql
+*/
 app.use('/graphql', graphqlHTTP((req, res, graphQLParams) => ({
     schema: schema,
     graphiql: true,
