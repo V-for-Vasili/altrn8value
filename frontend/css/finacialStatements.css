@@ -13,7 +13,6 @@
 
 .statementHeaderRC{
     display: flex;
-    flex-direction: row-reverse;
     flex-wrap: nowrap;
     flex-basis: auto;
     justify-content: space-between;
