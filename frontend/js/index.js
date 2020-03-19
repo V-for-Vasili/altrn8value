@@ -203,8 +203,8 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
         if (!state.id) {
           return state.text;
         }
-        var baseUrl = "https://financialmodelingprep.com/images-New-jpg/" + state.text;
-        var $state = $('<span><img src="' + baseUrl +'.jpg" class="search-icon" /> ' + state.text + ' | '+ state.name + '</span>');
+        var baseUrl = "https://financialmodelingprep.com/stocks/" + state.text.toLowerCase();
+        var $state = $('<span><img src="' + baseUrl +'.png" class="search-icon" /> ' + state.text + ' | '+ state.name + '</span>');
         return $state;
     }
 
@@ -250,7 +250,8 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
         let symbol = e.params.data.symbol;
         let tr = document.createElement('tr');
         tr.innerHTML = `
-            <td class="tm-product-name">${name}</td>
+            <img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/>
+            <td class="tm-product-name"> ${symbol} | ${name}</td>
             <td class="text-center">
                 <a class="tm-product-delete-link">
                     <i class="far fa-trash-alt tm-product-delete-icon"></i>
