@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Porfolios</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+    <!-- https://fonts.google.com/specimen/Roboto -->
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/drop-down.css">
+    <link rel="stylesheet" href="css/block.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/formatEdit.css">
+    <link rel="stylesheet" href="css/icons.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/products.css">
+    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/finacialStatements.css">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-xl">
+      <div class="container h-100">
+          <a class="navbar-brand" href="index.html">
+              <h1 class="tm-site-title mb-0">My Porfolios</h1>
+          </a>
+          <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <i class="fas fa-bars tm-nav-icon"></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mx-auto h-100">
+                  <li class="nav-item">
+                      <a class="nav-link " href="index.html">
+                          <i class="fas fa-money-check"></i> Stock Analysis
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link active" href="#">
+                        <i class="far fa-file-alt"></i> My Porfolios
+                        <span class="sr-only">(current)</span>
+                      </a>
+                  </li>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-cog"></i>
+                          <span>
+                              Settings <i class="fas fa-angle-down"></i>
+                          </span>
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="#">Profile</a>
+                          <a class="dropdown-item" href="#">Prefrences</a>
+                      </div>
+                  </li>
+              </ul>
+              <ul class="navbar-nav">
+                  <li class="nav-item">
+                      <a class="nav-link d-block" href="login.html">
+                          Username, <b>Logout</b>
+                      </a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+
+  </nav>
+  <div class="container mt-5">
+    <div class="row tm-content-row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
+        <div class="tm-bg-primary-dark tm-block tm-block-products">
+          <div class="statementHeaderRC">
+                            
+            <div id="statementBtnGroup">
+                <button class="btn btn-small btn-primary" id="newPorfolio">Create New Porfolio</button>
+            </div>
+          </div>
+          <div class="tm-product-table-container">
+            <table class="table table-hover tm-table-small tm-product-table">
+              <thead>
+                <tr>
+                  <th scope="col">&nbsp;</th>
+                  <th scope="col">PORFOLIO NAME</th>
+                  <th scope="col">CURRENT VALUE</th>
+                  <th scope="col">PURCHASE PRICE</th>
+                  <th scope="col">PROFIT</th>
+                  <th scope="col">CREATED</th>
+                  <th scope="col">&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><input type="checkbox" /></th>
+                  <td class="tm-product-name">Porfolio A</td>
+                  <td>$1,500</td>
+                  <td>$1,000</td>
+                  <td>50%</td>
+                  <td>28 March 2019</td>
+                  <td>
+                    <a href="#" class="tm-product-delete-link">
+                      <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row"><input type="checkbox" /></th>
+                  <td class="tm-product-name">Porfolio B</td>
+                  <td>$500</td>
+                  <td>$1,000</td>
+                  <td>-50%</td>
+                  <td>28 March 2019</td>
+                  <td>
+                    <a href="#" class="tm-product-delete-link">
+                      <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- table container -->
+          <button class="btn btn-primary btn-block text-uppercase">
+            View Selections
+          </button>
+        </div>
+      </div>
+     
+    </div>
+  </div>
+    <footer class="tm-footer row tm-mt-small">
+        <div class="col-12 font-weight-light">
+          <p class="text-center text-white mb-0 px-4 small">
+            Copyright &copy; <b>2018</b> All rights reserved. 
+            
+            Design: <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Template Mo</a>
+        </p>
+        </div>
+    </footer> 
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.7.0/echarts-en.common.min.js"></script>
+    <script src="js/template.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script> 
+    <script src="js/api.js"></script>
+    <script src="js/myPorfolios.js"></script>
+  </body>
+</html>
