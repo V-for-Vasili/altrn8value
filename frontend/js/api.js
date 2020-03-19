@@ -8,24 +8,27 @@ var api = (function(){
 
     function do_nothing(code, err, respObj) {}
 
-    // callback format: code, err, respObj
+    // Error is any return code >= 400.
+    // callback format: code, err, respObj.
     function send_ajax(method, url, data, callback) {
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
-            if (xhr.status == 200) {
+            if (xhr.status < 400) {
                 let respObj = JSON.parse(xhr.responseText);
                 callback(xhr.status, null, respObj);
             } else {
                 let err = `[${xhr.status}]: ${xhr.responseText}`;
                 callback(xhr.status, err, null);
                 // notify listeners to display error message
-                notifyErrorListeners(err);
+                module.notifyErrorListeners(err);
             }
         };
         xhr.open(method, url, true);
         if (!data) {
             xhr.send();
         } else{
+            // attach auth token
+            xhr.setRequestHeader('token', localStorage.getItem('Token'));
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(data));
         }
@@ -45,10 +48,47 @@ var api = (function(){
         send_ajax(method, url, null, callback);
     }
 
-    // based on accepted answer:
-    // https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
-    module.is_empty_object = function(obj) {
-        return Object.keys(obj).length === 0 && obj.constructor === Object;
+    // Passed to signin and signup ajax requests.
+    // checks response for validity and saves Username and Token, notifies
+    // login listeners.
+    function authentication_callback(code, err, respObj) {
+        if (code >= 400) return module.notifyErrorListeners(err);
+        if (!respObj.token) return module.notifyErrorListeners('Error: no token in respObj');
+        if (!respObj.username) return module.notifyErrorListeners('Error: no username in respObj');
+        // save token and username to localStorage
+        localStorage.setItem('Username', respObj.username);
+        localStorage.setItem('Token', respObj.token);
+        // notify listeners
+        module.notifyLoginListeners();
+    }
+
+    //
+    // authentication
+    //
+
+    module.isLoggedIn = function() {
+        let Token = localStorage.getItem('Token');
+        return Token === Token && Token !== null;
+    };
+
+    module.getUsername = function() {
+        return localStorage.getItem('Username');;
+    }
+
+    // from lab 6
+    module.signUp = function(username, password) {
+        send_ajax('POST', '/api/signup', {username, password}, authentication_callback);
+    }
+
+    // from lab 6
+    module.signIn = function(username, password) {
+        send_ajax('POST', '/api/signin', {username, password}, authentication_callback);
+    }
+
+    module.signOut = function() {
+        // destroy username and token
+        localStorage.removeItem('Username');
+        localStorage.removeItem('Token');
     }
 
     //
@@ -137,8 +177,15 @@ var api = (function(){
     // Listeners for different events
     //
 
+    let loginListeners = [];
     let stockDisplayListeners = [];
     let errorListeners = [];
+
+    module.notifyLoginListeners = function() {
+        loginListeners.forEach(function(listener) {
+            listener();
+        });
+    }
 
     module.notifyStockDisplayListeners = function() {
         stockDisplayListeners.forEach(function(listener) {
@@ -153,6 +200,10 @@ var api = (function(){
         });
     }
 
+    module.onLogin = function(listener) {
+        loginListeners.push(listener);
+    }
+
     module.onStockDisplayChange = function(listener) {
         stockDisplayListeners.push(listener);
     };
@@ -161,6 +212,16 @@ var api = (function(){
     module.onError = function(listener) {
         errorListeners.push(listener);
     };
+
+    //
+    // api helper methods
+    //
+
+    // based on accepted answer:
+    // https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+    module.is_empty_object = function(obj) {
+        return Object.keys(obj).length === 0 && obj.constructor === Object;
+    }
 
     return module;
 })();
