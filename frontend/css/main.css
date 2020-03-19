@@ -99,3 +99,7 @@ button:focus {
     font-family: Roboto, Helvetica, Arial, sans-serif;
     font-style: oblique;
 }
+#chart {
+    height: 100%;
+    width: 100%;
+}
