@@ -47,10 +47,19 @@
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="myPorfolios.html">
-                              <i class="far fa-file-alt"></i> My Porfolios
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-file-alt"></i>
+                                <span>
+                                    My Porfolios <i class="fas fa-angle-down"></i>
+                                </span>
                             </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item " href="myPorfolios.html">My Porfolios</a>
+                                <a class="dropdown-item" href="addPorfolio.html">Create Porfolio</a>
+                                
+                            </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -84,7 +93,7 @@
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
                     <div class="tm-bg-primary-dark header-block tm-block-h-auto">
-                        <div class="">
+                        <div class="selectionBox">
                             <div>
                                 <h2 class="tm-block-title">Add Stock</h2>
                                 <select id="singleSearch"></select>
@@ -109,7 +118,9 @@
                             </table>
                         </div>
                         <!-- table container -->
+                        <button type="submit" class="btn btn-primary btn-block text-uppercase">Save As Porfolio</button>
                     </div>
+                    
                 </div>
 
                 <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">

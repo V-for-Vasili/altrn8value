@@ -143,4 +143,6 @@
   width: 35px;
   
 }
-
+.selectionBox{
+  display: flex;
+}
