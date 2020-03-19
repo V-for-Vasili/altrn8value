@@ -55,11 +55,27 @@ var api = (function(){
     // api methods
     //
 
-    // queries financialmodelingprep.com;
-    // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
+    // company profile includes some info about the company and its business
     module.getCompanyProfile = function(symbol, callback=do_nothing) {
-        let path = `company/profile/${symbol}`;
-        send_financial_modeling_query(path, callback);
+        let query = `{
+                stock(symbol:\"${symbol}\"){
+                    company_profile {
+                        beta
+                        last_div
+                        range
+                        company_name
+                        industry
+                        website
+                        description
+                        ceo
+                        sector
+                        image
+                    }
+                }
+            }
+        `;
+        let data = {query: query};
+        seng_graphql_query(data, callback);
     };
 
     // does not include the following fields:
