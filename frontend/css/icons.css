@@ -29,3 +29,10 @@
     padding-top: 15px;
     font-size: 22px;
 }
+
+.stockSelectImg{
+    height: 65px;
+    width: 65px;
+    padding: 10%;
+    border-radius: 25px;
+}
