@@ -105,7 +105,7 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
                 series:series
             };
         }
-        chart.setOption(option);
+        chart.setOption(option,true);
     }
 
     initGraphCanvas(chart,PAGE_INFO.stockDisplayList,PAGE_INFO.series);
@@ -204,7 +204,8 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
           return state.text;
         }
         var baseUrl = "https://financialmodelingprep.com/stocks/" + state.text.toLowerCase();
-        var $state = $('<span><img src="' + baseUrl +'.png" class="search-icon" /> ' + state.text + ' | '+ state.name + '</span>');
+        //<img src="' + baseUrl +'.png" class="search-icon" /> 
+        var $state = $('<span>' + state.text + ' | '+ state.name + '</span>');
         return $state;
     }
 
@@ -215,7 +216,7 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
         placeholder: 'Select A Stock',
         theme: "flat",
         allowClear: true,
-        minimumInputLength: 1,
+        minimumInputLength: 2,
         ajax: {
             delay: 250,
             url:'https://financialmodelingprep.com/api/v3/search',
@@ -250,7 +251,7 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
         let symbol = e.params.data.symbol;
         let tr = document.createElement('tr');
         tr.innerHTML = `
-            <img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/>
+            <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/></td>
             <td class="tm-product-name"> ${symbol} | ${name}</td>
             <td class="text-center">
                 <a class="tm-product-delete-link">
