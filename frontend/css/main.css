@@ -85,20 +85,25 @@ button:focus {
 .hidden {
     display: none;
 }
+
 .errBox {
-    display: flex;
+    display: none;
     width: 100%
-    
 }
-.errBox textarea {
-    margin-top: 10px;
+
+.errBox p {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 30px 30px 30px 30px;
     width: 100%;
     background-color: #4e657a;
-    color: #f5a623;
+    color: #9e0303;
+    border: 2px solid #9e0303;
     resize: none;
     font-family: Roboto, Helvetica, Arial, sans-serif;
     font-style: oblique;
 }
+
 #chart {
     height: 100%;
     width: 100%;

@@ -300,11 +300,8 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
 
     // This is called when companey is selected: Use to call function to populate FS
     $('#companeySelect').on('select2:select', function (e) {
-        
         let sym = e.params.data.id;
         metricsTableChangeCurrStock(sym);
-        
-        
     });
 
     function addStockToDisplayList(symbol) {
@@ -355,6 +352,12 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
         console.log(err);
     });
 
+    api.onError(function(err) {
+        // make the error box visible and show the message
+        document.querySelector('#errMessage').innerHTML = err;
+        document.querySelector('#errBox').style.display = 'block';
+    });
+
     function showMetricsTable() {
         document.querySelector('#metrics_table_div').style.display = 'block';
         document.querySelector('#metrics_table_div').style.visibility = 'visible';
@@ -385,23 +388,29 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
         // get info statements from api
         apiFunction(companyName, false, function(code, err, respObj) {
             if (code !== 200) return api.notifyErrorListeners(err);
-            let infoByYear = getInfoByYear(respObj);
             let table = document.querySelector('#metrics_table_tbody');
             // populate table
             table.innerHTML = '';
-            for (let idx in metrics) {
-                let m = metrics[idx];
-                let tr = document.createElement('tr');
-                tr.innerHTML = `<th scope="row"><b>${m}</b></th>`;
-                for (let idx1 in years) {
-                    let year = years[idx1];
-                    let info = infoByYear[year][m];
-                    info = parseFloat(info);
-                    info = info.toFixed(2);
-                    if (idx1 == 0) info = `<b>${info}</b>`;
-                    tr.innerHTML += `<td>${info}</td>`;
+            if (api.is_empty_object(respObj)) {
+                table.innerHTML = '<th scope="row"><b>No Data.</b></th>';
+                // notify user of error
+                api.notifyErrorListeners('Error: Empty respObj for company ' + companyName);
+            } else {
+                let infoByYear = getInfoByYear(respObj);
+                for (let idx in metrics) {
+                    let m = metrics[idx];
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `<th scope="row"><b>${m}</b></th>`;
+                    for (let idx1 in years) {
+                        let year = years[idx1];
+                        let info = infoByYear[year][m];
+                        info = parseFloat(info);
+                        info = info.toFixed(2);
+                        if (idx1 == 0) info = `<b>${info}</b>`;
+                        tr.innerHTML += `<td>${info}</td>`;
+                    }
+                    table.appendChild(tr);
                 }
-                table.appendChild(tr);
             }
             showMetricsTable();
         });

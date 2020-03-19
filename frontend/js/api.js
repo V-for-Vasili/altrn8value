@@ -45,6 +45,12 @@ var api = (function(){
         send_ajax(method, url, null, callback);
     }
 
+    // based on accepted answer:
+    // https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+    module.is_empty_object = function(obj) {
+        return Object.keys(obj).length === 0 && obj.constructor === Object;
+    }
+
     //
     // api methods
     //
