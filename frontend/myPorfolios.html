@@ -71,7 +71,6 @@
               </ul>
           </div>
       </div>
-
   </nav>
   <div class="container mt-5">
     <div class="row tm-content-row">
@@ -132,8 +131,37 @@
           </button>
         </div>
       </div>
-     
     </div>
+    <div class="row tm-content-row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
+          <div class="tm-bg-primary-dark tm-block p-4" >
+              <div id="pastchart"></div>
+          </div>
+      </div>
+
+      <div class="col-12 tm-block-col hidden" id="metrics_table_div">
+          <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+              <h2 class="tm-block-title" id="metrics_table_title"></h2>
+              <div class="statementHeader">
+                  <select id="companeySelect"></select>
+                  <div id="statementBtnGroup">
+                      <button class="btn btn-small btn-primary" id="IS_tab_btn">Income Statement</button>
+                      <button class="btn btn-small btn-primary" id="BS_tab_btn">Balance Sheet</button>
+                      <button class="btn btn-small btn-primary" id="CF_tab_btn">Cash Flow Statement</button>
+                  </div>
+              </div>
+
+              <table id="fin_statements_table" class="table">
+              <table id="metrics_table" class="table">
+                  <thead id="metrics_table_thead">
+                  </thead>
+                  <tbody id="metrics_table_tbody">
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+</div>
   </div>
     <footer class="tm-footer row tm-mt-small">
         <div class="col-12 font-weight-light">
