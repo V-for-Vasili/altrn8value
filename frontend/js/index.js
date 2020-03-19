@@ -351,6 +351,12 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
         console.log(err);
     });
 
+    api.onError(function(err) {
+        // make the error box visible and show the message
+        document.querySelector('#errMessage').innerHTML = err;
+        document.querySelector('#errBox').style.display = 'block';
+    });
+
     function showMetricsTable() {
         document.querySelector('#metrics_table_div').style.display = 'block';
         document.querySelector('#metrics_table_div').style.visibility = 'visible';
@@ -387,7 +393,7 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
             if (api.is_empty_object(respObj)) {
                 table.innerHTML = '<th scope="row"><b>No Data.</b></th>';
                 // notify user of error
-                api.notifyErrorListeners('Empty respObj for company ' + companyName);
+                api.notifyErrorListeners('Error: Empty respObj for company ' + companyName);
             } else {
                 let infoByYear = getInfoByYear(respObj);
                 for (let idx in metrics) {
