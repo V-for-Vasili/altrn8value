@@ -15,8 +15,11 @@ window.onload = (function(){
 
     // once we are signed in, redirect to main page
     if (!api.isLoggedIn()) {
-        api.onLogin(function() {
-            if (api.isLoggedIn()) window.location.href = '/index.html';
+        api.onLogin(function() {            
+            if (api.isLoggedIn()){
+                api.initStorage();
+                window.location.href = '/index.html';
+            }
         });
     }
 

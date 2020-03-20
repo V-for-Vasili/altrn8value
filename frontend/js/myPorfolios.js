@@ -2,6 +2,30 @@
 window.onload = (function(){
     "use strict";
 
+    function loadPorfolios(porfolios){
+        porfolios.forEach(function(porfolio){
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+            <th scope="row"><input type="checkbox" /></th>
+            <td class="tm-product-name">${porfolio.name}</td>
+            <td>${porfolio.cost}</td>
+            <td>${porfolio.cost * 1.35}</td>
+            <td>35%</td>
+            <td>${porfolio.created}</td>
+            <td>
+              <a href="#" class="tm-product-delete-link">
+                <i class="far fa-trash-alt tm-product-delete-icon"></i>
+              </a>
+            </td>`;
+            $('#porfolioList').prepend(tr);
+        });
+        
+    }
+    let data = JSON.parse(localStorage.getItem("data"));
+    loadPorfolios(data.porfolios);
+
+
+
     // add error listeners to show error messages to the user
     api.onError(function(err) {
         console.log(err);
@@ -30,6 +54,8 @@ window.onload = (function(){
             };
         }
     });
+
+
 
     // add event listener to show or hide tabs depending on whether user is
     // signed in or not

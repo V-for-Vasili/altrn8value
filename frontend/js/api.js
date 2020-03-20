@@ -91,6 +91,7 @@ var api = (function(){
         localStorage.removeItem('Token');
         // notify listeners so changes on the page take place
         module.notifyLoginListeners();
+        window.location.href = '/index.html';
     }
 
     //
@@ -214,6 +215,14 @@ var api = (function(){
     module.onError = function(listener) {
         errorListeners.push(listener);
     };
+
+    /////////////////////////////////////////////////////
+    // TO BE REPLACED ONCE GRAPHQL IS FINISHED !!!!!!!!!//
+    module.initStorage = function(){
+        if (!localStorage.getItem("data")) localStorage.setItem("data",JSON.stringify({porfolios:[],pageInfo:null,newPorfolio:null,editPorfolio:null,option:null}));
+    };
+    
+    ////////////////////////////////////////////////////////
 
     //
     // api helper methods

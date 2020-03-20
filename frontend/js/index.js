@@ -288,7 +288,9 @@ window.onload = (function(){
           deleteStockFromDisplayList(symbol);
           if (PAGE_INFO.series.length == 0) chart.clear();
           initGraphCanvas(chart,PAGE_INFO.stockDisplayList,PAGE_INFO.series);  
-          
+          if ($("#StockSelections").children("tr").length == 0){
+            $("#savePorfolio").hide();
+        }
           // delete the stock from list of displayed stocks
           
         });
@@ -312,6 +314,11 @@ window.onload = (function(){
           params: {
              data: {name: name,id:symbol}
         }});
+
+        if ($("#StockSelections").children("tr").length > 0){
+            $("#savePorfolio").show();
+        }
+        
         // Clear Stock Select Bar
         $("#singleSearch").val(null).trigger("change");
     });
@@ -520,6 +527,17 @@ window.onload = (function(){
         api.notifyLoginListeners();
         api.notifyStockDisplayListeners();
     }
+
+    $('#savePorfolio').on('click',function(e){
+        if(api.isLoggedIn()){
+            let data = JSON.parse(localStorage.getItem("data"));
+            data.newPorfolio = PAGE_INFO.stockDisplayList;
+            data.option = 1;
+            localStorage.setItem('data',JSON.stringify(data));
+            window.location.href = '/addPorfolio.html';
+            
+        }
+    });
     
     reloadPageContent();
 
