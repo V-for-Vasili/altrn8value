@@ -377,6 +377,20 @@ window.onload = (function(){
         }
     });
 
+    // add event listener to show or hide tabs depending on whether user is
+    // signed in or not
+    api.onLogin(function() {
+        let myPortfoliosTab = document.querySelector('#navbarDropdown_portfolios');
+        let settingsTab = document.querySelector('#navbarDropdown_settings');
+        if (api.isLoggedIn()) {
+            myPortfoliosTab.style.visibility = 'visible';
+            settingsTab.style.visibility = 'visible';
+        } else {
+            myPortfoliosTab.style.visibility = 'hidden';
+            settingsTab.style.visibility = 'hidden';
+        }
+    });
+
     function showMetricsTable() {
         document.querySelector('#metrics_table_div').style.display = 'block';
         document.querySelector('#metrics_table_div').style.visibility = 'visible';

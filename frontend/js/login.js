@@ -20,6 +20,10 @@ window.onload = (function(){
         });
     }
 
+    // hide portfolios and settings tabs initially
+    document.querySelector('#navbarDropdown_portfolios').style.visibility = 'hidden';
+    document.querySelector('#navbarDropdown_settings').style.visibility = 'hidden';
+
     // From lab 6
     // function to submit signin or sigup form
     function submit_form(action) {
