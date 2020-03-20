@@ -116,7 +116,7 @@
                   </div>
                       <div class="form-group mb-3">
                           <h2 class="tm-block-title">Stock Selections</h2>
-                          <div class="tm-product-table-container">
+                          <div class="">
                               <table class="table table-hover tm-table-small tm-product-table">
                                   <thead class="rowBottomLine">
                                     <tr>
@@ -130,20 +130,17 @@
                                   </thead>
                                  
                                   <tbody id="StockSelections">
-                                    <tr>
-                                      <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/aapl.png"/></td>
-                                      <td class="tm-product-name">Apple</td>
-                                      <td>1,450</td>
-                                      <td><input id="stock"name="stock"type="text"class="form-control table-input validate" placeholder="-" required/></td>
-                                      <td>1,4500000000</td>
-                                      <td>
-                                        <a href="#" class="tm-product-delete-link">
-                                          <i class="far fa-trash-alt tm-product-delete-icon"></i>
-                                        </a>
-                                      </td>
-                                    </tr>
                                   </tbody>
-                                  
+                                  <thead id="rowTotal" class="rowTopLine" style="display: none;">
+                                    <tr>
+                                      <th scope="col">&nbsp;</th>
+                                      <th scope="col">&nbsp;</th>
+                                      <th scope="col">&nbsp;</th>
+                                      <th scope="col">&nbsp;</th>
+                                      <th id="totalCost" scope="col">-</th>
+                                      <th scope="col">&nbsp;</th>
+                                    </tr>
+                                  </thead>
                               </table>
                           </div>
                           <!-- table container -->
@@ -151,7 +148,7 @@
                 </div> 
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary btn-block text-uppercase">Save</button>
+                <button type="submit" id="saveBtn" style="display: none;" class="btn btn-primary btn-block text-uppercase">Save</button>
                 <a href="myPorfolios.html" class="btn btn-primary btn-block text-uppercase mb-3">Cancel</a>
               </div>
             </form>
