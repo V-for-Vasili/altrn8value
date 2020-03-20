@@ -58,7 +58,7 @@ var api = (function(){
         // save token and username to localStorage
         localStorage.setItem('Username', respObj.username);
         localStorage.setItem('Token', respObj.token);
-        // notify listeners
+        // notify listeners so changes on the page take place
         module.notifyLoginListeners();
     }
 
@@ -89,6 +89,8 @@ var api = (function(){
         // destroy username and token
         localStorage.removeItem('Username');
         localStorage.removeItem('Token');
+        // notify listeners so changes on the page take place
+        module.notifyLoginListeners();
     }
 
     //

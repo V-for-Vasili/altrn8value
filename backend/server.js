@@ -94,7 +94,7 @@ app.post('/api/signin/', function (req, res, next) {
   // retrieve user from the database
   User.findOne({username: username}, function(err, user){
     if (err) return res.status(500).end(err);
-    if (!user) return res.status(401).end("access denied");
+    if (!user) return res.status(401).end("Invalid username");
     //  Generate hash
     let salt = user.salt;
     let hash = crypto.createHmac('sha512', salt);

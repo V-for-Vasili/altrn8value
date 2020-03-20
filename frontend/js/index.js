@@ -22,11 +22,13 @@ window.onload = (function(){
         };
     }
     initPageInfo();
+
     // Initate Blank Canvas Where Historic Price Data will be loaded
-var chart = echarts.init(document.getElementById('chart'),'template', {   
-    width: document.getElementById('chart').offsetWidth,
-    height: document.getElementById('chart').offsetHeight
+    let chart = echarts.init(document.getElementById('chart'),'template', {
+        width: document.getElementById('chart').offsetWidth,
+        height: document.getElementById('chart').offsetHeight
     });
+
     function initGraphCanvas(chart,stocks,series){
         let option;
         if (stocks.length == 0){
@@ -109,8 +111,8 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
     }
 
     initGraphCanvas(chart,PAGE_INFO.stockDisplayList,PAGE_INFO.series);
-    
-    
+
+
     //
     // Selected metrics that we need to display
     //
@@ -208,8 +210,6 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
         var $state = $('<span>' + state.text + ' | '+ state.name + '</span>');
         return $state;
     }
-
- 
 
     // Sets Up the Add Stock Bar at top of page
     $("#singleSearch").select2({
@@ -359,6 +359,24 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
         document.querySelector('#errBox').style.display = 'block';
     });
 
+    // add event listener to handle login or logout as appropriate
+    api.onLogin(function() {
+        let authBtn = document.querySelector('#authBtn');
+        if (api.isLoggedIn()) {
+            authBtn.innerHTML = `${api.getUsername()}, <b>Logout</b>`;
+            // set action to log out
+            authBtn.onclick = function() {
+                api.signOut();
+            };
+        } else {
+            authBtn.innerHTML = `<b>Sign In or Sign Up</b>`;
+            // set action to log in
+            authBtn.onclick = function() {
+                window.location.href = '/login.html';
+            };
+        }
+    });
+
     function showMetricsTable() {
         document.querySelector('#metrics_table_div').style.display = 'block';
         document.querySelector('#metrics_table_div').style.visibility = 'visible';
@@ -469,6 +487,7 @@ var chart = echarts.init(document.getElementById('chart'),'template', {
     });
 
     function reloadPageContent() {
+        api.notifyLoginListeners();
         api.notifyStockDisplayListeners();
     }
     
