@@ -21,8 +21,8 @@ window.onload = (function(){
     }
 
     // hide portfolios and settings tabs initially
-    document.querySelector('#navbarDropdown_portfolios').style.visibility = 'hidden';
-    document.querySelector('#navbarDropdown_settings').style.visibility = 'hidden';
+    document.querySelector('#navbarDropdown_portfolios').style.display = 'none';
+    document.querySelector('#navbarDropdown_settings').style.display = 'none';
 
     // From lab 6
     // function to submit signin or sigup form

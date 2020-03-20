@@ -118,16 +118,32 @@
                           <h2 class="tm-block-title">Stock Selections</h2>
                           <div class="tm-product-table-container">
                               <table class="table table-hover tm-table-small tm-product-table">
+                                  <thead class="rowBottomLine">
+                                    <tr>
+                                      <th scope="col">&nbsp;</th>
+                                      <th scope="col">STOCK NAME</th>
+                                      <th scope="col">PRICE/SHARE</th>
+                                      <th scope="col">SHARES</th>
+                                      <th scope="col">TOTAL COST</th>
+                                      <th scope="col">&nbsp;</th>
+                                    </tr>
+                                  </thead>
+                                 
                                   <tbody id="StockSelections">
-                                    <thead>
-                                      <tr>
-                                        <th scope="col">STOCK NAME</th>
-                                        <th scope="col">CURRENT PRICE</th>
-                                        <th scope="col">UNITS PURCHASED</th>
-                                        <th scope="col">TOTAL PRICE</th>
-                                      </tr>
-                                    </thead>
+                                    <tr>
+                                      <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/aapl.png"/></td>
+                                      <td class="tm-product-name">Apple</td>
+                                      <td>1,450</td>
+                                      <td><input id="stock"name="stock"type="text"class="form-control table-input validate" placeholder="-" required/></td>
+                                      <td>1,4500000000</td>
+                                      <td>
+                                        <a href="#" class="tm-product-delete-link">
+                                          <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                                        </a>
+                                      </td>
+                                    </tr>
                                   </tbody>
+                                  
                               </table>
                           </div>
                           <!-- table container -->
@@ -160,6 +176,6 @@
     <script src="js/template.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script> 
     <script src="js/api.js"></script>
-    <script src="js/myPorfolios.js"></script>
+    <script src="js/addPorfolio.js"></script>
   </body>
 </html>

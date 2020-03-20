@@ -117,6 +117,23 @@ window.onload = (function(){
     // Selected metrics that we need to display
     //
 
+    // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-string
+    function formatNumeric(amount,prefix,decimalCount,decimal,thousands) {
+        try {
+          decimalCount = Math.abs(decimalCount);
+          decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+      
+          const negativeSign = amount < 0 ? "-" : "";
+      
+          let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+          let j = (i.length > 3) ? i.length % 3 : 0;
+      
+          return negativeSign + prefix + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
     // years for which we show financial statements
     let years = ['2019', '2018', '2017', '2016', '2015', '2014'];
     let incomeStatementMetrics = [
@@ -383,11 +400,11 @@ window.onload = (function(){
         let myPortfoliosTab = document.querySelector('#navbarDropdown_portfolios');
         let settingsTab = document.querySelector('#navbarDropdown_settings');
         if (api.isLoggedIn()) {
-            myPortfoliosTab.style.visibility = 'visible';
-            settingsTab.style.visibility = 'visible';
+            myPortfoliosTab.style.display = '';
+            settingsTab.style.style = '';
         } else {
-            myPortfoliosTab.style.visibility = 'hidden';
-            settingsTab.style.visibility = 'hidden';
+            myPortfoliosTab.style.display = 'none';
+            settingsTab.style.display = 'none';
         }
     });
 
@@ -433,13 +450,12 @@ window.onload = (function(){
                 for (let idx in metrics) {
                     let m = metrics[idx];
                     let tr = document.createElement('tr');
-                    tr.innerHTML = `<th scope="row"><b>${m}</b></th>`;
+                    tr.innerHTML = `<th scope="row">${m}</th>`;
                     for (let idx1 in years) {
                         let year = years[idx1];
                         let info = infoByYear[year][m];
-                        info = parseFloat(info);
-                        info = info.toFixed(2);
-                        if (idx1 == 0) info = `<b>${info}</b>`;
+                        info = formatNumeric(info,'',2,'.',',');
+                        if (idx1 == 0) info = `${info}`;
                         tr.innerHTML += `<td>${info}</td>`;
                     }
                     table.appendChild(tr);

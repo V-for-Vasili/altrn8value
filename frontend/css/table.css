@@ -38,3 +38,10 @@ thead {
 .table-hover tbody tr:hover {
     color: #a0c0de;
 }
+th[scope="col"]{
+    border-bottom:1pt solid ivory !important;
+}
+th[scope="row"]{
+    border-right:1pt solid ivory !important;
+}
+
