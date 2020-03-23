@@ -1,18 +1,26 @@
 // Imports
 const express = require('express');
-const graphqlHTTP = require('express-graphql');
 const morgan = require('morgan');
 const morganBody = require('morgan-body');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const axios = require('axios');
-const { buildSchema } = require('graphql');
-const { makeExecutableSchema } = require('graphql-tools');
-const {schema} = require('./schema.js')
 const { v4: uuid } = require('uuid');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
+// Db imports
+const mongoose = require('mongoose');
+const {User} = require('./db/User.js')
+
+// Graphql Imports
+const graphqlHTTP = require('express-graphql');
+const {schema} = require('./schema.js')
+
+// Enviroment Variables, Deployment Envirment Variables sets this to  production values
+const PORT =  process.env.PORT || '8080';
+const CONNECTION_URL = process.env.CONNECTION_URL || "mongodb+srv://SeanDev:kcwAPZHBtrYQkidQ@cluster0-i5kqv.mongodb.net/test?retryWrites=true&w=majority";
+// JWT signature
+const JWT_SECRET = process.env.JWT_SECRET || "7bzkj0iMcFU9JMnnE6SB";
 
 // Start building express app
 let app = express();
@@ -23,11 +31,6 @@ app.use(bodyParser.json());
 // serve frontend statically
 app.use(express.static('frontend'));
 
-// Enviroment Variables, Deployment Envirment Variables sets this to  productionvaie
-const PORT =  process.env.FACEBOOK_KEY || '8080';
-CONNECTION_URL = process.env.CONNECTION_URL || 'mongodb+srv://SeanDev:kcwAPZHBtrYQkidQ@cluster0-i5kqv.mongodb.net/test?retryWrites=true&w=majority';
-// JWT signature
-const JWT_SECRET = process.env.JWT_SECRET || "7bzkj0iMcFU9JMnnE6SB";
 
 // Settup Logger
 morgan.token('id', function getId(req) {
@@ -35,24 +38,14 @@ morgan.token('id', function getId(req) {
 });
 
 let loggerFormat = ':id [:date[web]] ":method :url" :status :response-time';
-//app.use(morgan(loggerFormat));
+
+app.use(morgan(loggerFormat));
 morganBody(app);
 
-
 // Mongose Settup
-const uri = "mongodb+srv://SeanDev:kcwAPZHBtrYQkidQ@cluster0-i5kqv.mongodb.net/test?retryWrites=true&w=majority";
-mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}).catch(err => {
+mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true}).catch(err => {
   console.log(err);
 })
-
-// User Schema
-let UserSchema = new mongoose.Schema({
-  _id: String,
-  username: String,
-  saltedHash: String,
-  salt: String
-});
-let User = mongoose.model('User',UserSchema);
 
 // User Log in
 app.post('/api/signup', function (req, res, next) {
@@ -112,14 +105,35 @@ app.post('/api/signin/', function (req, res, next) {
   });
 })
 
-
+// Auth Middleware
+app.use(function(req, res, next) {
+    let token = req.headers.token;
+    // Nullify values set by this function
+    req.uid = null;
+    req.username = null;
+    // Check if the token is valid
+    if(!token) return next();
+    try{
+      token = jwt.verify(token, JWT_SECRET);
+    } catch (err) {
+      console.log(err);
+      return next()
+    }
+    // Check if the user Exists
+    User.findOne({_id: token._id}, function(err, user){
+      if(!user || err)  next();
+      req.uid = token._id, req.username = user.username;
+      return next()
+    });
+});
 
 
 app.use('/graphql', graphqlHTTP((req, res, graphQLParams) => ({
     schema: schema,
     graphiql: true,
     context: {
-      headers: req.headers
+      username: req.username,
+      uid: req.uid
     }
   }))
 );
