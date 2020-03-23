@@ -21,9 +21,13 @@
     border-radius: 0;
     height: 50px;
 }
+.form-control.table-input {
+    width: 100%;
+}
 
 .form-group {
     margin-bottom: 15px;
+    
 }
 
 input[type="checkbox"] {

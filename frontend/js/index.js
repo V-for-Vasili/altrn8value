@@ -17,13 +17,122 @@ window.onload = (function(){
 
             metricTableCurrTab: 0,          // tab currenttly displayed in metric table
                                             // 0,1,2 = IS, BS, CF respectively
+
+            series: []                      // Contains Time sereies data for stock in stockDisplayList
         };
     }
     initPageInfo();
 
+    // Initate Blank Canvas Where Historic Price Data will be loaded
+    let chart = echarts.init(document.getElementById('chart'),'template', {
+        width: document.getElementById('chart').offsetWidth,
+        height: document.getElementById('chart').offsetHeight
+    });
+
+    function initGraphCanvas(chart,stocks,series){
+        let option;
+        if (stocks.length == 0){
+           option = {
+                
+                title: {
+                    show: true,
+                    textStyle:{
+                      fontSize:20
+                    },
+                    text: "No Stocks Selected",
+                    left:'center',
+                    top: 'center'
+                  },
+                series: []
+            };
+        }
+        else {
+            option = {
+                title: {
+                    text: "Historic Price",
+                    textStyle:{fontFamily:'Roboto, Helvetica'}, 
+                    top: '5%',
+                    left: '5%'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: stocks,
+                    top:'10%'
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '12%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        dataZoom: {yAxisIndex: 'none'},
+                        restore: {},
+                        //saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'time',
+                    boundaryGap: false,
+                },
+                yAxis: {
+                    type: 'value',
+                    boundaryGap: [0, '100%']
+                },
+                dataZoom: [{
+                    type: 'inside',
+                    start: 0,
+                    end: 10
+                }, {
+                    start: 0,
+                    end: 10,
+                    dataBackground:{
+                        lineStyle:{color:'#fff',shadowColor:'#fff'},
+                        areaStyle:{color: '#rgb(245, 166, 35)',opacity:1}
+                    },
+                    fillerColor:'rgb(245, 166, 35,.25)',
+                    handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                    handleSize: '80%',
+                    handleStyle: {
+                        color: '#fff',
+                        shadowBlur: 3,
+                        shadowColor: 'rgba(0, 0, 0, 0.6)',
+                        shadowOffsetX: 2,
+                        shadowOffsetY: 2
+                    }
+                }],
+                series:series
+            };
+        }
+        chart.setOption(option,true);
+    }
+
+    initGraphCanvas(chart,PAGE_INFO.stockDisplayList,PAGE_INFO.series);
+
+
     //
     // Selected metrics that we need to display
     //
+
+    // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-string
+    function formatNumeric(amount,prefix,decimalCount,decimal,thousands) {
+        try {
+          decimalCount = Math.abs(decimalCount);
+          decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+      
+          const negativeSign = amount < 0 ? "-" : "";
+      
+          let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+          let j = (i.length > 3) ? i.length % 3 : 0;
+      
+          return negativeSign + prefix + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+        } catch (e) {
+          console.log(e);
+        }
+      }
 
     // years for which we show financial statements
     let years = ['2019', '2018', '2017', '2016', '2015', '2014'];
@@ -109,107 +218,22 @@ window.onload = (function(){
         "Net Cash/Marketcap"
     ];
 
-    // Initate Blank Canvas Where Historic Price Data will be loaded
-    var options = {
-        theme: {
-            mode: 'light', 
-            palette: 'palette1', 
-            monochrome: {
-                enabled: false,
-                color: '#255aee',
-                shadeTo: 'light',
-                shadeIntensity: 0.65
-            },
-        },
-        series: [],
-        noData: {
-            text: 'No Stocks Selected'
-          },
-        chart: {
-        type: 'area',
-        stacked: false,
-        height: 350,
-        zoom: {
-          type: 'x',
-          enabled: true,
-          autoScaleYaxis: true
-        },
-        toolbar: {
-          autoSelected: 'zoom'
+    function formatState (state) {
+        if (!state.id) {
+          return state.text;
         }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      markers: {
-        size: 0,
-      },
-      title: {
-        text: 'Stock Price Movement',
-        align: 'left',
-        style: {
-            fontSize:  '20px',
-            fontWeight:  'bold',
-            fontFamily:  'Roboto, Helvetica, Arial, sans-serif',
-            color:  '#fff'
-          }
-      },
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shadeIntensity: 1,
-          inverseColors: false,
-          opacityFrom: 0.5,
-          opacityTo: 0,
-          stops: [0, 90, 100]
-        },
-      },
-      yaxis: {
-        labels: {
-            style: {
-                colors: '#fff',
-                fontSize: '12px',
-                fontFamily: 'Helvetica, Arial, sans-serif',
-                fontWeight: 400,
-                cssClass: 'apexcharts-yaxis-label',
-            },  
-          formatter: function (val) {
-            return (val);
-          }
-          
-        },
-        title: {
-          text: 'Price',
-          style: {
-            color: '#fff',
-            fontSize: '12px',
-            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-            fontWeight: 600,
-            cssClass: 'apexcharts-yaxis-title',
-        },
-        },
-      },
-      xaxis: {
-        type: 'datetime',
-        labels: {style: {colors: '#fff'}}},
-      tooltip: {
-        shared: false,
-        y: {
-          formatter: function (val) {
-            return (val);
-          }
-        }
-      }
-    };
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
+        var baseUrl = "https://financialmodelingprep.com/stocks/" + state.text.toLowerCase();
+        //<img src="' + baseUrl +'.png" class="search-icon" /> 
+        var $state = $('<span>' + state.text + ' | '+ state.name + '</span>');
+        return $state;
+    }
 
     // Sets Up the Add Stock Bar at top of page
     $("#singleSearch").select2({
         placeholder: 'Select A Stock',
         theme: "flat",
         allowClear: true,
-        minimumInputLength: 1,
+        minimumInputLength: 2,
         ajax: {
             delay: 250,
             url:'https://financialmodelingprep.com/api/v3/search',
@@ -221,12 +245,16 @@ window.onload = (function(){
                 let data = $.map(ajaxData, function (obj,index){
                     obj.id = obj.id || index + 1;
                     obj.text = obj.text || obj.symbol; // replace name with the property used for the text
+                    obj.name = obj.name;
                     return obj;
                 });
                 return {results: data};
             },
             cache: true
-        }
+        },
+        templateResult: formatState,
+        templateSelection: formatState
+
     });
     $("#companeySelect").select2({
       placeholder: 'Select A Stock',
@@ -240,7 +268,8 @@ window.onload = (function(){
         let symbol = e.params.data.symbol;
         let tr = document.createElement('tr');
         tr.innerHTML = `
-            <td class="tm-product-name">${name}</td>
+            <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/></td>
+            <td class="tm-product-name"> ${symbol} | ${name}</td>
             <td class="text-center">
                 <a class="tm-product-delete-link">
                     <i class="far fa-trash-alt tm-product-delete-icon"></i>
@@ -254,40 +283,29 @@ window.onload = (function(){
           $('#companeySelect').find("option[value='"+symbol+"']").remove();
           //$('#companeySelect').trigger('change');
 
-          let ser = chart.w.globals.initialSeries.filter(obj => (obj.name != symbol) );
-          if (ser.length > 0){
-            ser = ser.map(obj => {
-                let rObj ={};
-              rObj.name=obj.name;
-              rObj.data = obj.data;
-              return rObj;
-            });
-            chart.updateSeries(ser);
-          }
-          else chart.updateSeries();
-          
-          // delete the stock from list of displayed stocks
+          PAGE_INFO.series = PAGE_INFO.series.filter(obj => (obj.name != symbol) );
+          console.log(PAGE_INFO.series);
           deleteStockFromDisplayList(symbol);
+          if (PAGE_INFO.series.length == 0) chart.clear();
+          initGraphCanvas(chart,PAGE_INFO.stockDisplayList,PAGE_INFO.series);  
+          if ($("#StockSelections").children("tr").length == 0){
+            $("#savePorfolio").hide();
+        }
+          // delete the stock from list of displayed stocks
+          
         });
 
         // Retrive time sereies for added stock and add to plot
         var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol +"?serietype=line";
         $.getJSON(url, function(response) {
           let data = response.historical.map(obj =>{
-              let rObj = {};
-              rObj.x = obj.date;
-              rObj.y = obj.close;
-              return rObj;
+              let rObj = [obj.date,obj.close];
+              return rObj;  
           });
-          if (chart.w.globals.initialSeries.length == 0 || chart.w.globals.initialSeries[0].data.length == 0){
-            chart.updateSeries([{name: symbol,data: data}]);
-          }
-          else{
-            chart.appendSeries({
-                name: symbol,
-                data: data
-            });
-          }  
+          let series = {name:symbol,type:'line',area:{},data:data};
+          addStockToDisplayList(symbol);
+          PAGE_INFO.series.push(series);
+          initGraphCanvas(chart,PAGE_INFO.stockDisplayList,PAGE_INFO.series);
         });
         // Add Selected Comaney to FS select companey bar
         let opt = new Option(name,symbol,false,true);
@@ -296,17 +314,19 @@ window.onload = (function(){
           params: {
              data: {name: name,id:symbol}
         }});
+
+        if ($("#StockSelections").children("tr").length > 0){
+            $("#savePorfolio").show();
+        }
+        
         // Clear Stock Select Bar
         $("#singleSearch").val(null).trigger("change");
     });
 
     // This is called when companey is selected: Use to call function to populate FS
     $('#companeySelect').on('select2:select', function (e) {
-        
         let sym = e.params.data.id;
         metricsTableChangeCurrStock(sym);
-        addStockToDisplayList(sym);
-        
     });
 
     function addStockToDisplayList(symbol) {
@@ -357,6 +377,44 @@ window.onload = (function(){
         console.log(err);
     });
 
+    api.onError(function(err) {
+        // make the error box visible and show the message
+        document.querySelector('#errMessage').innerHTML = err;
+        document.querySelector('#errBox').style.display = 'block';
+    });
+
+    // add event listener to handle login or logout as appropriate
+    api.onLogin(function() {
+        let authBtn = document.querySelector('#authBtn');
+        if (api.isLoggedIn()) {
+            authBtn.innerHTML = `${api.getUsername()}, <b>Logout</b>`;
+            // set action to log out
+            authBtn.onclick = function() {
+                api.signOut();
+            };
+        } else {
+            authBtn.innerHTML = `<b>Sign In or Sign Up</b>`;
+            // set action to log in
+            authBtn.onclick = function() {
+                window.location.href = '/login.html';
+            };
+        }
+    });
+
+    // add event listener to show or hide tabs depending on whether user is
+    // signed in or not
+    api.onLogin(function() {
+        let myPortfoliosTab = document.querySelector('#navbarDropdown_portfolios');
+        let settingsTab = document.querySelector('#navbarDropdown_settings');
+        if (api.isLoggedIn()) {
+            myPortfoliosTab.style.display = '';
+            settingsTab.style.style = '';
+        } else {
+            myPortfoliosTab.style.display = 'none';
+            settingsTab.style.display = 'none';
+        }
+    });
+
     function showMetricsTable() {
         document.querySelector('#metrics_table_div').style.display = 'block';
         document.querySelector('#metrics_table_div').style.visibility = 'visible';
@@ -387,23 +445,28 @@ window.onload = (function(){
         // get info statements from api
         apiFunction(companyName, false, function(code, err, respObj) {
             if (code !== 200) return api.notifyErrorListeners(err);
-            let infoByYear = getInfoByYear(respObj);
             let table = document.querySelector('#metrics_table_tbody');
             // populate table
             table.innerHTML = '';
-            for (let idx in metrics) {
-                let m = metrics[idx];
-                let tr = document.createElement('tr');
-                tr.innerHTML = `<th scope="row"><b>${m}</b></th>`;
-                for (let idx1 in years) {
-                    let year = years[idx1];
-                    let info = infoByYear[year][m];
-                    info = parseFloat(info);
-                    info = info.toFixed(2);
-                    if (idx1 == 0) info = `<b>${info}</b>`;
-                    tr.innerHTML += `<td>${info}</td>`;
+            if (api.is_empty_object(respObj)) {
+                table.innerHTML = '<th scope="row"><b>No Data.</b></th>';
+                // notify user of error
+                api.notifyErrorListeners('Error: Empty respObj for company ' + companyName);
+            } else {
+                let infoByYear = getInfoByYear(respObj);
+                for (let idx in metrics) {
+                    let m = metrics[idx];
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `<th scope="row">${m}</th>`;
+                    for (let idx1 in years) {
+                        let year = years[idx1];
+                        let info = infoByYear[year][m];
+                        info = formatNumeric(info,'',2,'.',',');
+                        if (idx1 == 0) info = `${info}`;
+                        tr.innerHTML += `<td>${info}</td>`;
+                    }
+                    table.appendChild(tr);
                 }
-                table.appendChild(tr);
             }
             showMetricsTable();
         });
@@ -461,10 +524,21 @@ window.onload = (function(){
     });
 
     function reloadPageContent() {
+        api.notifyLoginListeners();
         api.notifyStockDisplayListeners();
     }
 
-    // refresh when index.js file is loaded
+    $('#savePorfolio').on('click',function(e){
+        if(api.isLoggedIn()){
+            let data = JSON.parse(localStorage.getItem("data"));
+            data.newPorfolio = PAGE_INFO.stockDisplayList;
+            data.option = 1;
+            localStorage.setItem('data',JSON.stringify(data));
+            window.location.href = '/addPorfolio.html';
+            
+        }
+    });
+    
     reloadPageContent();
 
 })();

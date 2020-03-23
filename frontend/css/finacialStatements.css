@@ -10,3 +10,11 @@
     flex-wrap: nowrap;
     flex-basis: auto;
 }
+
+.statementHeaderRC{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-basis: auto;
+    justify-content: space-between;
+
+}

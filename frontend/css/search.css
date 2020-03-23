@@ -8,9 +8,13 @@
     min-width: 15rem;
     font-family: Roboto, Helvetica;
 }
+/* Made the outline glow on click */
+.select2-container--open{
+  outline: -webkit-focus-ring-color auto 1px;
+}
 
 .select2-container *:focus {
-    outline: 0px;
+  outline: -webkit-focus-ring-color auto 1px;
 }
 
 .select2-container--flat .select2-selection--single {
@@ -138,4 +142,11 @@
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
 }
-
+.search-icon {
+  height: 35px;
+  width: 35px;
+  
+}
+.selectionBox{
+  display: flex;
+}

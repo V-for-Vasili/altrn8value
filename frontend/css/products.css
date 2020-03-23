@@ -14,6 +14,7 @@
 
 .tm-product-table tr {
     font-weight: 600;
+    text-align: left;
 }
 
 .tm-product-name {

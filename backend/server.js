@@ -87,7 +87,7 @@ app.post('/api/signin/', function (req, res, next) {
   // retrieve user from the database
   User.findOne({username: username}, function(err, user){
     if (err) return res.status(500).end(err);
-    if (!user) return res.status(401).end("access denied");
+    if (!user) return res.status(401).end("Invalid username");
     //  Generate hash
     let salt = user.salt;
     let hash = crypto.createHmac('sha512', salt);
@@ -101,9 +101,16 @@ app.post('/api/signin/', function (req, res, next) {
       {_id: user._id,
        exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60)},
        secret);
-      return res.status(201).send({_id: user._id, token, username});
+      return res.status(200).send({_id: user._id, token, username});
   });
 })
+
+/*
+curl -X POST                                                       \
+    -H "Content-Type: application/json"                            \
+    -d '{ "query": "{ stock(symbol:\"AAPL\"){ symbol price } }" }' \
+    http://localhost:8080/graphql
+*/
 
 // Auth Middleware
 app.use(function(req, res, next) {
