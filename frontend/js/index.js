@@ -33,7 +33,6 @@ window.onload = (function(){
         let option;
         if (stocks.length == 0){
            option = {
-                
                 title: {
                     show: true,
                     textStyle:{
@@ -45,8 +44,7 @@ window.onload = (function(){
                   },
                 series: []
             };
-        }
-        else {
+        } else {
             option = {
                 title: {
                     text: "Historic Price",
@@ -112,7 +110,6 @@ window.onload = (function(){
 
     initGraphCanvas(chart,PAGE_INFO.stockDisplayList,PAGE_INFO.series);
 
-
     //
     // Selected metrics that we need to display
     //
@@ -120,19 +117,19 @@ window.onload = (function(){
     // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-string
     function formatNumeric(amount,prefix,decimalCount,decimal,thousands) {
         try {
-          decimalCount = Math.abs(decimalCount);
-          decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
-      
-          const negativeSign = amount < 0 ? "-" : "";
-      
-          let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
-          let j = (i.length > 3) ? i.length % 3 : 0;
-      
-          return negativeSign + prefix + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+            decimalCount = Math.abs(decimalCount);
+            decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+
+            const negativeSign = amount < 0 ? "-" : "";
+
+            let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+            let j = (i.length > 3) ? i.length % 3 : 0;
+
+            return negativeSign + prefix + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
         } catch (e) {
-          console.log(e);
+            api.notifyErrorListeners(e);
         }
-      }
+    }
 
     // years for which we show financial statements
     let years = ['2019', '2018', '2017', '2016', '2015', '2014'];
@@ -222,9 +219,9 @@ window.onload = (function(){
         if (!state.id) {
           return state.text;
         }
-        var baseUrl = "https://financialmodelingprep.com/stocks/" + state.text.toLowerCase();
+        let baseUrl = "https://financialmodelingprep.com/stocks/" + state.text.toLowerCase();
         //<img src="' + baseUrl +'.png" class="search-icon" /> 
-        var $state = $('<span>' + state.text + ' | '+ state.name + '</span>');
+        let $state = $('<span>' + state.text + ' | '+ state.name + '</span>');
         return $state;
     }
 
@@ -238,7 +235,7 @@ window.onload = (function(){
             delay: 250,
             url:'https://financialmodelingprep.com/api/v3/search',
             data: function(params){
-                var Q = {query: params.term};
+                let Q = {query: params.term};
                 return Q;
             },
             processResults: function (ajaxData){
@@ -296,7 +293,7 @@ window.onload = (function(){
         });
 
         // Retrive time sereies for added stock and add to plot
-        var url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol +"?serietype=line";
+        let url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol +"?serietype=line";
         $.getJSON(url, function(response) {
           let data = response.historical.map(obj =>{
               let rObj = [obj.date,obj.close];
@@ -538,7 +535,7 @@ window.onload = (function(){
             
         }
     });
-    
+
     reloadPageContent();
 
 })();
