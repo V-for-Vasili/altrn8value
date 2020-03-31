@@ -21,8 +21,6 @@ window.onload = (function(){
         });
         
     }
-    let data = JSON.parse(localStorage.getItem("data"));
-    loadPorfolios(data.porfolios);
 
     // add event listener to handle login or logout as appropriate
     api.onLogin(function() {
@@ -42,19 +40,8 @@ window.onload = (function(){
         }
     });
 
-    // add event listener to show or hide tabs depending on whether user is
-    // signed in or not
-    api.onLogin(function() {
-        let myPortfoliosTab = document.querySelector('#navbarDropdown_portfolios');
-        let settingsTab = document.querySelector('#navbarDropdown_settings');
-        if (api.isLoggedIn()) {
-            myPortfoliosTab.style.visibility = 'visible';
-            settingsTab.style.visibility = 'visible';
-        } else {
-            myPortfoliosTab.style.visibility = 'hidden';
-            settingsTab.style.visibility = 'hidden';
-        }
-    });
+    let data = JSON.parse(localStorage.getItem("data"));
+    loadPorfolios(data.porfolios);
 
     function reloadPageContent() {
         api.notifyLoginListeners();
