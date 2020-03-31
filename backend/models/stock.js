@@ -10,7 +10,7 @@ const {ratingDetailTypeDef, ratingDetailResolver} = require("./stockFieldModels/
 const {growthTypeDef, growthResolver} = require("./stockFieldModels/growth.js");
 const {metricsTypeDef, metricsResolver} = require("./stockFieldModels/metrics.js");
 
-let stockTypeDef = `  type Stock {
+let stockTypeDef = `type Stock {
     symbol: String
     price: Float
     exchange: String

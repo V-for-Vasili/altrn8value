@@ -105,13 +105,6 @@ app.post('/api/signin/', function (req, res, next) {
   });
 })
 
-/*
-curl -X POST                                                       \
-    -H "Content-Type: application/json"                            \
-    -d '{ "query": "{ stock(symbol:\"AAPL\"){ symbol price } }" }' \
-    http://localhost:8080/graphql
-*/
-
 // Auth Middleware
 app.use(function(req, res, next) {
     let token = req.headers.token;
@@ -134,7 +127,12 @@ app.use(function(req, res, next) {
     });
 });
 
-
+/*
+curl -X POST                                                       \
+    -H "Content-Type: application/json"                            \
+    -d '{ "query": "{ stock(symbol:\"AAPL\"){ symbol price } }" }' \
+    http://localhost:8080/graphql
+*/
 app.use('/graphql', graphqlHTTP((req, res, graphQLParams) => ({
     schema: schema,
     graphiql: true,

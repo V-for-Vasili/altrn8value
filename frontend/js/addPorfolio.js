@@ -102,7 +102,7 @@ window.onload = (function () {
         });
         });
     }
-    
+
     function formatState(state) {
         if (!state.id) {
             return state.text;
@@ -154,7 +154,6 @@ window.onload = (function () {
         },
         templateResult: formatState,
         templateSelection: formatState
-
     });
 
     $("#stockSelect").on('select2:select', function (e) {
@@ -187,7 +186,6 @@ window.onload = (function () {
                 } else {
                     updateStock(symbol,0,0);
                     $("#" + symbol + "Cost").text("-");
-
                 }
                 let totalCost = getPorofolioCost();
                 totalCost = (totalCost == 0)? "-" :  formatNumeric(totalCost, "$", 2, ".", ",");
@@ -213,7 +211,7 @@ window.onload = (function () {
             }
             
             $("#stockSelect").val(null).trigger("change");
-        }); 
+        });
     });
    
     document.querySelector('#addStockForm').addEventListener("submit",function(e){
