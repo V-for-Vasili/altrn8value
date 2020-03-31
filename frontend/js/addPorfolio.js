@@ -46,7 +46,7 @@ window.onload = (function () {
 
     function loadInfo(symbols){
         symbols.forEach(function(symbol){
-            var url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
+            let url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
         $.getJSON(url, function (response) {
             let name = response[0].name;
             let price = response[0].price;
@@ -71,8 +71,7 @@ window.onload = (function () {
                   updateStock(symbol,shares,newCost);
                   let newCostFormatted = formatNumeric(newCost, "$", 2, ".", ",");
                   $("#" + symbol + "Cost").text(newCostFormatted);
-              }
-              else {
+              } else {
                   updateStock(symbol,0,0);
                   $("#" + symbol + "Cost").text("-");
 
@@ -95,12 +94,10 @@ window.onload = (function () {
           if ($("#StockSelections").children("tr").length > 0){
               $("#rowTotal").show();
               $("#saveBtn").show();
-          }
-          else{
+          } else {
               $("#rowTotal").hide();
               $("#saveBtn").hide();
           }
-          
           $("#stockSelect").val(null).trigger("change");
         });
         });
@@ -110,9 +107,9 @@ window.onload = (function () {
         if (!state.id) {
             return state.text;
         }
-        var baseUrl = "https://financialmodelingprep.com/stocks/" + state.text.toLowerCase();
+        let baseUrl = "https://financialmodelingprep.com/stocks/" + state.text.toLowerCase();
         //<img src="' + baseUrl +'.png" class="search-icon" /> 
-        var $state = $('<span>' + state.text + ' | ' + state.name + '</span>');
+        let $state = $('<span>' + state.text + ' | ' + state.name + '</span>');
         return $state;
     }
 
@@ -141,7 +138,7 @@ window.onload = (function () {
             delay: 250,
             url: 'https://financialmodelingprep.com/api/v3/search',
             data: function (params) {
-                var Q = { query: params.term };
+                let Q = { query: params.term };
                 return Q;
             },
             processResults: function (ajaxData) {
@@ -163,7 +160,7 @@ window.onload = (function () {
     $("#stockSelect").on('select2:select', function (e) {
         let name = e.params.data.name;
         let symbol = e.params.data.symbol;
-        var url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
+        let url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
         $.getJSON(url, function (response) {
             let price = response[0].price;
             addStock(name,symbol,price);
@@ -187,8 +184,7 @@ window.onload = (function () {
                     updateStock(symbol,shares,newCost);
                     let newCostFormatted = formatNumeric(newCost, "$", 2, ".", ",");
                     $("#" + symbol + "Cost").text(newCostFormatted);
-                }
-                else {
+                } else {
                     updateStock(symbol,0,0);
                     $("#" + symbol + "Cost").text("-");
 
@@ -211,27 +207,22 @@ window.onload = (function () {
             if ($("#StockSelections").children("tr").length > 0){
                 $("#rowTotal").show();
                 $("#saveBtn").show();
-            }
-            else{
+            } else {
                 $("#rowTotal").hide();
                 $("#saveBtn").hide();
             }
             
             $("#stockSelect").val(null).trigger("change");
-
         }); 
     });
    
     document.querySelector('#addStockForm').addEventListener("submit",function(e){
         e.preventDefault();
-        console.log("formsubmited");
-        console.log( $("#porfolioName"));
         let name = $("#porfolioName").val();
         NEW_PORFOLIO.name = name;
-        
         data.porfolios.push(NEW_PORFOLIO);
         data.option = 0;
-        localStorage.setItem("data",JSON.stringify(data));
+        localStorage.setItem("data", JSON.stringify(data));
         window.location.href = '/myPorfolios.html';
     });
 

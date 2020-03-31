@@ -315,7 +315,7 @@ window.onload = (function(){
         if ($("#StockSelections").children("tr").length > 0){
             $("#savePorfolio").show();
         }
-        
+
         // Clear Stock Select Bar
         $("#singleSearch").val(null).trigger("change");
     });
@@ -507,7 +507,6 @@ window.onload = (function(){
             data.option = 1;
             localStorage.setItem('data',JSON.stringify(data));
             window.location.href = '/addPorfolio.html';
-            
         }
     });
 
