@@ -369,17 +369,6 @@ window.onload = (function(){
         </tr>
     `;
 
-    // add error listeners to show error messages to the user
-    api.onError(function(err) {
-        console.log(err);
-    });
-
-    api.onError(function(err) {
-        // make the error box visible and show the message
-        document.querySelector('#errMessage').innerHTML = err;
-        document.querySelector('#errBox').style.display = 'block';
-    });
-
     // add event listener to handle login or logout as appropriate
     api.onLogin(function() {
         let authBtn = document.querySelector('#authBtn');

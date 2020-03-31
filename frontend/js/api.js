@@ -1,6 +1,6 @@
 let api = (function(){
     "use strict";
-    var module = {};
+    let module = {};
 
     //
     // helper functions
@@ -11,7 +11,7 @@ let api = (function(){
     // Error is any return code >= 400.
     // callback format: code, err, respObj.
     function send_ajax(method, url, data, callback) {
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.onload = function() {
             if (xhr.status < 400) {
                 let respObj = JSON.parse(xhr.responseText);

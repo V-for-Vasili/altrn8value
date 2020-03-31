@@ -2,17 +2,6 @@
 window.onload = (function(){
     "use strict";
 
-    // add error listeners to show error messages to the user
-    api.onError(function(err) {
-        console.log(err);
-    });
-
-    api.onError(function(err) {
-        // make the error box visible and show the message
-        document.querySelector('#errMessage').innerHTML = err;
-        document.querySelector('#errBox').style.display = 'block';
-    });
-
     // once we are signed in, redirect to main page
     if (!api.isLoggedIn()) {
         api.onLogin(function() {            

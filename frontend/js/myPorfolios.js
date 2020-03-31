@@ -24,19 +24,6 @@ window.onload = (function(){
     let data = JSON.parse(localStorage.getItem("data"));
     loadPorfolios(data.porfolios);
 
-
-
-    // add error listeners to show error messages to the user
-    api.onError(function(err) {
-        console.log(err);
-    });
-
-    api.onError(function(err) {
-        // make the error box visible and show the message
-        document.querySelector('#errMessage').innerHTML = err;
-        document.querySelector('#errBox').style.display = 'block';
-    });
-
     // add event listener to handle login or logout as appropriate
     api.onLogin(function() {
         let authBtn = document.querySelector('#authBtn');
@@ -54,8 +41,6 @@ window.onload = (function(){
             };
         }
     });
-
-
 
     // add event listener to show or hide tabs depending on whether user is
     // signed in or not

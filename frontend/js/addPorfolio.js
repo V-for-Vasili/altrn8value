@@ -1,30 +1,33 @@
 /*jshint esversion: 6 */
 window.onload = (function () {
     "use strict";
+
     let NEW_PORFOLIO = null;
+
     function initPorfolio(){
         NEW_PORFOLIO = {
             stocks:[],
             cost:0,
             created: new Date()
-            
         };
     }
     initPorfolio();
+
     let data = JSON.parse(localStorage.getItem("data"));
     if (data.option == 1){
         loadInfo(data.newPorfolio);
     }
 
-    
     function addStock(name,symbol,price){
         let stockObj = {name:name,symbol:symbol,purchasePrice:price,shares:0,cost:0};
         NEW_PORFOLIO.stocks.push(stockObj);
 
     }
+
     function removeStock(symbol){
         NEW_PORFOLIO.stocks = NEW_PORFOLIO.stocks.filter(stockObj => stockObj.symbol == symbol);
     }
+
     function updateStock(symbol,newShares,newCost){
         let idx = NEW_PORFOLIO.stocks.findIndex(stockObj => stockObj.symbol == symbol);
         let oldCost = NEW_PORFOLIO.stocks[idx].cost;
@@ -32,12 +35,15 @@ window.onload = (function () {
         NEW_PORFOLIO.stocks[idx].cost = newCost;
         UpdatePorfolioCost(newCost - oldCost);
     }
+
     function UpdatePorfolioCost(amount){
         NEW_PORFOLIO.cost += amount;
     }
+
     function getPorofolioCost(){
         return NEW_PORFOLIO.cost;
     }
+
     function loadInfo(symbols){
         symbols.forEach(function(symbol){
             var url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
@@ -109,6 +115,7 @@ window.onload = (function () {
         var $state = $('<span>' + state.text + ' | ' + state.name + '</span>');
         return $state;
     }
+
     // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-string
     function formatNumeric(amount, prefix, decimalCount, decimal, thousands) {
         try {
@@ -227,7 +234,5 @@ window.onload = (function () {
         localStorage.setItem("data",JSON.stringify(data));
         window.location.href = '/myPorfolios.html';
     });
-
-
 
 })();
