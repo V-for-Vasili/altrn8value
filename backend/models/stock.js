@@ -1,10 +1,12 @@
 // Imports
 const axios = require('axios');
-const {companyProfileResolver, companyProfileTypeDef} = require("./stockFieldModels/companyProfile.js");
+const {companyProfileTypeDef, companyProfileResolver} = require("./stockFieldModels/companyProfile.js");
 const {historicalClosingTypeDef, historyResolver, historyQueryDef} = require("./stockFieldModels/historicalClosing.js");
 const {quoteTypeDef, quoteResolver} = require("./stockFieldModels/quote.js");
 const {ratingTypeDef, ratingResolver} = require("./stockFieldModels/rating.js");
 const {ratingDetailTypeDef, ratingDetailResolver} = require("./stockFieldModels/ratingDetail.js");
+const {cashFlowStatementTypeDef, cashFlowStatementResolver} = require("./stockFieldModels/cashFlowStatement.js");
+
 
 // TODO: Implement these fields
 const {growthTypeDef, growthResolver} = require("./stockFieldModels/growth.js");
@@ -22,6 +24,7 @@ let stockTypeDef = `type Stock {
     rating_details: [RatingDetail]
     company_profile: CompanyProfile
     quote: Quote
+    cash_flow_statement: [CashFlowStatement]
     ${historyQueryDef}
   }`;
 
@@ -33,6 +36,7 @@ let stockFieldTypeDef=`
   ${quoteTypeDef}
   ${ratingTypeDef}
   ${ratingDetailTypeDef}
+  ${cashFlowStatementTypeDef}
 `;
 
 let stockResolver = async (_, {symbol}) => {
@@ -63,7 +67,8 @@ let stockFieldResolvers = {
   quote: quoteResolver,
   rating: ratingResolver,
   rating_details: ratingDetailResolver,
-  history: historyResolver
+  history: historyResolver,
+  cash_flow_statement: cashFlowStatementResolver
 }
 
 module.exports = {stockTypeDef, stockQueryDef, stockFieldTypeDef, stockResolver, stockFieldResolvers};

@@ -25,7 +25,7 @@ let ratingDetailResolver = async (obj, args, context, info) => {
     ratings.push({type: "P/B", score: pb.score, recommendation: pb.recommendation});
     const roa = response.ratingDetails["ROA"]
     ratings.push({type: "ROA", score: roa.score, recommendation: roa.recommendation});
-    const  dcf = response.ratingDetails["DCF"]
+    const dcf = response.ratingDetails["DCF"]
     ratings.push({type: "DCF", score: dcf.score, recommendation: dcf.recommendation});
     const pe = response.ratingDetails["P/E"]
     ratings.push({type: "P/E", score: pe.score, recommendation: pe.recommendation});

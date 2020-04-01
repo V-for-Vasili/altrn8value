@@ -43,4 +43,4 @@ let companyProfileResolver  =async (obj, args, context, info) => {
   }
 }
 
-module.exports = {companyProfileResolver, companyProfileTypeDef};
+module.exports = {companyProfileTypeDef, companyProfileResolver};
