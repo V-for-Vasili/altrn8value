@@ -142,8 +142,17 @@ let api = (function(){
     // queries financialmodelingprep.com; Searches NASDAQ only for now
     // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
     module.queryListOfStocks = function(searchStr, callback=do_nothing) {
-        let path = `search?query=${searchStr}&limit=10&exchange=NASDAQ`;
-        send_financial_modeling_query(path, callback);
+        let query = `{
+            stock_list(searchStr:\"${searchStr}\"){
+                symbol
+                name
+                currency
+                stockExchange
+                exchangeShortName
+            }
+        }`;
+        let data = {query: query};
+        seng_graphql_query(data, callback);
     };
 
     // queries financialmodelingprep.com;

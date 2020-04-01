@@ -2,10 +2,31 @@
 const axios = require('axios');
 
 
-let stockListQueryDef = `stock_list: String`
+let stockDescriptionTypeDef = `
+type StockDescription {
+    symbol: String
+    name: String
+    currency: String
+    stockExchange: String
+    exchangeShortName: String
+}`;
 
-let stockListResolver = async (_, {symbol}) => {
-    return 'qwe1234';
+let stockListQueryDef = `stock_list(searchStr: String!): [StockDescription]`;
+
+let stockListResolver = async (_, {searchStr}) => {
+    let response = {};
+    try {
+      response = await axios.get(`https://financialmodelingprep.com/api/v3/search?query=${searchStr}&limit=100`);
+      response = response.data;
+    } catch (err) {
+      console.log(err);
+    }
+    if(!response) {
+      console.log('Empty response from stockListResolver.');
+      return null;
+    } else {
+      return response;
+    }
 }
 
-module.exports = {stockListQueryDef, stockListResolver};
+module.exports = {stockDescriptionTypeDef, stockListQueryDef, stockListResolver};
