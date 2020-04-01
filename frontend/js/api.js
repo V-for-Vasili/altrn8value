@@ -72,6 +72,18 @@ let api = (function(){
         return names;
     }
 
+    function transform_financial_metrics_result(respObj, metrics_table) {
+        let result = [];
+        respObj.forEach(function(data) {
+            let data_transformed = {};
+            Object.keys(data).forEach(function(key) {
+                data_transformed[metrics_table[key]] = data[key];
+            });
+            result.push(data_transformed);
+        });
+        return result;
+    }
+
     //
     // Declarations of the metrics we fetch from the backend
     //
@@ -321,14 +333,7 @@ let api = (function(){
             respObj = respObj.data.stock[metric];
             // Transform the result to attah correct metric names, for example
             // "R&D Expenses" in place of "rd_expenses"
-            let result = [];
-            respObj.forEach(function(data) {
-                let data_transformed = {};
-                Object.keys(data).forEach(function(key) {
-                    data_transformed[module.incomeStatementMetrics[key]] = data[key];
-                });
-                result.push(data_transformed);
-            });
+            let result = transform_financial_metrics_result(respObj, module.incomeStatementMetrics);
             callback(code, err, result);
         });
     };
@@ -381,14 +386,7 @@ let api = (function(){
             respObj = respObj.data.stock[metric];
             // Transform the result to attah correct metric names, for example
             // "R&D Expenses" in place of "rd_expenses"
-            let result = [];
-            respObj.forEach(function(data) {
-                let data_transformed = {};
-                Object.keys(data).forEach(function(key) {
-                    data_transformed[module.balanceSheetMetrics[key]] = data[key];
-                });
-                result.push(data_transformed);
-            });
+            let result = transform_financial_metrics_result(respObj, module.balanceSheetMetrics);
             callback(code, err, result);
         });
     };
@@ -427,14 +425,7 @@ let api = (function(){
             respObj = respObj.data.stock[metric];
             // Transform the result to attah correct metric names, for example
             // "R&D Expenses" in place of "rd_expenses"
-            let result = [];
-            respObj.forEach(function(data) {
-                let data_transformed = {};
-                Object.keys(data).forEach(function(key) {
-                    data_transformed[module.cashFlowStmtMetrics[key]] = data[key];
-                });
-                result.push(data_transformed);
-            });
+            let result = transform_financial_metrics_result(respObj, module.cashFlowStmtMetrics);
             callback(code, err, result);
         });
     };
