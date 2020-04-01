@@ -6,6 +6,7 @@ const {quoteTypeDef, quoteResolver} = require("./stockFieldModels/quote.js");
 const {ratingTypeDef, ratingResolver} = require("./stockFieldModels/rating.js");
 const {ratingDetailTypeDef, ratingDetailResolver} = require("./stockFieldModels/ratingDetail.js");
 const {cashFlowStatementTypeDef, cashFlowStatementYearResolver, cashFlowStatementQuarterResolver} = require("./stockFieldModels/cashFlowStatement.js");
+const {balanceSheetTypeDef, balanceSheetYearResolver, balanceSheetQuarterResolver} = require("./stockFieldModels/balanceSheet.js");
 
 
 // TODO: Implement these fields
@@ -26,6 +27,8 @@ let stockTypeDef = `type Stock {
     quote: Quote
     cash_flow_statement_year: [CashFlowStatement]
     cash_flow_statement_quarter: [CashFlowStatement]
+    balanse_sheet_year: [BalanceSheet]
+    balanse_sheet_quarter: [BalanceSheet]
     ${historyQueryDef}
   }`;
 
@@ -38,6 +41,7 @@ let stockFieldTypeDef=`
   ${ratingTypeDef}
   ${ratingDetailTypeDef}
   ${cashFlowStatementTypeDef}
+  ${balanceSheetTypeDef}
 `;
 
 let stockResolver = async (_, {symbol}) => {
@@ -71,6 +75,8 @@ let stockFieldResolvers = {
   history: historyResolver,
   cash_flow_statement_year: cashFlowStatementYearResolver,
   cash_flow_statement_quarter: cashFlowStatementQuarterResolver,
+  balanse_sheet_year: balanceSheetYearResolver,
+  balanse_sheet_quarter: balanceSheetQuarterResolver,
 }
 
 module.exports = {stockTypeDef, stockQueryDef, stockFieldTypeDef, stockResolver, stockFieldResolvers};
