@@ -271,34 +271,172 @@ let api = (function(){
         seng_graphql_query(data, callback);
     };
 
-    // queries financialmodelingprep.com;
-    // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
     // if quarter is true, pull quarterly data
     // if quarter is false, pull yearly data
     module.getIncomeStatement = function(symbol, quarter=false, callback=do_nothing) {
-        let path = `financials/income-statement/${symbol}`;
-        if (quarter) path += '?period=quarter';
-        send_financial_modeling_query(path, callback);
+        let metric = quarter ? 'income_statement_quarter' : 'income_statement_year';
+        let query = `{
+            stock(symbol:\"${symbol}\"){
+                ${metric} {
+                    date
+                    revenue
+                    revenue_growth
+                    cost_of_revenue
+                    gross_profit
+                    rd_expenses
+                    sga_expense
+                    operating_expenses
+                    operating_income
+                    interest_expense
+                    earnings_before_tax
+                    income_tax_expense
+                    net_ncome_non_controlling_int
+                    net_income_discontinued_ops
+                    net_income
+                    preferred_dividends
+                    net_income_com
+                    eps
+                    eps_diluted
+                    weighted_average_shs_out
+                    weighted_average_shs_out_dil
+                    dividend_per_share
+                    gross_margin
+                    ebitda_margin
+                    ebit_margin
+                    profit_margin
+                    free_cash_flow_margin
+                    ebitda
+                    ebit
+                    consolidated_income
+                    earnings_before_tax_margin
+                    net_profit_margin
+                }
+            }
+        }`;
+        let data = {query: query};
+        seng_graphql_query(data, function(code, err, respObj) {
+            // need to transform the response object to return only a list of
+            // financial info for different time intervals
+            if (code !== 200) return module.notifyErrorListeners(err);
+            respObj = respObj.data.stock[metric];
+            // Transform the result to attah correct metric names, for example
+            // "R&D Expenses" in place of "rd_expenses"
+            let result = [];
+            respObj.forEach(function(data) {
+                let data_transformed = {};
+                Object.keys(data).forEach(function(key) {
+                    data_transformed[module.incomeStatementMetrics[key]] = data[key];
+                });
+                result.push(data_transformed);
+            });
+            callback(code, err, result);
+        });
     };
 
-    // queries financialmodelingprep.com;
-    // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
     // if quarter is true, pull quarterly data
     // if quarter is false, pull yearly data
     module.getBalanceSheet = function(symbol, quarter=false, callback=do_nothing) {
-        let path = `financials/balance-sheet-statement/${symbol}`;
-        if (quarter) path += '?period=quarter';
-        send_financial_modeling_query(path, callback);
+        let metric = quarter ? 'balanse_sheet_quarter' : 'balanse_sheet_year';
+        let query = `{
+            stock(symbol:\"${symbol}\"){
+                ${metric} {
+                    date
+                    cash_and_cash_equivalents
+                    short_term_investments
+                    cash_and_short_term_investments
+                    receivables
+                    inventories
+                    total_current_assets
+                    property_plant_and_equipment_net
+                    goodwill_and_intangible_assets
+                    long_term_investments
+                    tax_assets
+                    total_non_current_assets
+                    total_assets
+                    payables
+                    short_term_debt
+                    total_current_liabilities
+                    long_term_debt
+                    total_debt
+                    deferred_revenue
+                    tax_liabilities
+                    deposit_liabilities
+                    total_non_current_liabilities
+                    total_liabilities
+                    other_comprehensive_income
+                    retained_earnings_deficit
+                    total_shareholders_equity
+                    investments
+                    net_debt
+                    other_ssets
+                    other_liabilities
+                }
+            }
+        }`;
+        let data = {query: query};
+        seng_graphql_query(data, function(code, err, respObj) {
+            // need to transform the response object to return only a list of
+            // financial info for different time intervals
+            if (code !== 200) return module.notifyErrorListeners(err);
+            respObj = respObj.data.stock[metric];
+            // Transform the result to attah correct metric names, for example
+            // "R&D Expenses" in place of "rd_expenses"
+            let result = [];
+            respObj.forEach(function(data) {
+                let data_transformed = {};
+                Object.keys(data).forEach(function(key) {
+                    data_transformed[module.balanceSheetMetrics[key]] = data[key];
+                });
+                result.push(data_transformed);
+            });
+            callback(code, err, result);
+        });
     };
 
-    // queries financialmodelingprep.com;
-    // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
     // if quarter is true, pull quarterly data
     // if quarter is false, pull yearly data
     module.getCashFlowStmt = function(symbol, quarter=false, callback=do_nothing) {
-        let path = `financials/cash-flow-statement/${symbol}`;
-        if (quarter) path += '?period=quarter';
-        send_financial_modeling_query(path, callback);
+        let metric = quarter ? 'cash_flow_statement_quarter' : 'cash_flow_statement_year';
+        let query = `{
+            stock(symbol:\"${symbol}\"){
+                ${metric} {
+                    date
+                    depreciation_and_amortization
+                    stock_based_compensation
+                    operating_cash_flow
+                    capital_expenditure
+                    acquisitions_and_disposals
+                    investment_purchases_and_sales
+                    investing_cash_flow
+                    issuance_repayment_of_debt
+                    issuance_buybacks_of_shares
+                    dividend_payments
+                    financing_cash_flow
+                    effect_of_forex_changes_on_cash
+                    net_cash_flow_change_in_cash
+                    free_cash_flow
+                    net_cash_marketcap
+                }
+            }
+        }`;
+        let data = {query: query};
+        seng_graphql_query(data, function(code, err, respObj) {
+            // need to transform the response object to return only a list of
+            // financial info for different time intervals
+            if (code !== 200) return module.notifyErrorListeners(err);
+            respObj = respObj.data.stock[metric];
+            // Transform the result to attah correct metric names, for example
+            // "R&D Expenses" in place of "rd_expenses"
+            let result = [];
+            respObj.forEach(function(data) {
+                let data_transformed = {};
+                Object.keys(data).forEach(function(key) {
+                    data_transformed[module.cashFlowStmtMetrics[key]] = data[key];
+                });
+                result.push(data_transformed);
+            });
+            callback(code, err, result);
+        });
     };
 
     //

@@ -131,11 +131,6 @@ window.onload = (function(){
         }
     }
 
-    let years = api.years;
-    let incomeStatementMetrics = api.getIncomeStatementMetricNames();
-    let balanceSheetMetrics = api.getBalanceSheetMetricNames();
-    let cashFlowStmtMetrics = api.getCashFlowStmtMetricNames();
-
     function formatState (state) {
         if (!state.id) {
           return state.text;
@@ -276,7 +271,7 @@ window.onload = (function(){
     // generates columns for metrics table
     function generateMetricTableColumns() {
         let content = '';
-        for (let year of years) {
+        for (let year of api.years) {
             content += `<th scope="col">${year}</th>`;
         }
         return content;
@@ -320,12 +315,12 @@ window.onload = (function(){
 
     function getInfoByYear(respObj) {
         let infoByYear = {};
-        respObj.financials.forEach(function(item) {
+        respObj.forEach(function(item) {
             let year = item.date.split('-', 1)[0];
             infoByYear[year] = item;
         });
         // if info for some year is not present, substitute it with empty object
-        for (let year of years) {
+        for (let year of api.years) {
             if (!infoByYear[year]) infoByYear[year] = {};
         }
         return infoByYear;
@@ -351,8 +346,8 @@ window.onload = (function(){
                     let m = metrics[idx];
                     let tr = document.createElement('tr');
                     tr.innerHTML = `<th scope="row">${m}</th>`;
-                    for (let idx1 in years) {
-                        let year = years[idx1];
+                    for (let idx1 in api.years) {
+                        let year = api.years[idx1];
                         let info = infoByYear[year][m];
                         info = formatNumeric(info,'',2,'.',',');
                         if (idx1 == 0) info = `${info}`;
@@ -367,15 +362,15 @@ window.onload = (function(){
 
     // Functions to populate metrics table
     function metricsTableShowIncomeStatements(companyName) {
-        populateMetricsTable(api.getIncomeStatement, companyName, incomeStatementMetrics, "Income Statement");
+        populateMetricsTable(api.getIncomeStatement, companyName, api.getIncomeStatementMetricNames(), "Income Statement");
     }
 
     function metricsTableShowBalanceSheetInfo(companyName) {
-        populateMetricsTable(api.getBalanceSheet, companyName, balanceSheetMetrics, "Balance Sheet");
+        populateMetricsTable(api.getBalanceSheet, companyName, api.getBalanceSheetMetricNames(), "Balance Sheet");
     }
 
     function metricsTableShowCashFlowStatements(companyName) {
-        populateMetricsTable(api.getCashFlowStmt, companyName, cashFlowStmtMetrics, "Cash Flow Statement");
+        populateMetricsTable(api.getCashFlowStmt, companyName, api.getCashFlowStmtMetricNames(), "Cash Flow Statement");
     }
 
     function metricsTableChangeCurrStock(symbol) {
