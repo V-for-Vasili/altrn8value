@@ -1,8 +1,9 @@
 // Imports
 const { makeExecutableSchema } = require('graphql-tools');
-const {stockTypeDef, stockQueryDef, stockFieldTypeDef, stockResolver, stockFieldResolvers} = require('./models/stock.js')
 const {portfolioTypeDef, portfolioQueryResolver, portfolioFieldtResolvers, portfolioQueryDef, createPortfolioResolver, createPortfolioTypeDef,
   deletePortfolioTypeDef, deletePortfolioResolver, updatePortfolioTypeDef, updatePortfolioResolver} = require('./models/user.js')
+const {stockTypeDef, stockQueryDef, stockFieldTypeDef, stockResolver, stockFieldResolvers} = require('./models/stock.js')
+const {stockListQueryDef, stockListResolver} = require('./models/stockList.js');
 
 const typeDefs = `
   ${stockFieldTypeDef}
@@ -10,6 +11,7 @@ const typeDefs = `
   ${portfolioTypeDef}
 
   type Query {
+    ${stockListQueryDef}
     ${stockQueryDef}
     ${portfolioQueryDef}
   }
@@ -21,6 +23,7 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
+    stock_list: stockListResolver,
     stock: stockResolver,
     portfolio: portfolioQueryResolver
   },
