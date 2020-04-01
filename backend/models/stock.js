@@ -9,11 +9,6 @@ const {cashFlowStatementTypeDef, cashFlowStatementYearResolver, cashFlowStatemen
 const {balanceSheetTypeDef, balanceSheetYearResolver, balanceSheetQuarterResolver} = require("./stockFieldModels/balanceSheet.js");
 const {incomeStatementTypeDef, incomeStatementYearResolver, incomeStatementQuarterResolver} = require("./stockFieldModels/incomeStatement.js");
 
-
-// TODO: Implement these fields
-const {growthTypeDef, growthResolver} = require("./stockFieldModels/growth.js");
-const {metricsTypeDef, metricsResolver} = require("./stockFieldModels/metrics.js");
-
 let stockTypeDef = `type Stock {
     symbol: String
     price: Float
