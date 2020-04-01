@@ -227,10 +227,16 @@ let api = (function(){
 
     /////////////////////////////////////////////////////
     // TO BE REPLACED ONCE GRAPHQL IS FINISHED !!!!!!!!!//
-    module.initStorage = function(){
-        if (!localStorage.getItem("data")) localStorage.setItem("data",JSON.stringify({porfolios:[],pageInfo:null,newPorfolio:null,editPorfolio:null,option:null}));
+    module.initStorage = function() {
+        if (!localStorage.getItem("data"))
+            localStorage.setItem("data",JSON.stringify({
+                porfolios:[],
+                pageInfo:null,
+                newPorfolio:null,
+                editPorfolio:null,
+                option:null
+            }));
     };
-    
     ////////////////////////////////////////////////////////
 
     //

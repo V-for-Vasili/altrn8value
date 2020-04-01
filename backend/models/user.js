@@ -59,7 +59,7 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
   return  response;
 }
 
-let portfolioFieldtResolvers = {
+let portfolioFieldResolvers = {
   stock_list:  async (obj, args, context, info) => {
 
     // Check the user is authenticated
@@ -189,5 +189,5 @@ let updatePortfolioResolver = async (obj, args, context, info) => {
 
 
 
-module.exports = {portfolioTypeDef,portfolioFieldtResolvers, portfolioQueryResolver, portfolioQueryDef, createPortfolioResolver, createPortfolioTypeDef,
+module.exports = {portfolioTypeDef,portfolioFieldResolvers, portfolioQueryResolver, portfolioQueryDef, createPortfolioResolver, createPortfolioTypeDef,
   deletePortfolioTypeDef, deletePortfolioResolver, updatePortfolioTypeDef, updatePortfolioResolver};

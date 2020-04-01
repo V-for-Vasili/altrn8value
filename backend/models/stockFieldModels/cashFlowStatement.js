@@ -20,8 +20,8 @@ type CashFlowStatement {
     net_cash_flow_change_in_cash: String
     free_cash_flow: String
     net_cash_marketcap: String
-  }
-`
+}`;
+
 function parse_response(response) {
     let statements = [];
     response.forEach(function(item) {
