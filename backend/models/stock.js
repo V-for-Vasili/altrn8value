@@ -5,7 +5,7 @@ const {historicalClosingTypeDef, historyResolver, historyQueryDef} = require("./
 const {quoteTypeDef, quoteResolver} = require("./stockFieldModels/quote.js");
 const {ratingTypeDef, ratingResolver} = require("./stockFieldModels/rating.js");
 const {ratingDetailTypeDef, ratingDetailResolver} = require("./stockFieldModels/ratingDetail.js");
-const {cashFlowStatementTypeDef, cashFlowStatementResolver} = require("./stockFieldModels/cashFlowStatement.js");
+const {cashFlowStatementTypeDef, cashFlowStatementYearResolver, cashFlowStatementQuarterResolver} = require("./stockFieldModels/cashFlowStatement.js");
 
 
 // TODO: Implement these fields
@@ -24,7 +24,8 @@ let stockTypeDef = `type Stock {
     rating_details: [RatingDetail]
     company_profile: CompanyProfile
     quote: Quote
-    cash_flow_statement: [CashFlowStatement]
+    cash_flow_statement_year: [CashFlowStatement]
+    cash_flow_statement_quarter: [CashFlowStatement]
     ${historyQueryDef}
   }`;
 
@@ -68,7 +69,8 @@ let stockFieldResolvers = {
   rating: ratingResolver,
   rating_details: ratingDetailResolver,
   history: historyResolver,
-  cash_flow_statement: cashFlowStatementResolver
+  cash_flow_statement_year: cashFlowStatementYearResolver,
+  cash_flow_statement_quarter: cashFlowStatementQuarterResolver,
 }
 
 module.exports = {stockTypeDef, stockQueryDef, stockFieldTypeDef, stockResolver, stockFieldResolvers};
