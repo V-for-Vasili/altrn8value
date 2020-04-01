@@ -94,4 +94,19 @@ let incomeStatementYearResolver = async (obj, args, context, info) => {
   }
 }
 
-module.exports = {incomeStatementTypeDef, incomeStatementYearResolver};
+let incomeStatementQuarterResolver = async (obj, args, context, info) => {
+  let response = {};
+  try {
+    response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/income-statement/${obj.symbol}?period=quarter`);
+    response = response.data.financials;
+  } catch (err) {
+    console.log(err);
+  }
+  if(!response) {
+    return null;
+  } else {
+    return parse_response(response);
+  }
+}
+
+module.exports = {incomeStatementTypeDef, incomeStatementYearResolver, incomeStatementQuarterResolver};
