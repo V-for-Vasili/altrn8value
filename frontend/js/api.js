@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 let api = (function(){
     "use strict";
     let module = {};

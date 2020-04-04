@@ -13,7 +13,7 @@ window.onload = (function () {
     }
     initPorfolio();
 
-    let data = JSON.parse(localStorage.getItem("data"));
+    let data = JSON.parse(sessionStorage.getItem("data"));
     if (data.option == 1){
         loadInfo(data.newPorfolio);
     }
@@ -220,7 +220,7 @@ window.onload = (function () {
         NEW_PORFOLIO.name = name;
         data.porfolios.push(NEW_PORFOLIO);
         data.option = 0;
-        localStorage.setItem("data", JSON.stringify(data));
+        sessionStorage.setItem("data", JSON.stringify(data));
         window.location.href = '/myPorfolios.html';
     });
 
