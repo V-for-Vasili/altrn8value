@@ -67,7 +67,12 @@ let RS = (function(){
         rs.metricTableCurrTab = val;
         module.update(rs);
         return rs;
-    }
+    };
+
+    module.rest = function(){
+        let rs = newSession();
+        return rs;
+    };
 
     return module;
 })();

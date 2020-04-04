@@ -185,10 +185,8 @@ window.onload = (function(){
     $('#savePorfolio').on('click',function(e){
         console.log("entered");
         if(api.isLoggedIn()){
-            let data ={};
-            data.newPorfolio = rs.stockDisplayList;
-            data.option = 1;
-            sessionStorage.setItem('data',JSON.stringify(data));
+            let data = rs.stockDisplayList;
+            sessionStorage.setItem('newPorfolio',JSON.stringify(data));
             window.location.href = '/addPorfolio.html';
         }
     });

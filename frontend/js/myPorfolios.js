@@ -40,6 +40,7 @@ window.onload = (function(){
         }
     });
 
+    // Replace With Call to Backend 
     let data = JSON.parse(localStorage.getItem("data"));
     loadPorfolios(data.porfolios);
 
