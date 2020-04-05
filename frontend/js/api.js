@@ -436,8 +436,8 @@ let api = (function(){
         });
     };
 
-    // returns list of portfolios for user uid
-    module.getUserPortfolios = function(uid, callback=do_nothing) {
+    // returns list of portfolios for user
+    module.getUserPortfolios = function(callback=do_nothing) {
         console.log('### api - getUserPortfolios ###', uid);
         callback(200, null, JSON.parse(localStorage.getItem("Porfolios")));
     };
@@ -458,7 +458,7 @@ let api = (function(){
         seng_graphql_query(data, callback);
     };
 
-    // adds portfolio for user uid
+    // adds portfolio by name
     module.addPortfolio = function(name, callback=do_nothing) {
         let mutation = `mutation {
             createPortfolio(name:\"${name}\") {
@@ -469,9 +469,32 @@ let api = (function(){
         seng_graphql_query(data, callback);
     };
 
-    // deletes portfolio by pid
-    module.deletePortfolio = function(pid, callback=do_nothing) {
-        console.log('### api - deletePortfolio ###', pid);
+    // deletes portfolio by name
+    module.deletePortfolio = function(name, callback=do_nothing) {
+        let mutation = `mutation {
+            deletePortfolio(name:\"${name}\") {
+                name
+            }
+        }`;
+        let data = {query: mutation};
+        seng_graphql_query(data, callback);
+    };
+
+    // updates portfolio by name
+    module.updatePortfolio = function(name, callback=do_nothing) {
+        let mutation = `mutation {
+            updatePortfolio(name:\"${name}\") {
+                name
+                stock_list {
+                    stock {
+                        symbol
+                    }
+                    amount
+                }
+            }
+        }`;
+        let data = {query: mutation};
+        seng_graphql_query(data, callback);
     };
 
     //

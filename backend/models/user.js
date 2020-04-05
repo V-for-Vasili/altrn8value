@@ -7,6 +7,7 @@ const formatError = new FormatError([
     {name: 'ACCESS_DENIED', message: "access denied", statusCode: 401},
     {name: 'NOT_FOUND', message: "not found", statusCode: 404},
     {name: 'CONFLICT', message: "already exists", statusCode: 409},
+    {name: 'UNIMPLEMENTED', message: "unimplemented", statusCode: 409},
     ]);
 const errorName = formatError.errorName;
 
@@ -104,7 +105,6 @@ let portfolioFieldResolvers = {
       } catch (err) {
         console.log(err);
       }
-
     }
     let agregate = [];
     for (i in history_list) {
@@ -159,7 +159,7 @@ let createPortfolioResolver = async (obj, args, context, info) => {
 
 // Delete Portfolio
 let deletePortfolioTypeDef = `
-  deletePortfolio(
+  deletePortfolio (
     name: String!
   ): Portfolio
 `;
@@ -167,20 +167,22 @@ let deletePortfolioTypeDef = `
 let deletePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
   if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
+  throw new Error(errorName.UNIMPLEMENTED);
 }
 
 
 // Edit Portfolio
 let updatePortfolioTypeDef = `
-  type Portfolio (
-    name: String
-    stock_list: [{Stock, amount: Int}]
+  updatePortfolio (
+    name: String!
+    stock_list: [stockListInput]
   ): Portfolio
 `;
 
 let updatePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
   if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
+  throw new Error(errorName.UNIMPLEMENTED);
 }
 
 
