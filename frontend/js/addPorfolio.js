@@ -1,6 +1,25 @@
 /*jshint esversion: 6 */
 window.onload = (function () {
     "use strict";
+    // add event listener to handle login or logout as appropriate
+    api.onLogin(function() {
+        let authBtn = document.querySelector('#authBtn');
+        if (api.isLoggedIn()) {
+            authBtn.innerHTML = `${api.getUsername()}, <b>Logout</b>`;
+            // set action to log out
+            authBtn.onclick = function() {
+                api.signOut();
+            };
+        } else {
+            authBtn.innerHTML = `<b>Sign In or Sign Up</b>`;
+            // set action to log in
+            authBtn.onclick = function() {
+                window.location.href = '/login.html';
+            };
+        }
+    });
+
+
     loadInfo((sessionStorage.getItem("newPorfolio"))? JSON.parse(sessionStorage.getItem("newPorfolio")): []); 
     $("#stockSelect").select2({
         placeholder: 'Select A Stock',

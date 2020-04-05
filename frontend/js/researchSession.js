@@ -43,16 +43,15 @@ let RS = (function(){
     module.deleteStock = function(rs,symbol) {
         // remove symbol from list of stocks
         let index = rs.stockDisplayList.indexOf(symbol);
-        if (index == -1)
-            return api.notifyErrorListeners(`Cannot deleteStockFromDisplayList - ${symbol} is not in the list.`);
+        if (index == -1) return api.notifyErrorListeners(`Cannot deleteStockFromDisplayList - ${symbol} is not in the list.`);
         rs.stockDisplayList.splice(index, 1);
         rs.stockNamesList.splice(index,1);
         rs.series = rs.series.filter(obj => (obj.name != symbol));
         // if list is empty, reset PAGE_INFO
-        if (rs.stockDisplayList == 0) {
+        if (rs.stockDisplayList.length == 0) {
             // hide metric table, reset PAGE_INFO to default value
             FS.hideMetricsTable(this.id);
-            return module.newSession();
+            return newSession();
         } 
         else {
             if (rs.metricTableCurrStock && rs.metricTableCurrStock.localeCompare(symbol) == 0){

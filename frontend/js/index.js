@@ -83,10 +83,8 @@ window.onload = (function(){
                 // Update Sessional Storage
                 RS.update(rs);
                 // Remove Stock From FS 
-                FS.deleteStockFromDisplayList(rs,symbol);
                 reloadPageContent();
                 // Clear Graph if no stocks selected
-                if (rs.series.length == 0) chart.clear();
                 Graphing.update(tsPlot,rs.stockDisplayList,rs.series);
                 //  
                 if ($("#StockSelections").children("tr").length == 0){
@@ -217,9 +215,8 @@ window.onload = (function(){
                 // Update Sessional Storage
                 RS.update(rs);
                 // Remove Stock From FS 
-                FS.deleteStockFromDisplayList(rs,symbol);
                 // Clear Graph if no stocks selected
-                if (rs.series.length == 0) chart.clear();
+                //if (rs.series.length == 0) chart.clear();
                 Graphing.update(tsPlot,rs.stockDisplayList,rs.series);
                 //  
                 if ($("#StockSelections").children("tr").length == 0){
