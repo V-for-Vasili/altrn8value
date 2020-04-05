@@ -11,6 +11,16 @@
     color: #fff;
 }
 
+.tm-product-delete-link {
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #394e64;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+  }
+
 .tm-trash-icon {
     color: #6e6c6c;
     cursor: pointer;

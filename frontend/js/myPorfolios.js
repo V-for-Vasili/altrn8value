@@ -2,26 +2,13 @@
 window.onload = (function(){
     "use strict";
 
-    function loadPorfolios(porfolios){
-        porfolios.forEach(function(porfolio){
-            let tr = document.createElement('tr');
-            tr.innerHTML = `
-            <th scope="row"><input type="checkbox" /></th>
-            <td class="tm-product-name">${porfolio.name}</td>
-            <td>${porfolio.cost}</td>
-            <td>${porfolio.cost * 1.35}</td>
-            <td>35%</td>
-            <td>${porfolio.created}</td>
-            <td>
-              <a href="#" class="tm-product-delete-link">
-                <i class="far fa-trash-alt tm-product-delete-icon"></i>
-              </a>
-            </td>`;
-            $('#porfolioList').prepend(tr);
-        });
-        
-    }
-
+    //TODO:
+    // #########################################################################
+    // Replace With Call to Backend to pull all porofolios for the user 
+    let Porfolios = JSON.parse(localStorage.getItem("Porfolios"));
+    // Array of poroflio objects will be passed into the loadPorfolio function
+    loadPorfolios(Porfolios);
+    //########################################################################
     // add event listener to handle login or logout as appropriate
     api.onLogin(function() {
         let authBtn = document.querySelector('#authBtn');
@@ -39,16 +26,45 @@ window.onload = (function(){
             };
         }
     });
-
-    // Replace With Call to Backend 
-    let data = JSON.parse(localStorage.getItem("data"));
-    loadPorfolios(data.porfolios);
-
+    reloadPageContent();
     function reloadPageContent() {
         api.notifyLoginListeners();
         api.notifyStockDisplayListeners();
     }
+    function loadPorfolios(porfolios){
+        porfolios.forEach(function(porfolio){
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+            <th scope="row"><input type="checkbox" /></th>
+            <td class="tm-product-name">${porfolio.name}</td>
+            <td>${porfolio.cost}</td>
+            <td>${porfolio.cost * 1.35}</td>
+            <td>35%</td>
+            <td>${porfolio.created}</td>
+            <td>
+              <a href="#" class="tm-product-delete-link">
+                <i class="far fa-trash-alt tm-product-delete-icon"></i>
+              </a>
+            </td>`;
 
-    reloadPageContent();
+            tr.querySelector('i').addEventListener('click',function(e){
+                tr.parentElement.removeChild(tr);
+                // TODO:
+                //#########################################
+                //## Replace with Backend Function Calls###
+                // Removes The porfolio with this name from the users list of porofolios
+                let name = porfolio.name;
+                Porfolios = Porfolios.filter(obj => (obj.name != name));
+                localStorage.setItem("Porfolios",JSON.stringify(Porfolios));
+                //########################################## 
+            });
 
+            $('#porfolioList').prepend(tr);
+        });
+    }
+
+    function deletePorfolio(){
+
+    }
+    
 })();

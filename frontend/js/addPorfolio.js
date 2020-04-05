@@ -93,7 +93,13 @@ window.onload = (function () {
         NP.porfolio.name = name;
         let porfolios = (localStorage.getItem("Porfolios"))? JSON.parse(localStorage.getItem("Porfolios")) : []; 
         porfolios.push(NP.getPorfolio());
-        sessionStorage.setItem("newPorfolio",JSON.stringify(null));
+        // TODO:
+        //##################################################################
+        // Push profolio object into backend storage of users array of porofolios
+        localStorage.setItem("Porfolios",JSON.stringify(porfolios));
+        //#################################################################
+        sessionStorage.setItem("newPorfolio",JSON.stringify([]));
+        sessionStorage.setItem("RS",JSON.stringify(null));
         window.location.href = '/myPorfolios.html';
     });
 

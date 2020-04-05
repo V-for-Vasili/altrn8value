@@ -68,7 +68,7 @@ window.onload = (function(){
                 <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/></td>
                 <td class="tm-product-name"> ${symbol} | ${name}</td>
                 <td class="text-center">
-                    <a class="tm-product-delete-link">
+                    <a href="#" class="tm-product-delete-link">
                         <i class="far fa-trash-alt tm-product-delete-icon"></i>
                     </a>
                 </td>`;

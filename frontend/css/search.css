@@ -5,7 +5,7 @@
  Select Bar
  ********************/ 
 .select2-container {
-    min-width: 15rem;
+    min-width: 15rem !important;
     font-family: Roboto, Helvetica;
 }
 /* Made the outline glow on click */
