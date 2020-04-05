@@ -10,8 +10,9 @@ window.onload = (function(){
 
     api.onError(function(err) {
         // make the error box visible and show the message
-        document.querySelector('#errMessage').innerHTML = err;
         document.querySelector('#errBox').style.display = 'block';
+        document.querySelector('#errMessage').innerHTML = err;
+        
     });
 
     // add event listener to show or hide tabs depending on whether user is
