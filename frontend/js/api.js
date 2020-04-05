@@ -443,8 +443,14 @@ let api = (function(){
     };
 
     // adds portfolio for user uid
-    module.addPortfolio = function(uid, callback=do_nothing) {
-        console.log('### api - addPortfolio ###', uid);
+    module.addPortfolio = function(name, callback=do_nothing) {
+        let mutation = `mutation {
+            createPortfolio(name:\"${name}\") {
+                name
+            }
+        }`;
+        let data = {query: mutation};
+        seng_graphql_query(data, callback);
     };
 
     // deletes portfolio by pid

@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 window.onload = (function () {
     "use strict";
+
     loadInfo((sessionStorage.getItem("newPorfolio"))? JSON.parse(sessionStorage.getItem("newPorfolio")): []); 
     $("#stockSelect").select2({
         placeholder: 'Select A Stock',
@@ -86,6 +87,7 @@ window.onload = (function () {
             $("#stockSelect").val(null).trigger("change");
         });
     });
+
     // Save Button Functionallity
     document.querySelector('#addStockForm').addEventListener("submit",function(e){
         e.preventDefault();

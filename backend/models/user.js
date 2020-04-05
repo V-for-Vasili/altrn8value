@@ -3,7 +3,11 @@ const axios = require('axios');
 const FormatError = require('easygraphql-format-error');
 
 // Set up custom errors
-const formatError = new FormatError([{name: 'ACCESS_DENIED', message: "access denied", statusCode: 401},{name: 'NOT_FOUND', message: "not found", statusCode: 404}]);
+const formatError = new FormatError([
+    {name: 'ACCESS_DENIED', message: "access denied", statusCode: 401},
+    {name: 'NOT_FOUND', message: "not found", statusCode: 404},
+    {name: 'CONFLICT', message: "already exists", statusCode: 409},
+    ]);
 const errorName = formatError.errorName;
 
 // Import MongoDB Type
@@ -27,21 +31,17 @@ let portfolioTypeDef = `
     amount: Int
   }
 
-
-
   type Portfolio {
     name: String
     stock_list: [Stock_Purchase]
     agregate: [Agregate]
-  }
-`;
+  }`;
 
 
 // Get Portfolio
 let portfolioQueryDef =  `portfolio(name: String!): Portfolio`;
 
 let portfolioQueryResolver = async (obj, args, context, info) => {
-
   // Check the user is authenticated
   if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
   // Get Portfolio by name
@@ -56,12 +56,11 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
     }
   });
   if(!response) throw new Error(errorName.NOT_FOUND);
-  return  response;
+  return response;
 }
 
 let portfolioFieldResolvers = {
   stock_list:  async (obj, args, context, info) => {
-
     // Check the user is authenticated
     if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
     // Get Portfolio by name
@@ -78,7 +77,6 @@ let portfolioFieldResolvers = {
       try {
         let symbol = parent_list[parseInt(stock_element)].symbol;
         stock = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbol}`);
-
         stock = stock.data[0];
       } catch (err) {
         console.log(err);
@@ -125,8 +123,6 @@ let portfolioFieldResolvers = {
 
 // Create portfolio
 let createPortfolioTypeDef = `
-
-
   createPortfolio (
     name: String!
     stock_list: [stockListInput]
@@ -153,7 +149,7 @@ let createPortfolioResolver = async (obj, args, context, info) => {
   }
   // Check whether this exists alread
   let result = await Portfolio.findOne({uid: context.uid, name });
-  if(result) return null;
+  if (result) throw new Error(errorName.CONFLICT);
   else {
     let portfolio = new Portfolio({uid: context.uid, name, stock_list: stockListInput});
     portfolio.save();
@@ -186,7 +182,6 @@ let updatePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
   if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
 }
-
 
 
 module.exports = {portfolioTypeDef,portfolioFieldResolvers, portfolioQueryResolver, portfolioQueryDef, createPortfolioResolver, createPortfolioTypeDef,
