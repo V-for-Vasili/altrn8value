@@ -2,6 +2,10 @@
 window.onload = (function(){
     "use strict";
 
+    // show welcome message
+    let uname = api.getUsername();
+    if (uname) document.querySelector('#welcome_uname').innerHTML = `Welcome back, <b>${uname}</b>`;
+
     FS.init('metrics_table_div','metrics_table_title','metrics_table_thead','metrics_table_tbody');
    
     // Get sessional Storage Data
@@ -153,11 +157,6 @@ window.onload = (function(){
         reloadPageContent();
     });
 
-    function reloadPageContent() {
-        //api.notifyLoginListeners();
-        api.notifyStockDisplayListeners();
-    }
-
     $('#savePorfolio').on('click',function(e){
         console.log("entered");
         if(api.isLoggedIn()){
@@ -166,8 +165,6 @@ window.onload = (function(){
             window.location.href = '/addPorfolio.html';
         }
     });
-
-    reloadPageContent();
 
     function populateStockSelections(rs){
         $('#StockSelections').innerHTML ='';
@@ -207,5 +204,12 @@ window.onload = (function(){
             $("#savePorfolio").show();
         }
     }
+
+    function reloadPageContent() {
+        //api.notifyLoginListeners();
+        api.notifyStockDisplayListeners();
+    }
+
+    reloadPageContent();
 
 })();
