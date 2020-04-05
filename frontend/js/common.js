@@ -1,10 +1,7 @@
-let common = (function(){
+/*jshint esversion: 6 */
+window.onload = (function(){
     "use strict";
-    let module = {};
-
-    //
     // Contains functions used on every tab
-    //
 
     // add error listeners to show error messages to the user
     api.onError(function(err) {
@@ -22,14 +19,22 @@ let common = (function(){
     api.onLogin(function() {
         let myPortfoliosTab = document.querySelector('#navbarDropdown_portfolios');
         let settingsTab = document.querySelector('#navbarDropdown_settings');
+        let authBtn = document.querySelector('#authBtn');
         if (api.isLoggedIn()) {
-            myPortfoliosTab.style.visibility = 'visible';
-            settingsTab.style.visibility = 'visible';
+            myPortfoliosTab.style.display = '';
+            settingsTab.style.display = '';
+            authBtn.innerHTML = `${api.getUsername()}, <b>Logout</b>`;
+            authBtn.onclick = function() {
+                api.signOut();
+            };
         } else {
-            myPortfoliosTab.style.visibility = 'hidden';
-            settingsTab.style.visibility = 'hidden';
+            myPortfoliosTab.style.display = 'none';
+            settingsTab.style.display = 'none';
+            authBtn.innerHTML = `<b>Sign In or Sign Up</b>`;
+            authBtn.onclick = function() {
+                window.location.href = '/login.html';
+            };
         }
     });
-
-    return module;
 })();
+

@@ -460,6 +460,7 @@ let api = (function(){
 
     module.onLogin = function(listener) {
         loginListeners.push(listener);
+        listener();
     }
 
     module.onStockDisplayChange = function(listener) {

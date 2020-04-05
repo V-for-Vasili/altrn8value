@@ -28,7 +28,6 @@ window.onload = (function(){
     });
     reloadPageContent();
     function reloadPageContent() {
-        api.notifyLoginListeners();
         api.notifyStockDisplayListeners();
     }
     function loadPorfolios(porfolios){
@@ -63,8 +62,5 @@ window.onload = (function(){
         });
     }
 
-    function deletePorfolio(){
-
-    }
     
 })();

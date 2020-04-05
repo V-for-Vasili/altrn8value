@@ -139,28 +139,6 @@ window.onload = (function(){
      api.onStockDisplayChange(function() {
         FS.update(rs);
     });
-
-
-    
-    // add event listener to handle login or logout as appropriate
-    api.onLogin(function() {
-        let authBtn = document.querySelector('#authBtn');
-        if (api.isLoggedIn()) {
-            authBtn.innerHTML = `${api.getUsername()}, <b>Logout</b>`;
-            // set action to log out
-            authBtn.onclick = function() {
-                api.signOut();
-            };
-        } else {
-            authBtn.innerHTML = `<b>Sign In or Sign Up</b>`;
-            // set action to log in
-            authBtn.onclick = function() {
-                window.location.href = '/login.html';
-            };
-        }
-    });
-
-
     // attach events to go between different tabs in metrics table
     document.querySelector('#IS_tab_btn').addEventListener('click', function() {
         rs = RS.changeStatement(rs,0);
@@ -176,7 +154,7 @@ window.onload = (function(){
     });
 
     function reloadPageContent() {
-        api.notifyLoginListeners();
+        //api.notifyLoginListeners();
         api.notifyStockDisplayListeners();
     }
 
