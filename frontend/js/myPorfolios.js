@@ -48,15 +48,11 @@ window.onload = (function(){
             </td>`;
 
             tr.querySelector('i').addEventListener('click',function(e){
-                tr.parentElement.removeChild(tr);
-                // TODO:
-                //#########################################
-                //## Replace with Backend Function Calls###
-                // Removes The porfolio with this name from the users list of porofolios
-                let name = porfolio.name;
-                Porfolios = Porfolios.filter(obj => (obj.name != name));
-                localStorage.setItem("Porfolios",JSON.stringify(Porfolios));
-                //########################################## 
+                // delete this portfolio
+                api.deletePortfolio(porfolio._id, function(code, err, respObj) {
+                    if (code !== 200) return api.notifyErrorListeners(err);
+                    tr.parentElement.removeChild(tr);
+                });
             });
 
             $('#porfolioList').prepend(tr);

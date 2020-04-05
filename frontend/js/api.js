@@ -437,12 +437,20 @@ let api = (function(){
     };
 
     // returns list of portfolios for user uid
-    module.getUserPortfolios = function(uid, callback) {
+    module.getUserPortfolios = function(uid, callback=do_nothing) {
+        console.log('### api - getUserPortfolios ###', uid);
         callback(200, null, JSON.parse(localStorage.getItem("Porfolios")));
     };
 
     // adds portfolio for user uid
-    module.addPortfolio = function(uid) {};
+    module.addPortfolio = function(uid, callback=do_nothing) {
+        console.log('### api - addPortfolio ###', uid);
+    };
+
+    // deletes portfolio by pid
+    module.deletePortfolio = function(pid, callback=do_nothing) {
+        console.log('### api - deletePortfolio ###', pid);
+    };
 
     //
     // Listeners for different events
