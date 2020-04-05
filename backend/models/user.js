@@ -39,7 +39,7 @@ let portfolioTypeDef = `
 
 
 // Get Portfolio
-let portfolioQueryDef =  `portfolio(name: String!): Portfolio`;
+let portfolioQueryDef = `portfolio(name: String!): Portfolio`;
 
 let portfolioQueryResolver = async (obj, args, context, info) => {
   // Check the user is authenticated

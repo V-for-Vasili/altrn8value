@@ -442,6 +442,22 @@ let api = (function(){
         callback(200, null, JSON.parse(localStorage.getItem("Porfolios")));
     };
 
+    module.getPortfolioByName = function(name, callback=do_nothing) {
+        let query = `{
+            portfolio(name:\"${name}\") {
+                name
+                stock_list {
+                    stock {
+                        symbol
+                    }
+                    amount
+                }
+            }
+        }`;
+        let data = {query: query};
+        seng_graphql_query(data, callback);
+    };
+
     // adds portfolio for user uid
     module.addPortfolio = function(name, callback=do_nothing) {
         let mutation = `mutation {
