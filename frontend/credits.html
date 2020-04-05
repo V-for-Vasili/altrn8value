@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
-    <title>Stock Performance</title>
+    <title>Credits</title>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
     <!-- https://fonts.google.com/specimen/Roboto -->
@@ -31,8 +31,8 @@
     <div class="" id="home">
         <nav class="navbar navbar-expand-xl">
             <div class="container h-100">
-                <a class="navbar-brand" href="index.html">
-                    <h1 class="tm-site-title mb-0">Stock Analysis</h1>
+                <a class="navbar-brand" href="credits.html">
+                    <h1 class="tm-site-title mb-0">Credits</h1>
                 </a>
                 <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fas fa-bars tm-nav-icon"></i>
@@ -41,9 +41,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto h-100">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">
+                            <a class="nav-link " href="index.html">
                                 <i class="fas fa-money-check"></i> Stock Analysis
-                                <span class="sr-only">(current)</span>
+                                <span class="sr-only"></span>
                             </a>
                         </li>
                         <li class="nav-item dropdown" id="navbarDropdown_portfolios">
@@ -77,72 +77,15 @@
                     </ul>
                 </div>
             </div>
-
         </nav>
+        <br>
         <div class="container">
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
-                    <div></div>
-                    <p class="text-white mt-5 mb-5">Welcome back, <b>Username</b></p>
-                </div>
-                <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
-                    <div class="tm-bg-primary-dark header-block tm-block-h-auto">
-                        <div class="selectionBox">
-                            <div>
-                                <h2 class="tm-block-title">Add Stock</h2>
-                                <select id="singleSearch"></select>
-                            </div>
-                            
-                        </div>
-                        <div class="errBox" id="errBox">
-                            <p id="errMessage"></p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
             <!-- row -->
             <div class="row tm-content-row">
-                <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 tm-block-col">
-                    <div class="tm-bg-primary-dark tm-block tm-block-product-categories">
-                        <h2 class="tm-block-title">Stock Selections</h2>
-                        <div class="tm-product-table-container">
-                            <table class="table table-hover tm-table-small tm-product-table">
-                                <tbody id="StockSelections">
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- table container -->
-                        <button type="submit" id="savePorfolio" style="display: none;" class="btn btn-primary btn-block text-uppercase">Save As Porfolio</button>
-                    </div>
-                    
-                </div>
-
-                <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
-                    <div class="tm-bg-primary-dark tm-block p-4" >
-                        <div id="chart"></div>
-                    </div>
-                </div>
-
-                <div class="col-12 tm-block-col hidden" id="metrics_table_div">
-                    <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
-                        <h2 class="tm-block-title" id="metrics_table_title"></h2>
-                        <div class="statementHeader">
-                            <select id="companeySelect"></select>
-                            <div id="statementBtnGroup">
-                                <button class="btn btn-small btn-primary" id="IS_tab_btn">Income Statement</button>
-                                <button class="btn btn-small btn-primary" id="BS_tab_btn">Balance Sheet</button>
-                                <button class="btn btn-small btn-primary" id="CF_tab_btn">Cash Flow Statement</button>
-                            </div>
-                        </div>
-
-                        <table id="fin_statements_table" class="table">
-                        <table id="metrics_table" class="table table-hover tm-table-small tm-product-table">
-                            <thead class="rowBottomLine" id="metrics_table_thead">
-                            </thead>
-                            <tbody id="metrics_table_tbody">
-                            </tbody>
-                        </table>
+                <div class="col-12 tm-block-col" id="credits">
+                    <div class="tm-bg-primary-dark tm-block tm-block-taller">
+                        <h2 class="tm-block-title" id="metrics_table_title">Credits</h2>
+                       <p class="text-white">HTML5 & CSS Template Provided By: <a rel="nofollow noopener" href="https://templatemo.com" class="block-subtitle">Template Mo</a></p>  
                     </div>
                 </div>
             </div>
@@ -162,10 +105,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script> 
     <script src="js/api.js"></script>
     <script src="js/common.js"></script>
-    <script src="js/researchSession.js"></script>
-    <script src="js/graphing.js"></script>
-    <script src="js/financialStatements.js"></script>
-    <script src="js/index.js"></script>
+    
 </body>
 
 </html>
