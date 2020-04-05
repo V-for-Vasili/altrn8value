@@ -2,13 +2,12 @@
 window.onload = (function(){
     "use strict";
 
-    //TODO:
-    // #########################################################################
-    // Replace With Call to Backend to pull all porofolios for the user 
-    let Porfolios = JSON.parse(localStorage.getItem("Porfolios"));
-    // Array of poroflio objects will be passed into the loadPorfolio function
-    loadPorfolios(Porfolios);
-    //########################################################################
+    // call to backend to pull all portfolios for the user
+    api.getUserPortfolios(api.getUid(), function(code, err, respObj) {
+        if (code !== 200) return api.notifyErrorListeners(err);
+        loadPorfolios(respObj);
+    });
+
     // add event listener to handle login or logout as appropriate
     api.onLogin(function() {
         let authBtn = document.querySelector('#authBtn');
@@ -26,10 +25,12 @@ window.onload = (function(){
             };
         }
     });
-    reloadPageContent();
+
     function reloadPageContent() {
         api.notifyStockDisplayListeners();
     }
+    reloadPageContent();
+
     function loadPorfolios(porfolios){
         porfolios.forEach(function(porfolio){
             let tr = document.createElement('tr');
@@ -62,5 +63,4 @@ window.onload = (function(){
         });
     }
 
-    
 })();

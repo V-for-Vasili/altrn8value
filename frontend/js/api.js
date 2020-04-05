@@ -59,6 +59,7 @@ let api = (function(){
         // save token and username to localStorage
         localStorage.setItem('Username', respObj.username);
         localStorage.setItem('Token', respObj.token);
+        localStorage.setItem('Uid', respObj._id);
         // notify listeners so changes on the page take place
         module.notifyLoginListeners();
     }
@@ -202,6 +203,10 @@ let api = (function(){
 
     module.getUsername = function() {
         return localStorage.getItem('Username');;
+    }
+
+    module.getUid = function() {
+        return localStorage.getItem('Uid');;
     }
 
     // from lab 6
@@ -430,6 +435,14 @@ let api = (function(){
             callback(code, err, result);
         });
     };
+
+    // returns list of portfolios for user uid
+    module.getUserPortfolios = function(uid, callback) {
+        callback(200, null, JSON.parse(localStorage.getItem("Porfolios")));
+    };
+
+    // adds portfolio for user uid
+    module.addPortfolio = function(uid) {};
 
     //
     // Listeners for different events

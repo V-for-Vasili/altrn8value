@@ -10,11 +10,11 @@ const crypto = require('crypto');
 
 // Db imports
 const mongoose = require('mongoose');
-const {User} = require('./db/User.js')
+const {User} = require('./db/User.js');
 
 // Graphql Imports
 const graphqlHTTP = require('express-graphql');
-const {schema} = require('./schema.js')
+const {schema} = require('./schema.js');
 
 // Enviroment Variables, Deployment Envirment Variables sets this to  production values
 const PORT =  process.env.PORT || '8080';
