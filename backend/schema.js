@@ -24,8 +24,7 @@ const typeDefs = `
     ${createPortfolioTypeDef}
     ${deletePortfolioTypeDef}
     ${updatePortfolioTypeDef}
-  }
-`
+  }`;
 
 const resolvers = {
   Query: {
@@ -40,7 +39,7 @@ const resolvers = {
   },
   Stock: stockFieldResolvers,
   Portfolio: portfolioFieldResolvers
-}
+};
 
 let schema = makeExecutableSchema({typeDefs, resolvers});
 

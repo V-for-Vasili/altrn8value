@@ -45,16 +45,12 @@ let portfolioQueryDef = `portfolio(name: String!): Portfolio`;
 let portfolioQueryResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
   if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
-  // Get Portfolio by name
-  const name = args.name;
-  // Checks for each element of the stock list
-  let response = await Portfolio.findOne({uid: context.uid, name}, 'name stock_list', async function(err, docs) {
-    if(err) {
-      console.log(err);
-      return null;
-    } else if(!docs){
-      throw new Error(errorName.NOT_FOUND);
-    }
+  // Get Portfolio by name from db
+  let response = await Portfolio.findOne({uid: context.uid, name: args.name},
+                                        'name stock_list',
+                                        async function(err, docs) {
+    if (err) return console.log(err);
+    if(!docs) throw new Error(errorName.NOT_FOUND);
   });
   if(!response) throw new Error(errorName.NOT_FOUND);
   return response;

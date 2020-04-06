@@ -36,17 +36,10 @@ let api = (function(){
     }
 
     // queries backend
-    function seng_graphql_query(data, callback) {
+    function seng_graphql_request(data, callback) {
         let method = 'POST';
         let url = '/graphql';
         send_ajax(method, url, data, callback);
-    }
-
-    // queries financialmodelingprep.com api directly
-    function send_financial_modeling_query(path, callback) {
-        let method = 'GET';
-        let url = 'https://financialmodelingprep.com/api/v3/' + path;
-        send_ajax(method, url, null, callback);
     }
 
     // Passed to signin and signup ajax requests.
@@ -252,7 +245,7 @@ let api = (function(){
             }
         `;
         let data = {query: query};
-        seng_graphql_query(data, callback);
+        seng_graphql_request(data, callback);
     };
 
     // does not include the following fields:
@@ -270,7 +263,7 @@ let api = (function(){
             }
         }`;
         let data = {query: query};
-        seng_graphql_query(data, callback);
+        seng_graphql_request(data, callback);
     };
 
     // queries financialmodelingprep.com; Searches NASDAQ only for now
@@ -286,7 +279,7 @@ let api = (function(){
             }
         }`;
         let data = {query: query};
-        seng_graphql_query(data, callback);
+        seng_graphql_request(data, callback);
     };
 
     // if quarter is true, pull quarterly data
@@ -332,7 +325,7 @@ let api = (function(){
             }
         }`;
         let data = {query: query};
-        seng_graphql_query(data, function(code, err, respObj) {
+        seng_graphql_request(data, function(code, err, respObj) {
             // need to transform the response object to return only a list of
             // financial info for different time intervals
             if (code !== 200) return module.notifyErrorListeners(err);
@@ -385,7 +378,7 @@ let api = (function(){
             }
         }`;
         let data = {query: query};
-        seng_graphql_query(data, function(code, err, respObj) {
+        seng_graphql_request(data, function(code, err, respObj) {
             // need to transform the response object to return only a list of
             // financial info for different time intervals
             if (code !== 200) return module.notifyErrorListeners(err);
@@ -424,7 +417,7 @@ let api = (function(){
             }
         }`;
         let data = {query: query};
-        seng_graphql_query(data, function(code, err, respObj) {
+        seng_graphql_request(data, function(code, err, respObj) {
             // need to transform the response object to return only a list of
             // financial info for different time intervals
             if (code !== 200) return module.notifyErrorListeners(err);
@@ -436,12 +429,13 @@ let api = (function(){
         });
     };
 
-    // returns list of portfolios for user
+    // returns list of portfolios for current user
     module.getUserPortfolios = function(callback=do_nothing) {
         console.log('### api - getUserPortfolios ###', uid);
         callback(200, null, JSON.parse(localStorage.getItem("Porfolios")));
     };
 
+    // gets portfolio by name for a current user
     module.getPortfolioByName = function(name, callback=do_nothing) {
         let query = `{
             portfolio(name:\"${name}\") {
@@ -455,7 +449,7 @@ let api = (function(){
             }
         }`;
         let data = {query: query};
-        seng_graphql_query(data, callback);
+        seng_graphql_request(data, callback);
     };
 
     // adds portfolio by name
@@ -466,7 +460,7 @@ let api = (function(){
             }
         }`;
         let data = {query: mutation};
-        seng_graphql_query(data, callback);
+        seng_graphql_request(data, callback);
     };
 
     // deletes portfolio by name
@@ -477,7 +471,7 @@ let api = (function(){
             }
         }`;
         let data = {query: mutation};
-        seng_graphql_query(data, callback);
+        seng_graphql_request(data, callback);
     };
 
     // updates portfolio by name
@@ -494,7 +488,7 @@ let api = (function(){
             }
         }`;
         let data = {query: mutation};
-        seng_graphql_query(data, callback);
+        seng_graphql_request(data, callback);
     };
 
     //
