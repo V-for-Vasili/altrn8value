@@ -118,7 +118,7 @@ let portfolioFieldResolvers = {
 
 
 // Create portfolio
-let createPortfolioTypeDef = `
+let createPortfolioQueryDef = `
   createPortfolio (
     name: String!
     stock_list: [stockListInput]
@@ -154,7 +154,7 @@ let createPortfolioResolver = async (obj, args, context, info) => {
 }
 
 // Delete Portfolio
-let deletePortfolioTypeDef = `
+let deletePortfolioQueryDef = `
   deletePortfolio (
     name: String!
   ): Portfolio
@@ -168,7 +168,7 @@ let deletePortfolioResolver = async (obj, args, context, info) => {
 
 
 // Edit Portfolio
-let updatePortfolioTypeDef = `
+let updatePortfolioQueryDef = `
   updatePortfolio (
     name: String!
     stock_list: [stockListInput]
@@ -182,5 +182,8 @@ let updatePortfolioResolver = async (obj, args, context, info) => {
 }
 
 
-module.exports = {portfolioTypeDef,portfolioFieldResolvers, portfolioQueryResolver, portfolioQueryDef, createPortfolioResolver, createPortfolioTypeDef,
-  deletePortfolioTypeDef, deletePortfolioResolver, updatePortfolioTypeDef, updatePortfolioResolver};
+module.exports = {portfolioTypeDef,portfolioFieldResolvers,
+    portfolioQueryResolver, portfolioQueryDef,
+    createPortfolioQueryDef, createPortfolioResolver,
+    deletePortfolioQueryDef, deletePortfolioResolver,
+    updatePortfolioQueryDef, updatePortfolioResolver};
