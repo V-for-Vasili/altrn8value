@@ -9,7 +9,7 @@ let FS = (function(){
             this.bodyId = bodyId;
         },
         initColHeaders : function(){
-            document.getElementById(this.headId).innerHTML = `<tr><th scope="col">Metric:</th>${this.generateMetricTableColumns()}</tr>`;
+            document.getElementById(this.headId).innerHTML = `<tr><th scope="col">Account:</th>${this.generateMetricTableColumns()}</tr>`;
         },
         update: function(rs){
             if (rs.stockDisplayList.length == 0) {
@@ -60,10 +60,8 @@ let FS = (function(){
             }
             return infoByYear;
         },
-
         populateMetricsTable : function(apiFunction, companyName, metrics, title) {
             // set title
-            
             document.getElementById(this.titleId).innerHTML = title;
             // get info statements from api
             apiFunction(companyName, false, function(code, err, respObj) {
@@ -77,18 +75,26 @@ let FS = (function(){
                     api.notifyErrorListeners('Error: Empty respObj for company ' + companyName);
                 } else {
                     let infoByYear = FS.getInfoByYear(respObj);
+                    // used to assign conditonal formatting
+                    
                     for (let idx in metrics) {
+                        let c = '';
                         let m = metrics[idx];
                         let tr = document.createElement('tr');
-                        tr.innerHTML = `<th scope="row">${m}</th>`;
+                        c = FS.assignClass(title,m,api.years.length,table);
+                        tr.classList.add(c.tr);
+                        
+                        tr.innerHTML = `<th scope="row" class="${c.head}">${(c.flag)?c.newM:m}</th>`;
                         for (let idx1 in api.years) {
                             let year = api.years[idx1];
                             let info = infoByYear[year][m];
                             info = FS.formatNumeric(info,'',2,'.',',');
                             if (idx1 == 0) info = `${info}`;
-                            tr.innerHTML += `<td>${info}</td>`;
+                            tr.innerHTML += `<td class="${c.cell}">${info}</td>`;
                         }
-                        table.appendChild(tr);
+                        table.append(tr);
+                        
+                        
                     }
                 }
                 FS.showMetricsTable();
@@ -105,6 +111,137 @@ let FS = (function(){
 
         displayCF : function (companyName) {
             this.populateMetricsTable(api.getCashFlowStmt, companyName, api.getCashFlowStmtMetricNames(), "Cash Flow Statement");
+        },
+
+        assignClass:function(fs,accountName,numYears,tbl){
+            let c={head:'',cell:'',append:'',flag:false, td:''};
+            let a;
+            
+            switch(fs){
+                case "Income Statement":
+                    switch(accountName){
+                        case "Gross Profit":
+                            c.head = "ra";
+                            c.cell = "raTotal";
+                            break;
+                            //c.append = document.createElement('tr');
+                            //c.append.classList.add("seperator");
+                            //c.append.innerHTML = `<th scope="row" class="SeperatorTitle">Operating Expenses :</th>` + "<td></td>".repeat(len);
+                            //break;
+                        
+                        case "Operating Expenses":
+                            c.head = "ra";
+                            c.cell = "raTotal";
+                            break;
+                        case "R&D Expenses":
+                            c.cell = "totalNext";
+                            break;
+                        case "Operating Income":
+                            c.cell = "totalNext";
+                            break;
+                        case "Earnings before Tax":
+                            c.head = "ra";
+                            c.cell = "raTotal";
+                            break;
+                        case "Income Tax Expense":
+                            c.cell = "totalNext";
+                            break;
+                        case "Net Income":
+                            c.head = "ra";
+                            c.cell = "raTotal";
+                            break;
+                        case "EPS":
+                            c.cell = "totalNext";
+                            break;
+                    }
+                    break;
+                case "Balance Sheet":
+                    switch(accountName){
+                        case 'Cash & Cash Equivalents':
+                            c.append = document.createElement('tr');
+                            c.append.classList.add("seperator");
+                            c.append.innerHTML = `<th scope="row" class="seperatorTitle">Assets :</th>` + "<td></td>".repeat(numYears);
+                            a = document.createElement('tr');
+                            a.classList.add("seperator");
+                            a.innerHTML = `<th scope="row" class="seperatorSubTitle">Current Assets :</th>` + "<td></td>".repeat(numYears);
+                            tbl.append(c.append);
+                            tbl.append(a);
+                            break;
+
+                        case "Total Current Assets":
+                            c.head = "ra";
+                            c.cell = "raTotal";
+                            break;
+                            
+                        case "Property, Plant & Equipment Net":
+                            c.append = document.createElement('tr');
+                            c.append.classList.add("seperator");
+                            c.append.innerHTML = `<th scope="row" class="seperatorSubTitle">Non-current Assets :</th>` + "<td></td>".repeat(numYears);
+                            tbl.append(c.append);
+                            break;
+                        case "Total Non-current Assets":
+                            c.head = "ra";
+                            c.cell = "raTotal";
+                            break;
+                        case "Total Assets":
+                            c.head ="raTotal";
+                            c.cell = "raTotal";
+                            
+                            break;
+                        case "Payables":
+                            c.append = document.createElement('tr');
+                            c.append.classList.add("seperator");
+                            c.append.innerHTML = `<th scope="row" class="seperatorTitle text-red">Liabilites :</th>` + "<td></td>".repeat(numYears);
+                            a = document.createElement('tr');
+                            a.classList.add("seperator");
+                            a.innerHTML = `<th scope="row" class="seperatorSubTitle text-red">Current Liabilites :</th>` + "<td></td>".repeat(numYears);
+                            tbl.append(c.append);
+                            tbl.append(a);
+                            break;
+                        case "Total Current Liabilities":
+                            c.head = "ra";
+                            c.cell = "raTotal";
+                            break;
+                        case "Long-term Debt":
+                            c.append = document.createElement('tr');
+                            c.append.classList.add("seperator");
+                            c.append.innerHTML = `<th scope="row" class="seperatorSubTitle">Non-current Liabilites :</th>` + "<td></td>".repeat(numYears);
+                            tbl.append(c.append);
+                            break;
+                            case "Total Non-current Liabilities":
+                                c.head = "ra";
+                                c.cell = "raTotal";
+                                break;
+                            case "Total Liabilities":
+                                c.head ="raTotal";
+                                c.cell = "raTotal";
+                                break;
+                            case "Other Comprehensive Income":
+                                c.append = document.createElement('tr');
+                                c.append.classList.add("seperator");
+                                c.append.innerHTML = `<th scope="row" class="seperatorTitle ">Equity :</th>` + "<td></td>".repeat(numYears);
+                                tbl.append(c.append);
+                                break;
+                            case "Total Shareholders Equity":
+                                c.head ="raTotal";
+                                c.cell = "raTotal";
+                                break;
+
+
+                            
+
+
+                        
+
+
+                    } 
+                    break;
+                    
+            }
+            
+            
+            
+            return c;
         },
 
         
