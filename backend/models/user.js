@@ -4,10 +4,11 @@ const FormatError = require('easygraphql-format-error');
 
 // Set up custom errors
 const formatError = new FormatError([
-    {name: 'ACCESS_DENIED', message: "access denied", statusCode: 401},
-    {name: 'NOT_FOUND', message: "not found", statusCode: 404},
-    {name: 'CONFLICT', message: "already exists", statusCode: 409},
-    {name: 'UNIMPLEMENTED', message: "unimplemented", statusCode: 409},
+    {name: 'ACCESS_DENIED', message: 'access denied', statusCode: 401},
+    {name: 'NOT_FOUND', message: 'not found', statusCode: 404},
+    {name: 'CONFLICT', message: 'already exists', statusCode: 409},
+    {name: 'SERVER_ERROR', message: 'server error', statusCode: 500},
+    {name: 'UNIMPLEMENTED', message: 'unimplemented', statusCode: 501},
     ]);
 const errorName = formatError.errorName;
 
@@ -163,7 +164,13 @@ let deletePortfolioQueryDef = `
 let deletePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
   if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
-  throw new Error(errorName.UNIMPLEMENTED);
+  // remove 1 document from db, return result if successful
+  let result = null;
+  let x = await Portfolio.findOneAndDelete({name: args.name}, function(err, item) {
+      result = item;
+  });
+  if (!result) throw new Error(errorName.NOT_FOUND);
+  return result;
 }
 
 

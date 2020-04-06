@@ -483,6 +483,12 @@ let api = (function(){
         let mutation = `mutation {
             deletePortfolio(name:\"${name}\") {
                 name
+                stock_list {
+                    stock {
+                        symbol
+                    }
+                    amount
+                }
             }
         }`;
         let data = {query: mutation};
