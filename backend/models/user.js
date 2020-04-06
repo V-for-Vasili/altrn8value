@@ -78,15 +78,15 @@ let portfolioFieldResolvers = {
       } catch (err) {
         console.log(err);
       }
-       stock_list.push({stock: {
-        exchange: stock.exhange,
-        symbol: stock.symbol,
-        price: stock.price,
-        market_cap: stock.marketCap,
-        change: stock.change,
-        changes_percentage: stock.changesPercentage,
-        avg_volume: stock.avgVolume,
-      }, amount: parent_list[parseInt(stock_element)].amount }) ;
+      stock_list.push({stock: {
+          exchange: stock.exhange,
+          symbol: stock.symbol,
+          price: stock.price,
+          market_cap: stock.marketCap,
+          change: stock.change,
+          changes_percentage: stock.changesPercentage,
+          avg_volume: stock.avgVolume,
+      }, amount: parent_list[parseInt(stock_element)].amount}) ;
     }
     return stock_list;
   },
@@ -144,7 +144,7 @@ let createPortfolioResolver = async (obj, args, context, info) => {
     if (!stock) throw new Error(errorName.NOT_FOUND);
   }
   // Check whether this exists alread
-  let result = await Portfolio.findOne({uid: context.uid, name });
+  let result = await Portfolio.findOne({uid: context.uid, name});
   if (result) throw new Error(errorName.CONFLICT);
   else {
     let portfolio = new Portfolio({uid: context.uid, name, stock_list: stockListInput});
@@ -190,10 +190,11 @@ let portfolioListQueryDef = `
     ): [Portfolio]
 `;
 
-let portfolioListResolver = async () => {
+let portfolioListResolver = async (obj, args, context, info) => {
     // Check the user is authenticated
     if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
-    throw new Error(errorName.UNIMPLEMENTED);
+    // Fetch and return all portfolios that are associated with given uid
+    return await Portfolio.find({uid: context.uid});
 }
 
 module.exports = {portfolioTypeDef,portfolioFieldResolvers,

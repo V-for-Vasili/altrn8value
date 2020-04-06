@@ -272,7 +272,7 @@ let api = (function(){
 
     // queries financialmodelingprep.com; Searches NASDAQ only for now
     // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
-    module.queryListOfStocks = function(searchStr, callback=do_nothing) {
+    module.getListOfStocks = function(searchStr, callback=do_nothing) {
         let query = `{
             stockList(searchStr:\"${searchStr}\"){
                 symbol
@@ -435,8 +435,19 @@ let api = (function(){
 
     // returns list of portfolios for current user
     module.getUserPortfolios = function(callback=do_nothing) {
-        console.log('### api - getUserPortfolios ###', uid);
-        callback(200, null, JSON.parse(localStorage.getItem("Porfolios")));
+        let query = `{
+            portfolioList(uid:\"${module.getUid()}\") {
+                name
+                stock_list {
+                    stock {
+                        symbol
+                    }
+                    amount
+                }
+            }
+        }`;
+        let data = {query: query};
+        seng_graphql_request(data, callback);
     };
 
     // gets portfolio by name for a current user
