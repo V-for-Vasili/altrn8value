@@ -180,7 +180,8 @@ window.onload = (function(){
                         <i class="far fa-trash-alt tm-product-delete-icon"></i>
                     </a>
                 </td>`;
-            
+            let opt = new Option(name,symbol,false,true);
+            $('#companeySelect').append(opt);
             // Behaviour For When Stock is removed from selections
             tr.querySelector('i').addEventListener('click',function(e){
                 tr.parentElement.removeChild(tr);

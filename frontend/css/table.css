@@ -1,8 +1,11 @@
 .table {
+    
     background-color: #50697f;
     color: #fff;
     font-size: 85%;
+    font-weight: normal !important;
     margin-bottom: 0;
+    border: 2pt solid ivory;    
 }
 
 thead {
@@ -41,9 +44,44 @@ thead {
 thead.rowBottomLine th[scope="col"]{
     border-bottom:1pt solid ivory !important;
 }
-th[scope="row"]{
-    border-right:1pt solid ivory !important;
+.seperator{
+    border-top:1pt solid ivory !important;
+    border-bottom:1pt solid ivory !important;
+    background-color:#415a70;
+    max-height: fit-content;
+}
+.seperatorSubTitle{
+    color: #f5a623;
+    font-weight: bolder;
+    font-size: 13pt !important;
+    border-right: 0 !important;
+    white-space: nowrap;
+}
+.seperatorTitle{
+    color: #f5a623;
+    font-weight: bolder;
+    font-size: 15pt !important;
+    border-right: 0 !important;
+    white-space: nowrap;
 }
 thead.rowTopLine th[scope="col"]{
     border-top:1pt solid ivory !important;
+}
+.ra {
+    
+  text-align: right;
+}
+.raTotal {
+    border-top:1pt double ivory !important;
+    text-align: right;
+    white-space: nowrap;
+}
+.totalNext{
+    border-top:1pt double ivory !important;
+}
+table th[scope="row"]{
+    border-right:2pt dotted ivory;
+}
+table th[scope="col"]{
+    border-top:1pt solid ivory;
 }
