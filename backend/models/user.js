@@ -4,10 +4,11 @@ const FormatError = require('easygraphql-format-error');
 
 // Set up custom errors
 const formatError = new FormatError([
-    {name: 'ACCESS_DENIED', message: "access denied", statusCode: 401},
-    {name: 'NOT_FOUND', message: "not found", statusCode: 404},
-    {name: 'CONFLICT', message: "already exists", statusCode: 409},
-    {name: 'UNIMPLEMENTED', message: "unimplemented", statusCode: 409},
+    {name: 'ACCESS_DENIED', message: 'access denied', statusCode: 401},
+    {name: 'NOT_FOUND', message: 'not found', statusCode: 404},
+    {name: 'CONFLICT', message: 'already exists', statusCode: 409},
+    {name: 'SERVER_ERROR', message: 'server error', statusCode: 500},
+    {name: 'UNIMPLEMENTED', message: 'unimplemented', statusCode: 501},
     ]);
 const errorName = formatError.errorName;
 
@@ -78,15 +79,15 @@ let portfolioFieldResolvers = {
       } catch (err) {
         console.log(err);
       }
-       stock_list.push({stock: {
-        exchange: stock.exhange,
-        symbol: stock.symbol,
-        price: stock.price,
-        market_cap: stock.marketCap,
-        change: stock.change,
-        changes_percentage: stock.changesPercentage,
-        avg_volume: stock.avgVolume,
-      }, amount: parent_list[parseInt(stock_element)].amount }) ;
+      stock_list.push({stock: {
+          exchange: stock.exhange,
+          symbol: stock.symbol,
+          price: stock.price,
+          market_cap: stock.marketCap,
+          change: stock.change,
+          changes_percentage: stock.changesPercentage,
+          avg_volume: stock.avgVolume,
+      }, amount: parent_list[parseInt(stock_element)].amount}) ;
     }
     return stock_list;
   },
@@ -118,7 +119,7 @@ let portfolioFieldResolvers = {
 
 
 // Create portfolio
-let createPortfolioTypeDef = `
+let createPortfolioQueryDef = `
   createPortfolio (
     name: String!
     stock_list: [stockListInput]
@@ -144,7 +145,7 @@ let createPortfolioResolver = async (obj, args, context, info) => {
     if (!stock) throw new Error(errorName.NOT_FOUND);
   }
   // Check whether this exists alread
-  let result = await Portfolio.findOne({uid: context.uid, name });
+  let result = await Portfolio.findOne({uid: context.uid, name});
   if (result) throw new Error(errorName.CONFLICT);
   else {
     let portfolio = new Portfolio({uid: context.uid, name, stock_list: stockListInput});
@@ -154,7 +155,7 @@ let createPortfolioResolver = async (obj, args, context, info) => {
 }
 
 // Delete Portfolio
-let deletePortfolioTypeDef = `
+let deletePortfolioQueryDef = `
   deletePortfolio (
     name: String!
   ): Portfolio
@@ -163,12 +164,18 @@ let deletePortfolioTypeDef = `
 let deletePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
   if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
-  throw new Error(errorName.UNIMPLEMENTED);
+  // remove 1 document from db, return result if successful
+  let result = null;
+  let x = await Portfolio.findOneAndDelete({name: args.name}, function(err, item) {
+      result = item;
+  });
+  if (!result) throw new Error(errorName.NOT_FOUND);
+  return result;
 }
 
 
 // Edit Portfolio
-let updatePortfolioTypeDef = `
+let updatePortfolioQueryDef = `
   updatePortfolio (
     name: String!
     stock_list: [stockListInput]
@@ -182,5 +189,24 @@ let updatePortfolioResolver = async (obj, args, context, info) => {
 }
 
 
-module.exports = {portfolioTypeDef,portfolioFieldResolvers, portfolioQueryResolver, portfolioQueryDef, createPortfolioResolver, createPortfolioTypeDef,
-  deletePortfolioTypeDef, deletePortfolioResolver, updatePortfolioTypeDef, updatePortfolioResolver};
+// Portfolio list
+
+let portfolioListQueryDef = `
+    portfolioList (
+        uid: String!
+    ): [Portfolio]
+`;
+
+let portfolioListResolver = async (obj, args, context, info) => {
+    // Check the user is authenticated
+    if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
+    // Fetch and return all portfolios that are associated with given uid
+    return await Portfolio.find({uid: context.uid});
+}
+
+module.exports = {portfolioTypeDef,portfolioFieldResolvers,
+    portfolioQueryResolver, portfolioQueryDef,
+    createPortfolioQueryDef, createPortfolioResolver,
+    deletePortfolioQueryDef, deletePortfolioResolver,
+    updatePortfolioQueryDef, updatePortfolioResolver,
+    portfolioListQueryDef, portfolioListResolver};

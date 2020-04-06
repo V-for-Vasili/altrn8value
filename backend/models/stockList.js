@@ -11,7 +11,7 @@ type StockDescription {
     exchangeShortName: String
 }`;
 
-let stockListQueryDef = `stock_list(searchStr: String!): [StockDescription]`;
+let stockListQueryDef = `stockList(searchStr: String!): [StockDescription]`;
 
 let stockListResolver = async (_, {searchStr}) => {
     let response = {};

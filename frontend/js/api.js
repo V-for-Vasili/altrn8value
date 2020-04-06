@@ -39,7 +39,11 @@ let api = (function(){
     function seng_graphql_request(data, callback) {
         let method = 'POST';
         let url = '/graphql';
-        send_ajax(method, url, data, callback);
+        send_ajax(method, url, data, function(code, err, respObj) {
+            if (respObj.errors)
+                return module.notifyErrorListeners('Graphql errors: ' + JSON.stringify(respObj.errors));
+            return callback(200, null, respObj);
+        });
     }
 
     // Passed to signin and signup ajax requests.
@@ -271,9 +275,9 @@ let api = (function(){
 
     // queries financialmodelingprep.com; Searches NASDAQ only for now
     // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
-    module.queryListOfStocks = function(searchStr, callback=do_nothing) {
+    module.getListOfStocks = function(searchStr, callback=do_nothing) {
         let query = `{
-            stock_list(searchStr:\"${searchStr}\"){
+            stockList(searchStr:\"${searchStr}\"){
                 symbol
                 name
                 currency
@@ -434,8 +438,19 @@ let api = (function(){
 
     // returns list of portfolios for current user
     module.getUserPortfolios = function(callback=do_nothing) {
-        console.log('### api - getUserPortfolios ###', uid);
-        callback(200, null, JSON.parse(localStorage.getItem("Porfolios")));
+        let query = `{
+            portfolioList(uid:\"${module.getUid()}\") {
+                name
+                stock_list {
+                    stock {
+                        symbol
+                    }
+                    amount
+                }
+            }
+        }`;
+        let data = {query: query};
+        seng_graphql_request(data, callback);
     };
 
     // gets portfolio by name for a current user
@@ -471,6 +486,12 @@ let api = (function(){
         let mutation = `mutation {
             deletePortfolio(name:\"${name}\") {
                 name
+                stock_list {
+                    stock {
+                        symbol
+                    }
+                    amount
+                }
             }
         }`;
         let data = {query: mutation};
