@@ -4,8 +4,8 @@ let Graphing = (function(){
     module.initPlot =function(id){
         // Initate Blank Canvas Where Historic Price Data will be loaded
     let plot = echarts.init(document.getElementById(id),'template', {
-        width: document.getElementById(id).offsetWidth,
-        height: document.getElementById(id).offsetHeight
+        //width: document.getElementById(id).offsetWidth,
+        //height: document.getElementById(id).offsetHeight
         });
         return plot;
     };
@@ -89,5 +89,40 @@ let Graphing = (function(){
         }
         chart.setOption(option,true);
     };
+    module.graphPorfolio = function(chart,porfolio){
+        var porfolioDecomp = [];
+        let stockList = porfolio.stocks.map(obj => {
+            let rObj = obj.symbol;
+            return rObj;
+        });
+        let url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + stockList.toString();
+        $.getJSON(url, function(response) {
+            let rawData = response.historicalStockList;
+            let datesClose = {};
+            rawData.forEach(function(ts,index){
+
+                let decompItem = {name:ts.symbol,type:'line',area:{}};
+                let decompItemData = [];
+                ts.historical.forEach(function(day){
+                    decompItemData.push([day.date,day.close]);
+                    (datesClose[day.date])? datesClose[day.date]+=day.close * porfolio.stocks[index].shares : datesClose[day.date] = day.close * porfolio.stocks[index].shares;
+                });
+                decompItem.data = decompItemData;
+                porfolioDecomp.push(decompItem);
+            });
+
+            let totalPorfolio = {name:porfolio.name,type:'line',area:{}};
+            let totalPorfolioData = [];
+             Object.keys(datesClose).forEach(function(date){
+                totalPorfolioData.push([date,datesClose[date]]);
+                });
+                totalPorfolio.data = totalPorfolioData;
+                porfolioDecomp.push(totalPorfolio);
+                console.log(totalPorfolio);
+                module.update(chart,totalPorfolio.name,totalPorfolio);
+            });
+
+    };
+
     return module;
 })();

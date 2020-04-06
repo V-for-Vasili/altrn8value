@@ -85,3 +85,6 @@ table th[scope="row"]{
 table th[scope="col"]{
     border-top:1pt solid ivory;
 }
+.checkCell{
+    border-right: 0 !important;
+}

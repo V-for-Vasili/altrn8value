@@ -1,12 +1,16 @@
 /*jshint esversion: 6 */
 window.onload = (function(){
     "use strict";
-
-    // call to backend to pull all portfolios for the user
+    
+    //call to backend to pull all portfolios for the user
     api.getUserPortfolios(api.getUid(), function(code, err, respObj) {
         if (code !== 200) return api.notifyErrorListeners(err);
+        console.log(respObj);
         loadPorfolios(respObj);
     });
+    // let Porfolios = JSON.parse(localStorage.getItem("Porfolios"));
+    // // Array of poroflio objects will be passed into the loadPorfolio function
+    // loadPorfolios(Porfolios);
 
     // add event listener to handle login or logout as appropriate
     api.onLogin(function() {
@@ -35,7 +39,7 @@ window.onload = (function(){
         porfolios.forEach(function(porfolio){
             let tr = document.createElement('tr');
             tr.innerHTML = `
-            <th scope="row"><input type="checkbox" /></th>
+            <th scope="row" class="checkCell"><input type="checkbox" /></th>
             <td class="tm-product-name">${porfolio.name}</td>
             <td>${porfolio.cost}</td>
             <td>${porfolio.cost * 1.35}</td>
@@ -58,5 +62,9 @@ window.onload = (function(){
             $('#porfolioList').prepend(tr);
         });
     }
+
+    //let tsPlot = Graphing.initPlot("chart");
+    //Graphing.update(tsPlot,[],[]);
+    //Graphing.graphPorfolio(tsPlot,Porfolios[0]);
 
 })();
