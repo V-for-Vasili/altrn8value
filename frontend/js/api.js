@@ -471,10 +471,16 @@ let api = (function(){
     };
 
     // adds portfolio by name
-    module.addPortfolio = function(name, callback=do_nothing) {
+    module.createPortfolio = function(name, stock_list, callback=do_nothing) {
         let mutation = `mutation {
             createPortfolio(name:\"${name}\") {
                 name
+                stock_list {
+                    stock {
+                        symbol
+                    }
+                    amount
+                }
             }
         }`;
         let data = {query: mutation};
