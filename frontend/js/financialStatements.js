@@ -63,7 +63,6 @@ let FS = (function(){
 
         populateMetricsTable : function(apiFunction, companyName, metrics, title) {
             // set title
-            
             document.getElementById(this.titleId).innerHTML = title;
             // get info statements from api
             apiFunction(companyName, false, function(code, err, respObj) {

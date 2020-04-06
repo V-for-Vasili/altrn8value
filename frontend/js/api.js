@@ -39,7 +39,11 @@ let api = (function(){
     function seng_graphql_request(data, callback) {
         let method = 'POST';
         let url = '/graphql';
-        send_ajax(method, url, data, callback);
+        send_ajax(method, url, data, function(code, err, respObj) {
+            if (respObj.errors)
+                return module.notifyErrorListeners('Graphql errors: ' + JSON.stringify(respObj.errors));
+            return callback(200, null, respObj);
+        });
     }
 
     // Passed to signin and signup ajax requests.
