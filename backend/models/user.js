@@ -129,8 +129,8 @@ let createPortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
   if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
   // For each stock in the list check it exists
-  name = args.name;
-  stockListInput = args.stock_list;
+  let name = args.name;
+  let stockListInput = args.stock_list;
   // if no stock list provided, start with empty list
   if (!stockListInput) stockListInput = [];
   for (i in stockListInput) {

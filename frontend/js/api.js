@@ -40,6 +40,10 @@ let api = (function(){
         let method = 'POST';
         let url = '/graphql';
         send_ajax(method, url, data, function(code, err, respObj) {
+            // catch http error
+            if (err)
+                return module.notifyErrorListeners('Graphql errors: ' + JSON.stringify(err));
+            // catch graphql error
             if (respObj.errors)
                 return module.notifyErrorListeners('Graphql errors: ' + JSON.stringify(respObj.errors));
             return callback(200, null, respObj);
@@ -80,6 +84,26 @@ let api = (function(){
             });
             result.push(data_transformed);
         });
+        return result;
+    }
+
+    // Formats list of stocks to be transmitted by graphql mutation
+    function formatStockListInput(stock_list) {
+        // verify that there are no duplicate symbols
+        let symbols = [];
+        stock_list.forEach(function(item) {
+            if (symbols.includes(item.symbol)) {
+                // found duplicate. input invalid
+                return module.notifyErrorListeners('formatStockListInput: No duplicate symbols allowed.');
+            }
+            symbols.push(item.symbol);
+        });
+        // create graphql argument string
+        let result = '[';
+        stock_list.forEach(function(item) {
+            result += `{symbol:\"${item.symbol}\",amount:${parseInt(item.amount)}},`;
+        });
+        result += ']';
         return result;
     }
 
@@ -470,10 +494,11 @@ let api = (function(){
         seng_graphql_request(data, callback);
     };
 
-    // adds portfolio by name
+    // name is the name of the new portfolio
+    // stock list is of the form [{symbol, amount}]; symbols must not repeat
     module.createPortfolio = function(name, stock_list, callback=do_nothing) {
         let mutation = `mutation {
-            createPortfolio(name:\"${name}\") {
+            createPortfolio(name:\"${name}\", stock_list:${formatStockListInput(stock_list)}) {
                 name
                 stock_list {
                     stock {
