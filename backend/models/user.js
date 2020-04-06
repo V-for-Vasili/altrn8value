@@ -182,8 +182,23 @@ let updatePortfolioResolver = async (obj, args, context, info) => {
 }
 
 
+// Portfolio list
+
+let portfolioListQueryDef = `
+    portfolioList (
+        uid: String!
+    ): [Portfolio]
+`;
+
+let portfolioListResolver = async () => {
+    // Check the user is authenticated
+    if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
+    throw new Error(errorName.UNIMPLEMENTED);
+}
+
 module.exports = {portfolioTypeDef,portfolioFieldResolvers,
     portfolioQueryResolver, portfolioQueryDef,
     createPortfolioQueryDef, createPortfolioResolver,
     deletePortfolioQueryDef, deletePortfolioResolver,
-    updatePortfolioQueryDef, updatePortfolioResolver};
+    updatePortfolioQueryDef, updatePortfolioResolver,
+    portfolioListQueryDef, portfolioListResolver};

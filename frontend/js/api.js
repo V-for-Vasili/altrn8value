@@ -274,7 +274,7 @@ let api = (function(){
     // based on https://financialmodelingprep.com/developer/docs/#Company-Financial-Statements
     module.queryListOfStocks = function(searchStr, callback=do_nothing) {
         let query = `{
-            stock_list(searchStr:\"${searchStr}\"){
+            stockList(searchStr:\"${searchStr}\"){
                 symbol
                 name
                 currency
