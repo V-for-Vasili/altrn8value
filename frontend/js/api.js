@@ -28,8 +28,6 @@ let api = (function(){
         if (!data) {
             xhr.send();
         } else{
-            // attach auth token
-            xhr.setRequestHeader('token', localStorage.getItem('Token'));
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(data));
         }
@@ -55,12 +53,9 @@ let api = (function(){
     // login listeners.
     function authentication_callback(code, err, respObj) {
         if (code >= 400) return module.notifyErrorListeners(err);
-        if (!respObj.token) return module.notifyErrorListeners('Error: no token in respObj');
-        if (!respObj.username) return module.notifyErrorListeners('Error: no username in respObj');
+       
         // save token and username to localStorage
-        localStorage.setItem('Username', respObj.username);
-        localStorage.setItem('Token', respObj.token);
-        localStorage.setItem('Uid', respObj._id);
+        
         // notify listeners so changes on the page take place
         module.notifyLoginListeners();
     }
@@ -221,36 +216,35 @@ let api = (function(){
     //
 
     module.isLoggedIn = function() {
-        let Token = localStorage.getItem('Token');
-        return Token === Token && Token !== null;
+        let username = getCookie('username');
+        return (username)? 1:0;
     };
 
     module.getUsername = function() {
-        return localStorage.getItem('Username');;
-    }
+        return getCookie('username');
+    };
 
     module.getUid = function() {
-        return localStorage.getItem('Uid');;
-    }
+        return getCookie("Uid");
+    };
 
     // from lab 6
     module.signUp = function(username, password) {
         send_ajax('POST', '/api/signup', {username, password}, authentication_callback);
-    }
+    };
 
     // from lab 6
     module.signIn = function(username, password) {
         send_ajax('POST', '/api/signin', {username, password}, authentication_callback);
-    }
+    };
 
     module.signOut = function() {
         // destroy username and token
-        localStorage.removeItem('Username');
-        localStorage.removeItem('Token');
+        document.cookie ="username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         // notify listeners so changes on the page take place
         module.notifyLoginListeners();
         window.location.href = '/index.html';
-    }
+    };
 
     //
     // api methods
@@ -592,20 +586,25 @@ let api = (function(){
         errorListeners.push(listener);
     };
 
-    /////////////////////////////////////////////////////
-    // TO BE REPLACED ONCE GRAPHQL IS FINISHED !!!!!!!!!//
-    module.initStorage = function() {
-        if (!localStorage.getItem("data"))
-            localStorage.setItem("data",JSON.stringify({
-                porfolios:[],
-                pageInfo:null,
-                newPorfolio:null,
-                editPorfolio:null,
-                option:null
-            }));
-    };
-    ////////////////////////////////////////////////////////
 
+    // src : https://www.w3schools.com/js/js_cookies.asp
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return null;
+    }
+
+   
     //
     // api helper methods
     //

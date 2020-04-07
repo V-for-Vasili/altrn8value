@@ -1,9 +1,11 @@
+/*jshint esversion: 6 */
 // Imports
 const express = require('express');
 const morgan = require('morgan');
 const morganBody = require('morgan-body');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const cookie = require('cookie');
 const { v4: uuid } = require('uuid');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -45,7 +47,17 @@ morganBody(app);
 // Mongose Settup
 mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true}).catch(err => {
   console.log(err);
-})
+});
+
+app.use(function(req, res, next){
+  req.user = ('user' in req.session)? req.session.user : null;
+  let username = (req.user)? req.user._id : '';
+  res.setHeader('Set-Cookie', cookie.serialize('username', username, {
+        path : '/', 
+        maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
+  }));
+  next();
+});
 
 // User Log in
 app.post('/api/signup', function (req, res, next) {
@@ -63,18 +75,28 @@ app.post('/api/signup', function (req, res, next) {
     let _id = uuid();
     // Build JWT
     let secret = JWT_SECRET;
-    let token = jwt.sign(
-      {_id, exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60)},
-      secret
-    );
+    let token = jwt.sign({_id: _id , user:username},secret,{expiresIn:"7d"});
+    // Set token in cookie
+    res.setHeader('Set-Cookie', cookie.serialize('token', String(token), {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7 // 1 week
+    }));
+    res.setHeader('Set-Cookie', cookie.serialize('username', String(username), {
+      path : '/', 
+      maxAge: 60 * 60 * 24 * 7 // 1 week 
+    }));
+    res.setHeader('Set-Cookie', cookie.serialize('uID', String(_id), {
+      path : '/', 
+      maxAge: 60 * 60 * 24 * 7 // 1 week 
+    }));
+    
 
     // Add new user
     let new_user = new User({_id, username, saltedHash, salt});
     new_user.save(function (err) {
-     if (err) return res.status(500).end(err)
+     if (err) return res.status(500).end(err);
     });
-
-   return res.status(201).send({_id, token, username});
+   return res.status(201).json("User "+ username + " Signed Up & Logged On");
   });
 })
 
@@ -97,35 +119,72 @@ app.post('/api/signin/', function (req, res, next) {
     if (user.saltedHash !== saltedHash) return res.status(401).end("access denied");
     // Build JWT
     let secret = JWT_SECRET;
-    let token = jwt.sign(
-      {_id: user._id,
-       exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60)},
-       secret);
-      return res.status(200).send({_id: user._id, token, username});
+    let token = jwt.sign({_id: user._id , user:username},secret,{expiresIn:"7d"});
+    // Set token in cookie
+    res.setHeader('Set-Cookie', cookie.serialize('token', (token), {
+      httpOnly:true,
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7 // 1 week
+    }));
+    res.setHeader('Set-Cookie', cookie.serialize('username', String(username), {
+      path : '/', 
+      maxAge: 60 * 60 * 24 * 7 // 1 week 
+    }));
+    res.setHeader('Set-Cookie', cookie.serialize('uID', String(user._id), {
+      path : '/', 
+      maxAge: 60 * 60 * 24 * 7 // 1 week 
+    }));
+    return res.status(200).json("User " + username + " Logged On");
   });
 })
 
-// Auth Middleware
+// // Auth Middleware
+// app.use(function(req, res, next) {
+//     let token = req.headers.token;
+//     // Nullify values set by this function
+//     req.uid = null;
+//     req.username = null;
+//     // Check if the token is valid
+//     if(!token) return next();
+//     try{
+//       token = jwt.verify(token, JWT_SECRET);
+//     } catch (err) {
+//       console.log(err);
+//       return next()
+//     }
+//     // Check if the user Exists
+//     User.findOne({_id: token._id}, function(err, user){
+//       if(!user || err)  next();
+//       req.uid = token._id, req.username = user.username;
+//       return next()
+//     });
+// });
+
+// 
+
+// Set variables to correct values to be passed into conext paramater of graphql
 app.use(function(req, res, next) {
-    let token = req.headers.token;
-    // Nullify values set by this function
-    req.uid = null;
-    req.username = null;
-    // Check if the token is valid
-    if(!token) return next();
-    try{
-      token = jwt.verify(token, JWT_SECRET);
-    } catch (err) {
-      console.log(err);
-      return next()
-    }
-    // Check if the user Exists
-    User.findOne({_id: token._id}, function(err, user){
-      if(!user || err)  next();
-      req.uid = token._id, req.username = user.username;
-      return next()
-    });
+  req.username = null;
+  req.uid = null;
+  req.isAuth = false;
+  let cookies = cookie.parse(req.headers.cookie || '');
+  if (cookies.token){
+      let payload =  jwt.verify(cookies.token, JWT_SECRET);
+      if (!payload) return res.status(401).end("access denied");
+      User.findOne({_id: payload._id }, function(err, user){
+        if (err) return res.status(500).end(err);
+        if(!user) return res.status(401).end("access denied");
+        req.username = payload.user;
+        req.uid = payload._id;
+        req.isAuth = true;
+      });
+    } 
+  next();
 });
+
+
+
+
 
 /*
 curl -X POST                                                       \
@@ -138,7 +197,8 @@ app.use('/graphql', graphqlHTTP((req, res, graphQLParams) => ({
     graphiql: true,
     context: {
       username: req.username,
-      uid: req.uid
+      uid: req.uid,
+      isAuth: req.isAuth
     }
   }))
 );
