@@ -26,9 +26,10 @@ let historyResolver  =  async (obj, args, context, info) => {
   let response = {};
   try {
     if (timeseries) {
-      response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${obj.symbol}?timeseries=${timeseries}`);
+      response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${obj.symbol}?serietype=${timeseries}`);
         response = response.data.historical;
-    } if (to && from) {
+    } 
+    else if (to && from) {
       response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${obj.symbol}?from=${from}&to=${to}`);
       response = response.data.historical;
     } else {
@@ -39,9 +40,9 @@ let historyResolver  =  async (obj, args, context, info) => {
     console.log(err);
   }
   if(!response) {
-    return null
+    return null;
   } else {
-    return response
+    return response;
   }
 }
 
