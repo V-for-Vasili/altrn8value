@@ -49,12 +49,10 @@ mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: tru
   console.log(err);
 });
 
-
 // User Log in
 app.post('/api/signup', function (req, res, next) {
   let username = req.body.username;
   let password = req.body.password;
-
   User.findOne({username: username}, function(err, user){
     if (err) return res.status(500).end(err);
     if (user) return res.status(409).end("username " + username + " already exists");
@@ -66,7 +64,6 @@ app.post('/api/signup', function (req, res, next) {
     let _id = uuid();
     // Build JWT
     let secret = JWT_SECRET;
-    
     let token = jwt.sign({_id: _id , user:username},secret,{expiresIn:"7d"});
     // Set token in cookie
     let cookieArray = [];
@@ -90,8 +87,6 @@ app.post('/api/signup', function (req, res, next) {
       })
     );
     res.setHeader('Set-Cookie', cookieArray);
-    
-
     // Add new user
     let new_user = new User({_id, username, saltedHash, salt});
     new_user.save(function (err) {
@@ -100,7 +95,6 @@ app.post('/api/signup', function (req, res, next) {
    return res.status(201).json("User "+ username + " Signed Up & Logged On");
   });
 })
-
 
 // Signin Pulled from Lab 6
 // curl -H "Content-Type: application/json" -X POST -d '{"username":"alice","password":"alice"}'  localhost:3000/api/signin/:ebf3c240-8c05-4195-9aec-83e850c8eda4
@@ -143,34 +137,9 @@ app.post('/api/signin/', function (req, res, next) {
       })
     );
     res.setHeader('Set-Cookie', cookieArray);
-    
     return res.status(200).json("User " + username + " Logged On");
   });
 })
-
-// // Auth Middleware
-// app.use(function(req, res, next) {
-//     let token = req.headers.token;
-//     // Nullify values set by this function
-//     req.uid = null;
-//     req.username = null;
-//     // Check if the token is valid
-//     if(!token) return next();
-//     try{
-//       token = jwt.verify(token, JWT_SECRET);
-//     } catch (err) {
-//       console.log(err);
-//       return next()
-//     }
-//     // Check if the user Exists
-//     User.findOne({_id: token._id}, function(err, user){
-//       if(!user || err)  next();
-//       req.uid = token._id, req.username = user.username;
-//       return next()
-//     });
-// });
-
-// 
 
 // Set variables to correct values to be passed into context paramater of graphql
 app.use(function(req, res, next) {
@@ -179,23 +148,19 @@ app.use(function(req, res, next) {
   req.isAuth = false;
   let cookies = cookie.parse(req.headers.cookie || '');
   if (cookies.token){
-      let payload =  jwt.verify(cookies.token, JWT_SECRET);
-      if (!payload) return res.status(401).end("access denied");
-      User.findOne({_id: payload._id }, function(err, user){
-        if (err) return res.status(500).end(err);
-        if(!user) return res.status(401).end("access denied");
-        // set context params
-        req.username = payload.user;
-        req.uid = payload._id;
-        req.isAuth = true;
-        next();
-      });
-  } 
+    let payload =  jwt.verify(cookies.token, JWT_SECRET);
+    if (!payload) return res.status(401).end("access denied");
+    User.findOne({_id: payload._id }, function(err, user){
+      if (err) return res.status(500).end(err);
+      if(!user) return res.status(401).end("access denied");
+      // set context params
+      req.username = payload.user;
+      req.uid = payload._id;
+      req.isAuth = true;
+      next();
+    });
+  }
 });
-
-
-
-
 
 /*
 curl -X POST                                                       \
