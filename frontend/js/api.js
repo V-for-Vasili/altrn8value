@@ -53,9 +53,6 @@ let api = (function(){
     // login listeners.
     function authentication_callback(code, err, respObj) {
         if (code >= 400) return module.notifyErrorListeners(err);
-       
-        // save token and username to localStorage
-        
         // notify listeners so changes on the page take place
         module.notifyLoginListeners();
     }
@@ -84,6 +81,8 @@ let api = (function(){
 
     // Formats list of stocks to be transmitted by graphql mutation
     function formatStockListInput(stock_list) {
+        if (stock_list.length == 0)
+            return module.notifyErrorListeners('formatStockListInput: stock_list must be non-empty.');
         // verify that there are no duplicate symbols
         let symbols = [];
         stock_list.forEach(function(item) {
