@@ -45,5 +45,6 @@ const resolvers = {
 };
 
 let schema = makeExecutableSchema({typeDefs, resolvers});
+console.log(typeDefs,resolvers);
 
 module.exports = {schema};

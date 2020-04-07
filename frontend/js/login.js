@@ -6,7 +6,6 @@ window.onload = (function(){
     if (!api.isLoggedIn()) {
         api.onLogin(function() {            
             if (api.isLoggedIn()){
-                api.initStorage();
                 window.location.href = '/index.html';
             }
         });
