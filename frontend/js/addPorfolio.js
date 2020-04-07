@@ -51,7 +51,7 @@ window.onload = (function () {
                 </td>`;
             $('#StockSelections').prepend(tr);
             $("#" + symbol + "Shares").on("change", function (e) {
-                let shares = $("#" + symbol + "Shares").val();
+                let shares = parseFloat($("#" + symbol + "Shares").val());
                 if (!isNaN(shares)) {
                     let newCost = shares * price ;
                     NP.updateStock(symbol,shares,newCost);
