@@ -172,7 +172,7 @@ app.post('/api/signin/', function (req, res, next) {
 
 // 
 
-// Set variables to correct values to be passed into conext paramater of graphql
+// Set variables to correct values to be passed into context paramater of graphql
 app.use(function(req, res, next) {
   req.username = null;
   req.uid = null;
@@ -184,12 +184,13 @@ app.use(function(req, res, next) {
       User.findOne({_id: payload._id }, function(err, user){
         if (err) return res.status(500).end(err);
         if(!user) return res.status(401).end("access denied");
+        // set context params
         req.username = payload.user;
         req.uid = payload._id;
         req.isAuth = true;
+        next();
       });
   } 
-  return next();
 });
 
 
