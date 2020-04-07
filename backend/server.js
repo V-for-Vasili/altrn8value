@@ -49,6 +49,16 @@ mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: tru
   console.log(err);
 });
 
+app.use(function(req, res, next){
+  req.user = ('user' in req.session)? req.session.user : null;
+  let username = (req.user)? req.user._id : '';
+  res.setHeader('Set-Cookie', cookie.serialize('username', username, {
+        path : '/', 
+        maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
+  }));
+  next();
+});
+
 // User Log in
 app.post('/api/signup', function (req, res, next) {
   let username = req.body.username;
@@ -65,7 +75,7 @@ app.post('/api/signup', function (req, res, next) {
     let _id = uuid();
     // Build JWT
     let secret = JWT_SECRET;
-    let token = jwt.sign({_id: _id},secret,{expiresIn:"7d"});
+    let token = jwt.sign({_id: _id , user:username},secret,{expiresIn:"7d"});
     // Set token in cookie
     res.setHeader('Set-Cookie', cookie.serialize('token', String(token), {
       path: '/',
@@ -75,6 +85,12 @@ app.post('/api/signup', function (req, res, next) {
       path : '/', 
       maxAge: 60 * 60 * 24 * 7 // 1 week 
     }));
+    res.setHeader('Set-Cookie', cookie.serialize('uID', String(_id), {
+      path : '/', 
+      maxAge: 60 * 60 * 24 * 7 // 1 week 
+    }));
+    
+
     // Add new user
     let new_user = new User({_id, username, saltedHash, salt});
     new_user.save(function (err) {
@@ -103,7 +119,7 @@ app.post('/api/signin/', function (req, res, next) {
     if (user.saltedHash !== saltedHash) return res.status(401).end("access denied");
     // Build JWT
     let secret = JWT_SECRET;
-    let token = jwt.sign({_id: user._id},secret,{expiresIn:"7d"});
+    let token = jwt.sign({_id: user._id , user:username},secret,{expiresIn:"7d"});
     // Set token in cookie
     res.setHeader('Set-Cookie', cookie.serialize('token', (token), {
       httpOnly:true,
@@ -111,6 +127,10 @@ app.post('/api/signin/', function (req, res, next) {
       maxAge: 60 * 60 * 24 * 7 // 1 week
     }));
     res.setHeader('Set-Cookie', cookie.serialize('username', String(username), {
+      path : '/', 
+      maxAge: 60 * 60 * 24 * 7 // 1 week 
+    }));
+    res.setHeader('Set-Cookie', cookie.serialize('uID', String(user._id), {
       path : '/', 
       maxAge: 60 * 60 * 24 * 7 // 1 week 
     }));
@@ -141,23 +161,26 @@ app.post('/api/signin/', function (req, res, next) {
 // });
 
 // 
-let isAuthenticated = function(req, res, next) {
+
+// Set variables to correct values to be passed into conext paramater of graphql
+app.use(function(req, res, next) {
+  req.username = null;
+  req.uid = null;
+  req.isAuth = false;
   let cookies = cookie.parse(req.headers.cookie || '');
   if (cookies.token){
-      let user =  jwt.verify(cookies.token, JWT_SECRET);
-      if (!user) return res.status(401).end("access denied");
-      User.findOne({_id: user._id}, function(err, user){
+      let payload =  jwt.verify(cookies.token, JWT_SECRET);
+      if (!payload) return res.status(401).end("access denied");
+      User.findOne({_id: payload._id }, function(err, user){
         if (err) return res.status(500).end(err);
         if(!user) return res.status(401).end("access denied");
-        
-        return next()
-            });
-      } 
-  else {
-    return res.status(401).end("access denied");
-  }
+        req.username = payload.user;
+        req.uid = payload._id;
+        req.isAuth = true;
+      });
+    } 
   next();
-};
+});
 
 
 
@@ -174,7 +197,8 @@ app.use('/graphql', graphqlHTTP((req, res, graphQLParams) => ({
     graphiql: true,
     context: {
       username: req.username,
-      uid: req.uid
+      uid: req.uid,
+      isAuth: req.isAuth
     }
   }))
 );

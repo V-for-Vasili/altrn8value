@@ -6,7 +6,7 @@ window.onload = (function(){
     api.getUserPortfolios(api.getUid(), function(code, err, respObj) {
         if (code !== 200) return api.notifyErrorListeners(err);
         console.log(respObj);
-        loadPorfolios(respObj);
+        //loadPorfolios(respObj);
     });
     // let Porfolios = JSON.parse(localStorage.getItem("Porfolios"));
     // // Array of poroflio objects will be passed into the loadPorfolio function

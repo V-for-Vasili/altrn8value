@@ -225,7 +225,7 @@ let api = (function(){
     };
 
     module.getUid = function() {
-        return localStorage.getItem('Uid');
+        return getCookie("Uid");
     };
 
     // from lab 6
