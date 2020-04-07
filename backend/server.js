@@ -49,15 +49,6 @@ mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: tru
   console.log(err);
 });
 
-app.use(function(req, res, next){
-  req.user = ('user' in req.session)? req.session.user : null;
-  let username = (req.user)? req.user._id : '';
-  res.setHeader('Set-Cookie', cookie.serialize('username', username, {
-        path : '/', 
-        maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
-  }));
-  next();
-});
 
 // User Log in
 app.post('/api/signup', function (req, res, next) {
@@ -75,20 +66,30 @@ app.post('/api/signup', function (req, res, next) {
     let _id = uuid();
     // Build JWT
     let secret = JWT_SECRET;
+    
     let token = jwt.sign({_id: _id , user:username},secret,{expiresIn:"7d"});
     // Set token in cookie
-    res.setHeader('Set-Cookie', cookie.serialize('token', String(token), {
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7 // 1 week
-    }));
-    res.setHeader('Set-Cookie', cookie.serialize('username', String(username), {
-      path : '/', 
-      maxAge: 60 * 60 * 24 * 7 // 1 week 
-    }));
-    res.setHeader('Set-Cookie', cookie.serialize('uID', String(_id), {
-      path : '/', 
-      maxAge: 60 * 60 * 24 * 7 // 1 week 
-    }));
+    let cookieArray = [];
+    cookieArray.push(
+      cookie.serialize('token', String(token), {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7 ,
+        httpOnly:true
+      })
+    );
+    cookieArray.push(
+      cookie.serialize('username', String(username), {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7
+      })
+    );
+    cookieArray.push(
+      cookie.serialize('uID', String(_id), {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7
+      })
+    );
+    res.setHeader('Set-Cookie', cookieArray);
     
 
     // Add new user
@@ -121,19 +122,28 @@ app.post('/api/signin/', function (req, res, next) {
     let secret = JWT_SECRET;
     let token = jwt.sign({_id: user._id , user:username},secret,{expiresIn:"7d"});
     // Set token in cookie
-    res.setHeader('Set-Cookie', cookie.serialize('token', (token), {
-      httpOnly:true,
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7 // 1 week
-    }));
-    res.setHeader('Set-Cookie', cookie.serialize('username', String(username), {
-      path : '/', 
-      maxAge: 60 * 60 * 24 * 7 // 1 week 
-    }));
-    res.setHeader('Set-Cookie', cookie.serialize('uID', String(user._id), {
-      path : '/', 
-      maxAge: 60 * 60 * 24 * 7 // 1 week 
-    }));
+    let cookieArray = [];
+    cookieArray.push(
+      cookie.serialize('token', String(token), {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7 ,
+        httpOnly:true
+      })
+    );
+    cookieArray.push(
+      cookie.serialize('username', String(username), {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7
+      })
+    );
+    cookieArray.push(
+      cookie.serialize('uID', String(user._id), {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7
+      })
+    );
+    res.setHeader('Set-Cookie', cookieArray);
+    
     return res.status(200).json("User " + username + " Logged On");
   });
 })
@@ -178,8 +188,8 @@ app.use(function(req, res, next) {
         req.uid = payload._id;
         req.isAuth = true;
       });
-    } 
-  next();
+  } 
+  return next();
 });
 
 
