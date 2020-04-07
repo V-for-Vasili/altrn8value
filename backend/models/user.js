@@ -70,23 +70,25 @@ let portfolioFieldResolvers = {
     // For each stock populate its fields
     let stock_list = [];
     for (stock_element in parent_list) {
+      stock_element = parseInt(stock_element);
+      let amount = parent_list[stock_element].amount;
+      let symbol = parent_list[stock_element].symbol;
       let stock = {};
       try {
-        let symbol = parent_list[parseInt(stock_element)].symbol;
         stock = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbol}`);
         stock = stock.data[0];
       } catch (err) {
         console.log(err);
       }
       stock_list.push({stock: {
-          exchange: stock.exhange,
-          symbol: stock.symbol,
-          price: stock.price,
-          market_cap: stock.marketCap,
-          change: stock.change,
-          changes_percentage: stock.changesPercentage,
-          avg_volume: stock.avgVolume,
-      }, amount: parent_list[parseInt(stock_element)].amount}) ;
+        exchange: stock.exhange,
+        symbol: stock.symbol,
+        price: stock.price,
+        market_cap: stock.marketCap,
+        change: stock.change,
+        changes_percentage: stock.changesPercentage,
+        avg_volume: stock.avgVolume,
+      }, amount: amount}) ;
     }
     return stock_list;
   },
