@@ -20,7 +20,7 @@ const {Portfolio} = require('../db/Portfolio.js');
 let portfolioTypeDef = `
   type Stock_Purchase {
     stock: Stock,
-    amount: Int
+    amount: Float
   }
 
   type Agregate {
@@ -30,7 +30,7 @@ let portfolioTypeDef = `
 
   input stockListInput {
     symbol: String
-    amount: Int
+    amount: Float
   }
 
   type Portfolio {

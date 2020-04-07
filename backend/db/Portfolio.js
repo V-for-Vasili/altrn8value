@@ -5,6 +5,6 @@ let PortfolioSchema = new mongoose.Schema({
   name: String,
   stock_list:  [{symbol: String, amount: Number}]
 });
-let Portfolio = mongoose.model('Portfolio',PortfolioSchema);
+let Portfolio = mongoose.model('Portfolio', PortfolioSchema);
 
 module.exports = {Portfolio};

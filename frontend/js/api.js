@@ -94,7 +94,7 @@ let api = (function(){
         // create graphql argument string
         let result = '[';
         stock_list.forEach(function(item) {
-            result += `{symbol:\"${item.symbol}\",amount:${parseInt(item.amount)}},`;
+            result += `{symbol:\"${item.symbol}\",amount:${parseFloat(item.amount)}},`;
         });
         result += ']';
         return result;
