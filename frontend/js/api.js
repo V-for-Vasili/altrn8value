@@ -49,8 +49,7 @@ let api = (function(){
     }
 
     // Passed to signin and signup ajax requests.
-    // checks response for validity and saves Username and Token, notifies
-    // login listeners.
+    // notifies login listeners if login is successfuls.
     function authentication_callback(code, err, respObj) {
         if (code >= 400) return module.notifyErrorListeners(err);
         // notify listeners so changes on the page take place
@@ -455,6 +454,7 @@ let api = (function(){
 
     // returns list of portfolios for current user
     module.getUserPortfolios = function(callback=do_nothing) {
+        if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let query = `{
             portfolioList(uid:\"${module.getUid()}\") {
                 name
@@ -472,6 +472,7 @@ let api = (function(){
 
     // gets portfolio by name for a current user
     module.getPortfolioByName = function(name, callback=do_nothing) {
+        if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let query = `{
             portfolio(name:\"${name}\") {
                 name
@@ -491,6 +492,7 @@ let api = (function(){
     // stock list is of the form [{symbol, amount}]; symbols must not repeat;
     // response is the portfolio object created
     module.createPortfolio = function(name, stock_list, callback=do_nothing) {
+        if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let mutation = `mutation {
             createPortfolio(name:\"${name}\", stock_list:${formatStockListInput(stock_list)}) {
                 name
@@ -509,6 +511,7 @@ let api = (function(){
     // deletes portfolio by name
     // response is the portfolio object deleted
     module.deletePortfolio = function(name, callback=do_nothing) {
+        if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let mutation = `mutation {
             deletePortfolio(name:\"${name}\") {
                 name
@@ -529,6 +532,7 @@ let api = (function(){
     // stock list is of the form [{symbol, amount}]; symbols must not repeat
     // response is the portfolio object after update
     module.updatePortfolio = function(name, stock_list, callback=do_nothing) {
+        if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let mutation = `mutation {
             updatePortfolio(name:\"${name}\", stock_list:${formatStockListInput(stock_list)}) {
                 name
