@@ -29,13 +29,11 @@ let FS = (function(){
             api.notifyErrorListeners('rs.metricTableCurrTab contains invalid number.');
 
         },
-
         showMetricsTable : function() {
             document.getElementById(this.id).style.display = 'block';
             //document.getElementById(this.id).style.visibility = 'visible';
             
         },
-
         hideMetricsTable : function() {
             document.getElementById(this.id).style.display = 'none';
             //document.getElementById(this).style.visibility = 'hidden';
@@ -76,7 +74,6 @@ let FS = (function(){
                 } else {
                     let infoByYear = FS.getInfoByYear(respObj);
                     // used to assign conditonal formatting
-                    
                     for (let idx in metrics) {
                         let c = '';
                         let m = metrics[idx];
@@ -93,13 +90,12 @@ let FS = (function(){
                             tr.innerHTML += `<td class="${c.cell}">${info}</td>`;
                         }
                         table.append(tr);
-                        
-                        
                     }
                 }
                 FS.showMetricsTable();
             });
         },
+
         // Functions to populate metrics table
         dsiplayIS : function(companyName) {
             this.populateMetricsTable(api.getIncomeStatement, companyName, api.getIncomeStatementMetricNames(), "Income Statement");
@@ -116,7 +112,6 @@ let FS = (function(){
         assignClass:function(fs,accountName,numYears,tbl){
             let c={head:'',cell:'',append:'',flag:false, td:''};
             let a;
-            
             switch(fs){
                 case "Income Statement":
                     switch(accountName){
@@ -128,7 +123,6 @@ let FS = (function(){
                             //c.append.classList.add("seperator");
                             //c.append.innerHTML = `<th scope="row" class="SeperatorTitle">Operating Expenses :</th>` + "<td></td>".repeat(len);
                             //break;
-                        
                         case "Operating Expenses":
                             c.head = "ra";
                             c.cell = "raTotal";
@@ -167,12 +161,10 @@ let FS = (function(){
                             tbl.append(c.append);
                             tbl.append(a);
                             break;
-
                         case "Total Current Assets":
                             c.head = "ra";
                             c.cell = "raTotal";
                             break;
-                            
                         case "Property, Plant & Equipment Net":
                             c.append = document.createElement('tr');
                             c.append.classList.add("seperator");
@@ -186,7 +178,6 @@ let FS = (function(){
                         case "Total Assets":
                             c.head ="raTotal";
                             c.cell = "raTotal";
-                            
                             break;
                         case "Payables":
                             c.append = document.createElement('tr');
@@ -226,24 +217,11 @@ let FS = (function(){
                                 c.head ="raTotal";
                                 c.cell = "raTotal";
                                 break;
-
-
-                            
-
-
-                        
-
-
                     } 
                     break;
-                    
             }
-            
-            
-            
             return c;
         },
-
         
         formatNumeric : function (amount,prefix,decimalCount,decimal,thousands) {
             try {

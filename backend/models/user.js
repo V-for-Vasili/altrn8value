@@ -64,7 +64,6 @@ let portfolioFieldResolvers = {
     // Get Portfolio by name
     const name = obj.name;
     // Checks for each element of the stock list
-    //let response =  await Portfolio.findOne({uid: context.uid, name}, 'name stock_list');
     let parent_list = obj.stock_list;
     // If no Portfolio was found throw and error
     if(!parent_list) throw new Error(errorName.NOT_FOUND);
@@ -130,9 +129,11 @@ let createPortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
   if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
   // For each stock in the list check it exists
-  name = args.name;
-  stockListInput = args.stock_list;
-  for (i in stockListInput){
+  let name = args.name;
+  let stockListInput = args.stock_list;
+  // if no stock list provided, start with empty list
+  if (!stockListInput) stockListInput = [];
+  for (i in stockListInput) {
     // Check The Symbol is valid
     let stock = {};
     try {
@@ -148,6 +149,7 @@ let createPortfolioResolver = async (obj, args, context, info) => {
   let result = await Portfolio.findOne({uid: context.uid, name});
   if (result) throw new Error(errorName.CONFLICT);
   else {
+    // create and save a portfolo object in database
     let portfolio = new Portfolio({uid: context.uid, name, stock_list: stockListInput});
     portfolio.save();
     return {name, stock_list: stockListInput}
