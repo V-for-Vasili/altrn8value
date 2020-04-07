@@ -98,9 +98,9 @@ window.onload = (function(){
             // Check whether all ready selected
             
             // Retrive time sereies for added stock and add to plot
-            let url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + symbol +"?serietype=line";
-                $.getJSON(url, function(response) {
-                let data = response.historical.map(obj =>{
+            
+                api.getDailyStoclPriceTS(symbol, function(response) {
+                let data = response.data.stock.history.map(obj =>{
                     let rObj = [obj.date,obj.close];
                     return rObj;  
                 });

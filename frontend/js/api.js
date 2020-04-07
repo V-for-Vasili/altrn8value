@@ -305,13 +305,21 @@ let api = (function(){
         seng_graphql_request(data, callback);
     };
 
-    module.getDailyStoclPriceTS(symbol,callback=do_nothing){
-        let query = `{stock(symbol:"symbol"){
-            history {
+    module.getDailyStoclPriceTS = function(symbol,callback=do_nothing){
+        let query = `{stock(symbol:\"${symbol}\"){
+            history(timeseries:"line") {
               date
               close
             }
-          }}`
+          }}`;
+          let data = {query: query};
+          seng_graphql_request(data,function(code, err, respObj) {
+            // need to transform the response object to return only a list of
+            // financial info for different time intervals
+            if (code !== 200) return module.notifyErrorListeners(err);
+           
+            callback(respObj);
+        });
     }
 
     // if quarter is true, pull quarterly data
