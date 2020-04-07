@@ -187,7 +187,24 @@ let updatePortfolioQueryDef = `
 let updatePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
   if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
-  throw new Error(errorName.UNIMPLEMENTED);
+  // make sure portfolio with that name does exist for that username
+  let portfolio = await Portfolio.findOne(
+                            {uid: context.uid, name: args.name},
+                            'name uid stock_list',
+                            async function(err, doc) {
+    if (err) return console.log(err);
+  });
+  if (!portfolio) throw new Error(errorName.NOT_FOUND);
+  // uddate the portfolio object with the given stock list
+  let result = await Portfolio.findOneAndUpdate(
+                            {uid: context.uid, name: args.name},
+                            {stock_list: args.stock_list},
+                            {upsert: false},
+                            async function(err, doc) {
+    if (err) return console.log(err);
+  });
+  // return updated portfolio
+  return result;
 }
 
 

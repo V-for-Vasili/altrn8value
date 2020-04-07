@@ -495,7 +495,8 @@ let api = (function(){
     };
 
     // name is the name of the new portfolio
-    // stock list is of the form [{symbol, amount}]; symbols must not repeat
+    // stock list is of the form [{symbol, amount}]; symbols must not repeat;
+    // response is the portfolio object created
     module.createPortfolio = function(name, stock_list, callback=do_nothing) {
         let mutation = `mutation {
             createPortfolio(name:\"${name}\", stock_list:${formatStockListInput(stock_list)}) {
@@ -513,6 +514,7 @@ let api = (function(){
     };
 
     // deletes portfolio by name
+    // response is the portfolio object deleted
     module.deletePortfolio = function(name, callback=do_nothing) {
         let mutation = `mutation {
             deletePortfolio(name:\"${name}\") {
@@ -529,10 +531,13 @@ let api = (function(){
         seng_graphql_request(data, callback);
     };
 
-    // updates portfolio by name
-    module.updatePortfolio = function(name, callback=do_nothing) {
+    // name is the name of the portfolio
+    // stock_list argument will be the new stock_list stored for this portfolio
+    // stock list is of the form [{symbol, amount}]; symbols must not repeat
+    // response is the portfolio object after update
+    module.updatePortfolio = function(name, stock_list, callback=do_nothing) {
         let mutation = `mutation {
-            updatePortfolio(name:\"${name}\") {
+            updatePortfolio(name:\"${name}\", stock_list:${formatStockListInput(stock_list)}) {
                 name
                 stock_list {
                     stock {
