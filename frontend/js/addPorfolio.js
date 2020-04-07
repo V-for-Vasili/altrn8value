@@ -41,7 +41,7 @@ window.onload = (function () {
             tr.innerHTML = `
                 <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/></td>
                 <td class="tm-product-name"> ${symbol} | ${name}</td>
-                <td id="${symbol + "Price"}">${formatNumeric(price, "$", 2, ".", ",")}</td>
+                <td id="${symbol + "Price"}">${api.formatNumeric(price, "$", 2, ".", ",")}</td>
                 <td><input id="${symbol + "Shares"}"name="stock"type="text"class="form-control table-input validate" placeholder="-" required/></td>
                 <td id="${symbol + "Cost"}">-</td>
                 <td>
@@ -55,14 +55,14 @@ window.onload = (function () {
                 if (!isNaN(shares)) {
                     let newCost = shares * price ;
                     NP.updateStock(symbol,shares,newCost);
-                    let newCostFormatted = formatNumeric(newCost, "$", 2, ".", ",");
+                    let newCostFormatted = api.formatNumeric(newCost, "$", 2, ".", ",");
                     $("#" + symbol + "Cost").text(newCostFormatted);
                 } else {
                     NP.updateStock(symbol,0,0);
                     $("#" + symbol + "Cost").text("-");
                 }
                 let totalCost = NP.getPorofolioCost();
-                totalCost = (totalCost == 0)? "-" :  formatNumeric(totalCost, "$", 2, ".", ",");
+                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
                 $("#totalCost").text(totalCost);
             });
 
@@ -72,7 +72,7 @@ window.onload = (function () {
                 NP.updateStock(symbol,0,0);
                 NP.removeStock(symbol);
                 let totalCost = NP.getPorofolioCost();
-                totalCost = (totalCost == 0)? "-" :  formatNumeric(totalCost, "$", 2, ".", ",");
+                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
                 $("#totalCost").text(totalCost);
             });
             // Display Save Button if there is atleast one stock selected
@@ -117,7 +117,7 @@ window.onload = (function () {
                 tr.innerHTML = `
                 <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/></td>
                 <td class="tm-product-name"> ${symbol} | ${name}</td>
-                <td id="${symbol + "Price"}">${formatNumeric(price, "$", 2, ".", ",")}</td>
+                <td id="${symbol + "Price"}">${api.formatNumeric(price, "$", 2, ".", ",")}</td>
                 <td><input id="${symbol + "Shares"}"name="stock"type="text"class="form-control table-input validate" placeholder="-" required/></td>
                 <td id="${symbol + "Cost"}">-</td>
                 <td>
@@ -131,7 +131,7 @@ window.onload = (function () {
                     if (!isNaN(shares)) {
                         let newCost = shares * price ;
                         NP.updateStock(symbol,shares,newCost);
-                        let newCostFormatted = formatNumeric(newCost, "$", 2, ".", ",");
+                        let newCostFormatted = api.formatNumeric(newCost, "$", 2, ".", ",");
                         $("#" + symbol + "Cost").text(newCostFormatted);
                     }
                     else {
@@ -139,7 +139,7 @@ window.onload = (function () {
                         $("#" + symbol + "Cost").text("-");
                     }
                     let totalCost = NP.getPorofolioCost();
-                    totalCost = (totalCost == 0)? "-" :  formatNumeric(totalCost, "$", 2, ".", ",");
+                    totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
                     $("#totalCost").text(totalCost);
                 });
 
@@ -149,7 +149,7 @@ window.onload = (function () {
                     NP.updateStock(symbol,0,0);
                     NP.removeStock(symbol);
                     let totalCost = NP.getPorofolioCost();
-                    totalCost = (totalCost == 0)? "-" :  formatNumeric(totalCost, "$", 2, ".", ",");
+                    totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
                     $("#totalCost").text(totalCost);
                 });
                 if ($("#StockSelections").children("tr").length > 0){
@@ -174,22 +174,4 @@ window.onload = (function () {
         let $state = $('<span>' + state.text + ' | ' + state.name + '</span>');
         return $state;
     }
-    // Formats numeric outputs for cost calculations
-    // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-string
-    function formatNumeric(amount, prefix, decimalCount, decimal, thousands) {
-        try {
-            decimalCount = Math.abs(decimalCount);
-            decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
-
-            const negativeSign = amount < 0 ? "-" : "";
-
-            let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
-            let j = (i.length > 3) ? i.length % 3 : 0;
-
-            return negativeSign + prefix + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
 })();

@@ -85,7 +85,7 @@ let FS = (function(){
                         for (let idx1 in api.years) {
                             let year = api.years[idx1];
                             let info = infoByYear[year][m];
-                            info = FS.formatNumeric(info,'',2,'.',',');
+                            info = api.formatNumeric(info,'',2,'.',',');
                             if (idx1 == 0) info = `${info}`;
                             tr.innerHTML += `<td class="${c.cell}">${info}</td>`;
                         }
@@ -222,22 +222,6 @@ let FS = (function(){
             }
             return c;
         },
-        
-        formatNumeric : function (amount,prefix,decimalCount,decimal,thousands) {
-            try {
-                decimalCount = Math.abs(decimalCount);
-                decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
-    
-                const negativeSign = amount < 0 ? "-" : "";
-    
-                let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
-                let j = (i.length > 3) ? i.length % 3 : 0;
-    
-                return negativeSign + prefix + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
-            } catch (e) {
-                api.notifyErrorListeners(e);
-            }
-        }
     };
 
     return module;
