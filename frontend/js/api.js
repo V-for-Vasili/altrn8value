@@ -508,21 +508,16 @@ let api = (function(){
     // name is the name of the new portfolio
     // stock list is of the form [{symbol, amount}]; symbols must not repeat;
     // response is the portfolio object created
-    module.createPortfolio = function(name,stock_list, callback=do_nothing) {
+    module.createPortfolio = function(name,stock_list,purchaseValue,callback=do_nothing) {
         
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
-        let mutation = `mutation {
-            createPortfolio(name:\"${name}\", stock_list:${formatStockListInput(stock_list)}) {
-                name
-                stock_list {
-                    stock {
-                        symbol
-                    }
-                    amount
-                }
-            }
-        }`;
-        let data = {query: mutation};
+        let mutation = `mutation createPortfolio($name:String!,$stock_list:[stockListInput!]!,$purchaseValue:Float!){
+            createPortfolio(name:$name,
+                stock_list:$stock_list,
+                purchaseValue:$purchaseValue, 
+            ){name}}`;
+        let variables ={name,stock_list,purchaseValue};
+        let data = {query: mutation , variables:variables};
         seng_graphql_request(data, callback);
     };
 

@@ -93,14 +93,11 @@ window.onload = (function () {
         e.preventDefault();
         let name = $("#portfolioName").val();
         let date = new Date().toString();
-
-        
-        
-        api.createPortfolio(name,stock_list);
-        
+        let pObj = NP.submitPortfolio(name,date);
+        api.createPortfolio(pObj.name, pObj.stock_list, pObj.purchaseValue);
         sessionStorage.setItem("newPortfolio",JSON.stringify([]));
         sessionStorage.removeItem("RS");
-        window.location.href = '/myPortfolios.html';
+        //window.location.href = '/myPortfolios.html';
     });
 
     // Inital Loading of stock selections from current research session

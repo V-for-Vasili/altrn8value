@@ -10,9 +10,9 @@ let NP = (function(){
             return this.portfolio;
         },
         // Will correctly formatt the object to be passed into API call and assign
-        submitportfolio : function(name,portfolio,date){
-            let result = {name:name ,purchaseValue:portfolio.purchaseValue, dateCreated:date};
-            let stock_list = portfolio.stock_list.map(obj => {
+        submitPortfolio : function(name,date){
+            let result = {name:name ,purchaseValue:this.portfolio.purchaseValue, dateCreated:date};
+            let stock_list = this.portfolio.stock_list.map(obj => {
                 let rObj = {
                     symbol:obj.symbol,
                     shares:obj.shares,
