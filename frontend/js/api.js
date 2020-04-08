@@ -78,28 +78,6 @@ let api = (function(){
         return result;
     }
 
-    // Formats list of stocks to be transmitted by graphql mutation
-    function formatStockListInput(stock_list) {
-        if (stock_list.length == 0)
-            return module.notifyErrorListeners('formatStockListInput: stock_list must be non-empty.');
-        // verify that there are no duplicate symbols
-        let symbols = [];
-        stock_list.forEach(function(item) {
-            if (symbols.includes(item.symbol)) {
-                // found duplicate. input invalid
-                return module.notifyErrorListeners('formatStockListInput: No duplicate symbols allowed.');
-            }
-            symbols.push(item.symbol);
-        });
-        // create graphql argument string
-        let result = '[';
-        stock_list.forEach(function(item) {
-            result += `{symbol:\"${item.symbol}\",amount:${parseFloat(item.amount)}},`;
-        });
-        result += ']';
-        return result;
-    }
-
     //
     // Declarations of the metrics we fetch from the backend
     //
@@ -509,7 +487,6 @@ let api = (function(){
     // stock list is of the form [{symbol, amount}]; symbols must not repeat;
     // response is the portfolio object created
     module.createPortfolio = function(name,stock_list,purchaseValue,createdAt,callback=do_nothing) {
-        
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let mutation = `mutation createPortfolio($name:String!,$stock_list:[stockListInput!]!,$purchaseValue:Float!,$createdAt:String!){
             createPortfolio(name:$name,
@@ -537,7 +514,8 @@ let api = (function(){
                 }
             }
         }`;
-        let data = {query: mutation};
+        let variables ={name,stock_list};
+        let data = {query: mutation , variables:variables};
         seng_graphql_request(data, callback);
     };
 
@@ -548,7 +526,7 @@ let api = (function(){
     module.updatePortfolio = function(name, stock_list, callback=do_nothing) {
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let mutation = `mutation {
-            updatePortfolio(name:\"${name}\", stock_list:${formatStockListInput(stock_list)}) {
+            updatePortfolio(name:\"${name}\",$stock_list:[stockListInput!]!) {
                 name
                 stock_list {
                     stock {
