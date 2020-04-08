@@ -451,13 +451,13 @@ let api = (function(){
     module.getUserPortfolios = function(callback=do_nothing) {
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let query = `{
-            portfolioList(uid:\"${module.getUid()}\") {
+            portfolioList {
                 name
                 stock_list {
                     stock {
                         symbol
                     }
-                    amount
+                    shares
                 }
             }
         }`;

@@ -128,54 +128,41 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
   return result;
 }
 
-let portfolioListQueryDef = `
-    portfolioList:[Portfolio]
-`;
-
-let portfolioListResolver = async (obj, args, context, info) => {
+let portfolioFieldResolvers = {
+  stock_list:  async (obj, args, context, info) => {
     // Check the user is authenticated
     if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
-    // Fetch and return all portfolios that are associated with given uid
-    let userID = context.uid;
-    //let userID = "sanicTheHedgehog";
-    return await Portfolio.find({uid: userID});
-}
-
-let portfolioFieldResolvers = {
-  // stock_list:  async (obj, args, context, info) => {
-  //   // Check the user is authenticated
-  //   if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
-  //   // Get Portfolio by name
-  //   const name = obj.name;
-  //   // Checks for each element of the stock list
-  //   let parent_list = obj.stock_list;
-  //   // If no Portfolio was found throw and error
-  //   if(!parent_list) throw new Error(errorName.NOT_FOUND);
-  //   // For each stock populate its fields
-  //   let stock_list = [];
-  //   for (stock_element in parent_list) {
-  //     stock_element = parseInt(stock_element);
-  //     let amount = parent_list[stock_element].amount;
-  //     let symbol = parent_list[stock_element].symbol;
-  //     let stock = {};
-  //     try {
-  //       stock = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbol}`);
-  //       stock = stock.data[0];
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //     stock_list.push({stock: {
-  //       exchange: stock.exhange,
-  //       symbol: stock.symbol,
-  //       price: stock.price,
-  //       market_cap: stock.marketCap,
-  //       change: stock.change,
-  //       changes_percentage: stock.changesPercentage,
-  //       avg_volume: stock.avgVolume,
-  //     }, amount: amount}) ;
-  //   }
-  //   return stock_list;
-  // },
+    // Get Portfolio by name
+    const name = obj.name;
+    // Checks for each element of the stock list
+    let parent_list = obj.stock_list;
+    // If no Portfolio was found throw and error
+    if(!parent_list) throw new Error(errorName.NOT_FOUND);
+    // For each stock populate its fields
+    let stock_list = [];
+    for (stock_element in parent_list) {
+      stock_element = parseInt(stock_element);
+      let shares = parent_list[stock_element].shares;
+      let symbol = parent_list[stock_element].symbol;
+      let stock = {};
+      try {
+        stock = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbol}`);
+        stock = stock.data[0];
+      } catch (err) {
+        console.log(err);
+      }
+      stock_list.push({stock: {
+        exchange: stock.exhange,
+        symbol: stock.symbol,
+        price: stock.price,
+        market_cap: stock.marketCap,
+        change: stock.change,
+        changes_percentage: stock.changesPercentage,
+        avg_volume: stock.avgVolume,
+      }, shares: shares}) ;
+    }
+    return stock_list;
+  },
   agregate: async (obj, args, context, info) => {
     let stock_list = obj.stock_list;
     let history_list = [];
@@ -261,6 +248,18 @@ let updatePortfolioResolver = async (obj, args, context, info) => {
 
 // Portfolio list
 
+let portfolioListQueryDef = `
+    portfolioList:[Portfolio]
+`;
+
+let portfolioListResolver = async (obj, args, context, info) => {
+    // Check the user is authenticated
+    if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+    // Fetch and return all portfolios that are associated with given uid
+    let userID = context.uid;
+    //let userID = "sanicTheHedgehog";
+    return await Portfolio.find({uid: userID});
+}
 
 
 module.exports = {portfolioTypeDef,portfolioFieldResolvers,
