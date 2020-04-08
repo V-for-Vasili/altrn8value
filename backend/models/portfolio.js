@@ -120,25 +120,25 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
   let response = await Portfolio.findOne({uid: userID, name: args.name}, function(err, res) {
     if (err) return console.log(err);
     if(!res) throw new Error(errorName.NOT_FOUND);
-    console.log("THIS IS THE PORFOLIO INSIDE CALLBACK",res);
+    
     result = res;
   });
-  console.log("THIS IS RESPONSE AFTER CALL BACK :",response);
+
   if(!result) throw new Error(errorName.NOT_FOUND);
   return result;
 }
 
 let portfolioListQueryDef = `
-    portfolioList (
-        uid: String!
-    ): [Portfolio]
+    portfolioList:[Portfolio]
 `;
 
 let portfolioListResolver = async (obj, args, context, info) => {
     // Check the user is authenticated
-    if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+    //if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
     // Fetch and return all portfolios that are associated with given uid
-    return await Portfolio.find({uid: context.uid});
+    //let userID = context.uid;
+    let userID = "sanicTheHedgehog";
+    return await Portfolio.find({uid: userID});
 }
 
 let portfolioFieldResolvers = {
@@ -202,11 +202,6 @@ let portfolioFieldResolvers = {
   }
 }
 
-
-
-
-
-
 // Delete Portfolio
 let deletePortfolioQueryDef = `
   deletePortfolio (
@@ -216,10 +211,12 @@ let deletePortfolioQueryDef = `
 
 let deletePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
-  if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+  //if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+  //let userID = context.uid;
+  let userID = "sanicTheHedgehog";
   // remove 1 document from db, return result if successful
   let result = null;
-  let x = await Portfolio.findOneAndDelete({name: args.name}, function(err, item) {
+  let x = await Portfolio.findOneAndDelete({uid:userID, name: args.name}, function(err, item) {
       result = item;
   });
   if (!result) throw new Error(errorName.NOT_FOUND);
@@ -232,24 +229,27 @@ let updatePortfolioQueryDef = `
   updatePortfolio (
     name: String!
     stock_list: [stockListInput]
+    purchaseValue : Float!
   ): Portfolio
 `;
 
 let updatePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
-  if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+  //if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+  //let userID = context.uid;
+  let userID = "sanicTheHedgehog";
   // make sure portfolio with that name does exist for that username
   let portfolio = await Portfolio.findOne(
-                            {uid: context.uid, name: args.name},
-                            'name uid stock_list',
+                            {uid: userID, name: args.name},
+                            'name uid stock_list purchaseValue',
                             async function(err, doc) {
     if (err) return console.log(err);
   });
   if (!portfolio) throw new Error(errorName.NOT_FOUND);
   // uddate the portfolio object with the given stock list
   let result = await Portfolio.findOneAndUpdate(
-                            {uid: context.uid, name: args.name},
-                            {stock_list: args.stock_list},
+                            {uid: userID, name: args.name},
+                            {stock_list: args.stock_list,purchaseValue:args.purchaseValue},
                             {upsert: false},
                             async function(err, doc) {
     if (err) return console.log(err);
