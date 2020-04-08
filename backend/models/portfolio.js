@@ -60,9 +60,9 @@ let portfolioTypeDef = `
   let createPortfolioResolver = async (obj, args, context, info) => {
     // Check the user is authenticated
     
-    //if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
-    //let userID = context.uid;
-    let userID = "sanicTheHedgehog";
+    if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+    let userID = context.uid;
+    //let userID = "sanicTheHedgehog";
 
     // For each stock in the list check it exists
     let name = args.name;
@@ -112,9 +112,9 @@ let portfolioQueryDef = `portfolio(name: String!): Portfolio`;
 
 let portfolioQueryResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
-  //if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
-  //let userID = context.uid;
-  let userID = "sanicTheHedgehog";
+  if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+  let userID = context.uid;
+  //let userID = "sanicTheHedgehog";
   // Get Portfolio by name from db
   let result = null;
   let response = await Portfolio.findOne({uid: userID, name: args.name}, function(err, res) {
@@ -134,10 +134,10 @@ let portfolioListQueryDef = `
 
 let portfolioListResolver = async (obj, args, context, info) => {
     // Check the user is authenticated
-    //if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+    if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
     // Fetch and return all portfolios that are associated with given uid
-    //let userID = context.uid;
-    let userID = "sanicTheHedgehog";
+    let userID = context.uid;
+    //let userID = "sanicTheHedgehog";
     return await Portfolio.find({uid: userID});
 }
 
@@ -211,9 +211,9 @@ let deletePortfolioQueryDef = `
 
 let deletePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
-  //if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
-  //let userID = context.uid;
-  let userID = "sanicTheHedgehog";
+  if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+  let userID = context.uid;
+  //let userID = "sanicTheHedgehog";
   // remove 1 document from db, return result if successful
   let result = null;
   let x = await Portfolio.findOneAndDelete({uid:userID, name: args.name}, function(err, item) {
@@ -236,8 +236,8 @@ let updatePortfolioQueryDef = `
 let updatePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
   //if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
-  //let userID = context.uid;
-  let userID = "sanicTheHedgehog";
+  let userID = context.uid;
+  //let userID = "sanicTheHedgehog";
   // make sure portfolio with that name does exist for that username
   let portfolio = await Portfolio.findOne(
                             {uid: userID, name: args.name},
