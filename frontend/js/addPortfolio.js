@@ -2,7 +2,7 @@
 window.onload = (function () {
     "use strict";
 
-    loadInfo((sessionStorage.getItem("newPorfolio"))? JSON.parse(sessionStorage.getItem("newPorfolio")): []); 
+    loadInfo((sessionStorage.getItem("newPortfolio"))? JSON.parse(sessionStorage.getItem("newPortfolio")): []); 
     $("#stockSelect").select2({
         placeholder: 'Select A Stock',
         theme: "flat",
@@ -91,23 +91,16 @@ window.onload = (function () {
     // Save Button Functionallity
     document.querySelector('#addStockForm').addEventListener("submit",function(e){
         e.preventDefault();
-        let name = $("#porfolioName").val();
-        NP.porfolio.name = name;
-        let porfolio = NP.getPorfolio();
-        let stock_list = porfolio.stocks.map(obj => {
-            let robj = {
-                symbol : obj.symbol,
-                amount : obj.shares,
-                purchasePrice: obj.purchasePrice,
-                purchaseTime:porfolio.created
-            };
-            return robj; 
-        });
+        let name = $("#portfolioName").val();
+        let date = new Date().toString();
+
+        
+        
         api.createPortfolio(name,stock_list);
         
-        sessionStorage.setItem("newPorfolio",JSON.stringify([]));
+        sessionStorage.setItem("newPortfolio",JSON.stringify([]));
         sessionStorage.removeItem("RS");
-        window.location.href = '/myPorfolios.html';
+        window.location.href = '/myPortfolios.html';
     });
 
     // Inital Loading of stock selections from current research session

@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 // Imports
 const axios = require('axios');
 const FormatError = require('easygraphql-format-error');
@@ -19,8 +20,10 @@ const {Portfolio} = require('../db/Portfolio.js');
 // portfolio type def
 let portfolioTypeDef = `
   type Stock_Purchase {
-    stock: Stock,
-    amount: Float
+    stock: Stock
+    shares: Float
+    purchasePrice: Float
+    purchaseTime: String
   }
 
   type Agregate {
@@ -30,14 +33,94 @@ let portfolioTypeDef = `
 
   input stockListInput {
     symbol: String
-    amount: Float
+    shares: Float
+    purchasePrice: Float
+    purchaseTime: String
   }
 
   type Portfolio {
-    name: String
-    stock_list: [Stock_Purchase]
+    name: String!
+    stock_list: [Stock_Purchase]!
+    purchaseValue: Float!
+    currentValue: Float!
+    dateCreated: String!
     agregate: [Agregate]
   }`;
+
+  // Create portfolio
+  let createPortfolioQueryDef = `
+  createPortfolio (
+    name: String!
+    stock_list: [stockListInput!]!
+    purchaseValue: Float!
+  ): Portfolio
+  `;
+
+  let createPortfolioResolver = async (obj, args, context, info) => {
+    // Check the user is authenticated
+    
+    //if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+    //let userID = context.uid;
+    let userID = "sanicTheHedgehog";
+
+    // For each stock in the list check it exists
+    let name = args.name;
+    // Check whether this exists alread
+    let result = await Portfolio.findOne({uid: userID, name});
+    if (result) throw new Error(errorName.CONFLICT);
+
+    let stockListInput = args.stock_list;
+    // if no stock list provided, start with empty list
+    if (!stockListInput) stockListInput = [];
+    else {
+      // Extract list of symbols
+      let symbols = stockListInput.map(obj => {
+        let rObj = obj.symbol;
+        return rObj;
+      });
+      try {
+      // Check all symbols are valid 
+      console.log("SYMBOLS ARE:",symbols);
+      let response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbols.toString()}`);
+      let stocks = response.data;
+      console.log("STOCKS ARE",stocks);
+      console.log("SYMBOLS LENGTH: ",symbols.length);
+      console.log("STOCKS LENGTH: ",stocks.length);
+      if (stocks.length != symbols.length) throw new Error(errorName.NOT_FOUND);
+        // Change date strings to ISO objects so they can be used in queries in MOGODB
+        let sl = stockListInput.map(obj => {
+          let rObj = obj;
+          rObj.purchaseTime = new Date(obj.purchaseTime);
+          return rObj;
+        });
+        let portfolio =  new Portfolio({uid: userID, name:name, stock_list: sl,purchaseValue:args.purchaseValue});
+        await portfolio.save();
+        console.log(portfolio);
+        
+        return {name:name,
+          stock_list:stockListInput,
+          purchaseValue:args.purchaseValue,
+          currentValue: args.purchaseValue,
+          dateCreated:portfolio.createdAt.toString()};
+      } catch (err) {
+        console.log(err);
+      }
+      // If any of symbols are invalid lengths will differ
+      
+    
+       
+   
+
+    }
+    
+    
+  }
+
+
+
+
+
+
 
 
 // Get Portfolio
@@ -119,44 +202,9 @@ let portfolioFieldResolvers = {
 }
 
 
-// Create portfolio
-let createPortfolioQueryDef = `
-  createPortfolio (
-    name: String!
-    stock_list: [stockListInput]
-  ): Portfolio
-`;
 
-let createPortfolioResolver = async (obj, args, context, info) => {
-  // Check the user is authenticated
-  if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
-  // For each stock in the list check it exists
-  let name = args.name;
-  let stockListInput = args.stock_list;
-  // if no stock list provided, start with empty list
-  if (!stockListInput) stockListInput = [];
-  for (i in stockListInput) {
-    // Check The Symbol is valid
-    let stock = {};
-    try {
-      let symbol = stockListInput[i].symbol;
-      stock = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbol}`);
-      stock = stock.data[0];
-    } catch (err) {
-      console.log(err);
-    }
-    if (!stock) throw new Error(errorName.NOT_FOUND);
-  }
-  // Check whether this exists alread
-  let result = await Portfolio.findOne({uid: context.uid, name});
-  if (result) throw new Error(errorName.CONFLICT);
-  else {
-    // create and save a portfolo object in database
-    let portfolio = new Portfolio({uid: context.uid, name, stock_list: stockListInput});
-    portfolio.save();
-    return {name, stock_list: stockListInput}
-  }
-}
+
+
 
 // Delete Portfolio
 let deletePortfolioQueryDef = `

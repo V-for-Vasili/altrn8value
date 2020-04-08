@@ -92,7 +92,7 @@ window.onload = (function(){
                 Graphing.update(tsPlot,rs.stockDisplayList,rs.series);
                 //  
                 if ($("#StockSelections").children("tr").length == 0){
-                    $("#savePorfolio").hide();
+                    $("#savePortfolio").hide();
                 }
             });
             // Check whether all ready selected
@@ -119,9 +119,9 @@ window.onload = (function(){
                 }
             });
             
-            // Display Save Porfolio Button of Authorized and Has atleast one selection
+            // Display Save Portfolio Button of Authorized and Has atleast one selection
             if (api.isLoggedIn()  && $("#StockSelections").children("tr").length > 0){
-                $("#savePorfolio").show();
+                $("#savePortfolio").show();
             }
             // Clear Stock Select Bar
             $("#singleSearch").val(null).trigger("change");
@@ -157,12 +157,12 @@ window.onload = (function(){
         reloadPageContent();
     });
 
-    $('#savePorfolio').on('click',function(e){
+    $('#savePortfolio').on('click',function(e){
         console.log("entered");
         if(api.isLoggedIn()){
             let data = rs.stockDisplayList;
-            sessionStorage.setItem('newPorfolio',JSON.stringify(data));
-            window.location.href = '/addPorfolio.html';
+            sessionStorage.setItem('newPortfolio',JSON.stringify(data));
+            window.location.href = '/addPortfolio.html';
         }
     });
 
@@ -196,13 +196,13 @@ window.onload = (function(){
                 Graphing.update(tsPlot,rs.stockDisplayList,rs.series);
                 //  
                 if ($("#StockSelections").children("tr").length == 0){
-                    $("#savePorfolio").hide();
+                    $("#savePortfolio").hide();
                 }
             });
             $('#StockSelections').prepend(tr);
         });
         if (api.isLoggedIn()  && $("#StockSelections").children("tr").length > 0){
-            $("#savePorfolio").show();
+            $("#savePortfolio").show();
         }
     }
 

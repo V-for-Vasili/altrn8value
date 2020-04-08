@@ -6,11 +6,11 @@ window.onload = (function(){
     api.getUserPortfolios(api.getUid(), function(code, err, respObj) {
         if (code !== 200) return api.notifyErrorListeners(err);
         console.log(respObj);
-        //loadPorfolios(respObj);
+        //loadportfolios(respObj);
     });
-    // let Porfolios = JSON.parse(localStorage.getItem("Porfolios"));
-    // // Array of poroflio objects will be passed into the loadPorfolio function
-    // loadPorfolios(Porfolios);
+    // let portfolios = JSON.parse(localStorage.getItem("portfolios"));
+    // // Array of poroflio objects will be passed into the loadportfolio function
+    // loadportfolios(portfolios);
 
     // add event listener to handle login or logout as appropriate
     api.onLogin(function() {
@@ -35,16 +35,16 @@ window.onload = (function(){
     }
     reloadPageContent();
 
-    function loadPorfolios(porfolios){
-        porfolios.forEach(function(porfolio){
+    function loadPortfolios(portfolios){
+        portfolios.forEach(function(portfolio){
             let tr = document.createElement('tr');
             tr.innerHTML = `
             <th scope="row" class="checkCell"><input type="checkbox" /></th>
-            <td class="tm-product-name">${porfolio.name}</td>
-            <td>${porfolio.cost}</td>
-            <td>${porfolio.cost * 1.35}</td>
+            <td class="tm-product-name">${portfolio.name}</td>
+            <td>${portfolio.cost}</td>
+            <td>${portfolio.cost * 1.35}</td>
             <td>35%</td>
-            <td>${porfolio.created}</td>
+            <td>${portfolio.created}</td>
             <td>
               <a href="#" class="tm-product-delete-link">
                 <i class="far fa-trash-alt tm-product-delete-icon"></i>
@@ -53,18 +53,18 @@ window.onload = (function(){
 
             tr.querySelector('i').addEventListener('click',function(e){
                 // delete this portfolio
-                api.deletePortfolio(porfolio._id, function(code, err, respObj) {
+                api.deletePortfolio(portfolio._id, function(code, err, respObj) {
                     if (code !== 200) return api.notifyErrorListeners(err);
                     tr.parentElement.removeChild(tr);
                 });
             });
 
-            $('#porfolioList').prepend(tr);
+            $('#portfolioList').prepend(tr);
         });
     }
 
     //let tsPlot = Graphing.initPlot("chart");
     //Graphing.update(tsPlot,[],[]);
-    //Graphing.graphPorfolio(tsPlot,Porfolios[0]);
+    //Graphing.graphportfolio(tsPlot,portfolios[0]);
 
 })();
