@@ -216,7 +216,7 @@ let updatePortfolioQueryDef = `
   updatePortfolio (
     name: String!
     stock_list: [stockListInput]
-    purchaseValue : Float!
+    purchaseValue: Float!
   ): Portfolio
 `;
 
