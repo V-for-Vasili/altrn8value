@@ -305,6 +305,23 @@ let api = (function(){
         seng_graphql_request(data, callback);
     };
 
+    module.getDailyStoclPriceTS = function(symbol,callback=do_nothing){
+        let query = `{stock(symbol:\"${symbol}\"){
+            history(timeseries:"line") {
+              date
+              close
+            }
+          }}`;
+          let data = {query: query};
+          seng_graphql_request(data,function(code, err, respObj) {
+            // need to transform the response object to return only a list of
+            // financial info for different time intervals
+            if (code !== 200) return module.notifyErrorListeners(err);
+           
+            callback(respObj);
+        });
+    }
+
     // if quarter is true, pull quarterly data
     // if quarter is false, pull yearly data
     module.getIncomeStatement = function(symbol, quarter=false, callback=do_nothing) {
@@ -491,19 +508,11 @@ let api = (function(){
     // name is the name of the new portfolio
     // stock list is of the form [{symbol, amount}]; symbols must not repeat;
     // response is the portfolio object created
-    module.createPortfolio = function(porfolio, callback=do_nothing) {
-        let stock_list = porfolio.map(obj => {
-            let robj = {
-                symbol : obj.symbol,
-                amount : obj.shares,
-                purchasePrice: obj.purchasePrice,
-                purchaseTime:porfolio.created
-            };
-            return robj; 
-        });
+    module.createPortfolio = function(name,stock_list, callback=do_nothing) {
+        
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let mutation = `mutation {
-            createPortfolio(name:\"${porfolio.name}\", stock_list:${formatStockListInput(stock_list)}) {
+            createPortfolio(name:\"${name}\", stock_list:${formatStockListInput(stock_list)}) {
                 name
                 stock_list {
                     stock {

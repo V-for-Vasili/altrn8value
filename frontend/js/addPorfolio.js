@@ -93,13 +93,18 @@ window.onload = (function () {
         e.preventDefault();
         let name = $("#porfolioName").val();
         NP.porfolio.name = name;
-        let porfolios = (localStorage.getItem("Porfolios"))? JSON.parse(localStorage.getItem("Porfolios")) : []; 
-        porfolios.push(NP.getPorfolio());
-        // TODO:
-        //##################################################################
-        // Push profolio object into backend storage of users array of porofolios
-        localStorage.setItem("Porfolios",JSON.stringify(porfolios));
-        //#################################################################
+        let porfolio = NP.getPorfolio();
+        let stock_list = porfolio.stocks.map(obj => {
+            let robj = {
+                symbol : obj.symbol,
+                amount : obj.shares,
+                purchasePrice: obj.purchasePrice,
+                purchaseTime:porfolio.created
+            };
+            return robj; 
+        });
+        api.createPortfolio(name,stock_list);
+        
         sessionStorage.setItem("newPorfolio",JSON.stringify([]));
         sessionStorage.removeItem("RS");
         window.location.href = '/myPorfolios.html';
