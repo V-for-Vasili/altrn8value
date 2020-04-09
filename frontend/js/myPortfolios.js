@@ -11,7 +11,9 @@ window.addEventListener('load', function(){
             // calculate totalCurrentPrice, change;
             let totalCurrentPrice = 0.0;
             portfolio.stock_list.forEach(function(stockPurchase) {
-                totalCurrentPrice = totalCurrentPrice + stockPurchase.stock.price;
+                let pricePerShare = stockPurchase.stock.price;
+                let shares = stockPurchase.shares;
+                totalCurrentPrice = totalCurrentPrice + (pricePerShare * shares);
             });
             let change = ((totalCurrentPrice / totalPurchasePrice) - 1.0) * 100;
             // Fields in order:
