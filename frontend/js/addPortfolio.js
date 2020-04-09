@@ -33,8 +33,10 @@ window.onload = (function () {
         let name = e.params.data.name;
         let symbol = e.params.data.symbol;
         let url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
-        $.getJSON(url, function (response) {
-            let price = response[0].price;
+        api.getCompanyProfile(symbol, function (response) {
+            response = response.data.stock;
+            let name = response.company_profile.company_name;
+            let price = response.price;
             NP.addStock(name,symbol,price);
             let tr = document.createElement('tr');
             tr.innerHTML = `
@@ -102,10 +104,11 @@ window.onload = (function () {
     // Inital Loading of stock selections from current research session
     function loadInfo(symbols){ 
         symbols.forEach(function(symbol){
-            let url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
-            $.getJSON(url, function (response) {
-                let name = response[0].name;
-                let price = response[0].price;
+            
+            api.getCompanyProfile(symbol, function (response) {
+                response = response.data.stock;
+                let name = response.company_profile.company_name;
+                let price = response.price;
                 NP.addStock(name,symbol,price);
                 let tr = document.createElement('tr');
                 tr.innerHTML = `

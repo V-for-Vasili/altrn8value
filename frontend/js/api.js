@@ -246,6 +246,8 @@ let api = (function(){
     module.getCompanyProfile = function(symbol, callback=do_nothing) {
         let query = `{
                 stock(symbol:\"${symbol}\"){
+                    symbol
+                    price
                     company_profile {
                         beta
                         last_div
@@ -262,7 +264,12 @@ let api = (function(){
             }
         `;
         let data = {query: query};
-        seng_graphql_request(data, callback);
+        seng_graphql_request(data, function(code, err, respObj) {
+            // financial info for different time intervals
+            if (code !== 200) return module.notifyErrorListeners(err);
+           
+            callback(respObj);
+        });
     };
 
     // does not include the following fields:
@@ -280,7 +287,12 @@ let api = (function(){
             }
         }`;
         let data = {query: query};
-        seng_graphql_request(data, callback);
+        seng_graphql_request(data, function(code, err, respObj) {
+            // financial info for different time intervals
+            if (code !== 200) return module.notifyErrorListeners(err);
+           
+            callback(respObj);
+        });
     };
 
     // queries financialmodelingprep.com; Searches NASDAQ only for now
