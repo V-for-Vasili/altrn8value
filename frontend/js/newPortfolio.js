@@ -15,7 +15,7 @@ let NP = (function(){
             let stock_list = this.portfolio.stock_list.map(obj => {
                 let rObj = {
                     symbol:obj.symbol,
-                    shares:obj.shares,
+                    shares:parseFloat(obj.shares),
                     purchasePrice:obj.purchasePrice,
                     purchaseTime:date
                 };

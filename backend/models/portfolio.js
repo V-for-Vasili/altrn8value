@@ -42,7 +42,6 @@ let portfolioTypeDef = `
     name: String!
     stock_list: [Stock_Purchase]!
     purchaseValue: Float!
-    currentValue: Float!
     createdAt: String!
     agregate: [Agregate]
   }`;
@@ -81,12 +80,8 @@ let portfolioTypeDef = `
       });
       try {
       // Check all symbols are valid 
-      console.log("SYMBOLS ARE:",symbols);
       let response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbols.toString()}`);
       let stocks = response.data;
-      console.log("STOCKS ARE",stocks);
-      console.log("SYMBOLS LENGTH: ",symbols.length);
-      console.log("STOCKS LENGTH: ",stocks.length);
       if (stocks.length != symbols.length) throw new Error(errorName.NOT_FOUND);
         // Change date strings to ISO objects so they can be used in queries in MOGODB
         // let sl = stockListInput.map(obj => {
@@ -96,7 +91,6 @@ let portfolioTypeDef = `
         // });
         let portfolio =  new Portfolio({uid: userID, name:name, stock_list: stockListInput,purchaseValue:args.purchaseValue , createdAt:args.createdAt});
         await portfolio.save();
-        console.log(portfolio);
         
         return portfolio;
       } catch (err) {
@@ -121,9 +115,17 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
     if (err) return console.log(err);
     if(!res) throw new Error(errorName.NOT_FOUND);
     
+    res.stock_list = res.stock_list.map(obj => {
+      let rObj = obj;
+      rObj.stock = {};
+      rObj.stock.symbol = obj.symbol;
+      rObj.purchaseTime = rObj.purchaseTime.toJSON();
+      return rObj;
+    });
+    res.createdAt = res.createdAt.toJSON();
     result = res;
   });
-
+  console.log("Porfolio after modifiying time strings are: ",result );
   if(!result) throw new Error(errorName.NOT_FOUND);
   return result;
 }
@@ -140,10 +142,12 @@ let portfolioFieldResolvers = {
     if(!parent_list) throw new Error(errorName.NOT_FOUND);
     // For each stock populate its fields
     let stock_list = [];
-    for (stock_element in parent_list) {
+    for (let stock_element in parent_list) {
       stock_element = parseInt(stock_element);
       let shares = parent_list[stock_element].shares;
       let symbol = parent_list[stock_element].symbol;
+      let purchasePrice =  parent_list[stock_element].purchasePrice;
+      let purchaseTime =  parent_list[stock_element].purchaseTime;
       let stock = {};
       try {
         stock = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbol}`);
@@ -159,7 +163,7 @@ let portfolioFieldResolvers = {
         change: stock.change,
         changes_percentage: stock.changesPercentage,
         avg_volume: stock.avgVolume,
-      }, shares: shares}) ;
+      }, shares: shares , purchasePrice:purchasePrice,purchaseTime:purchaseTime});
     }
     return stock_list;
   },
@@ -185,7 +189,6 @@ let portfolioFieldResolvers = {
         }
       }
     }
-    console.log(history_list);
   }
 }
 
@@ -222,9 +225,9 @@ let updatePortfolioQueryDef = `
 
 let updatePortfolioResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
-  //if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
-  let userID = context.uid;
-  //let userID = "sanicTheHedgehog";
+  if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
+  //let userID = context.uid;
+  let userID = "sanicTheHedgehog";
   // make sure portfolio with that name does exist for that username
   let portfolio = await Portfolio.findOne(
                             {uid: userID, name: args.name},
@@ -258,7 +261,14 @@ let portfolioListResolver = async (obj, args, context, info) => {
     // Fetch and return all portfolios that are associated with given uid
     let userID = context.uid;
     //let userID = "sanicTheHedgehog";
-    return await Portfolio.find({uid: userID});
+    let portfolioArray = await Portfolio.find({uid: userID});
+    portfolioArray = portfolioArray.map(obj => {
+      let eleArgs = {name:obj.name};
+      let rObj = portfolioQueryResolver(null,eleArgs,context,info);
+      rObj.stock_list = portfolioFieldResolvers.stock_list(rObj,null,context,info);
+      return rObj;
+    });
+  return portfolioArray;
 }
 
 

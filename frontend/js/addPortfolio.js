@@ -98,7 +98,7 @@ window.onload = (function () {
         api.createPortfolio(pObj.name, pObj.stock_list, pObj.purchaseValue,date.toJSON());
         sessionStorage.setItem("newPortfolio",JSON.stringify([]));
         sessionStorage.removeItem("RS");
-        //window.location.href = '/myPortfolios.html';
+        window.location.href = '/myPortfolios.html';
     });
 
     // Inital Loading of stock selections from current research session
