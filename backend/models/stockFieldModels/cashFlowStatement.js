@@ -1,3 +1,4 @@
+/*jshint sub:true*/
 // Imports
 const axios = require('axios');
 
@@ -48,33 +49,33 @@ function parse_response(response) {
 }
 
 let cashFlowStatementYearResolver = async (obj, args, context, info) => {
-  let response = {};
-  try {
-    response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/${obj.symbol}`);
-    response = response.data.financials;
-  } catch (err) {
-    console.log(err);
-  }
-  if(!response) {
-    return null;
-  } else {
-    return parse_response(response);
-  }
-}
+    let response = {};
+    try {
+        response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/${obj.symbol}`);
+        response = response.data.financials;
+    } catch (err) {
+        console.log(err);
+    }
+    if(!response) {
+        return null;
+    } else {
+        return parse_response(response);
+    }
+};
 
 let cashFlowStatementQuarterResolver = async (obj, args, context, info) => {
-  let response = {};
-  try {
-    response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/${obj.symbol}?period=quarter`);
-    response = response.data.financials;
-  } catch (err) {
-    console.log(err);
-  }
-  if(!response) {
-    return null;
-  } else {
-    return parse_response(response);
-  }
-}
+    let response = {};
+    try {
+        response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/cash-flow-statement/${obj.symbol}?period=quarter`);
+        response = response.data.financials;
+    } catch (err) {
+        console.log(err);
+    }
+    if (!response) {
+        return null;
+    } else {
+        return parse_response(response);
+    }
+};
 
 module.exports = {cashFlowStatementTypeDef, cashFlowStatementYearResolver, cashFlowStatementQuarterResolver};

@@ -31,12 +31,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // serve frontend statically
 app.use(express.static('frontend'));
-app.use('/docs', express.static('./slate/build'))
+app.use('/docs', express.static('./slate/build'));
 
 
 // Settup Logger
 morgan.token('id', function getId(req) {
-  return req.id
+    return req.id;
 });
 
 let loggerFormat = ':id [:date[web]] ":method :url" :status :response-time';
@@ -46,7 +46,7 @@ morganBody(app);
 
 // Mongose Settup
 mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true}).catch(err => {
-  console.log(err);
+    console.log(err);
 });
 
 // User Log in
@@ -94,7 +94,7 @@ app.post('/api/signup', function (req, res, next) {
     });
    return res.status(201).json("User "+ username + " Signed Up & Logged On");
   });
-})
+});
 
 // Signin Pulled from Lab 6
 // curl -H "Content-Type: application/json" -X POST -d '{"username":"alice","password":"alice"}'  localhost:3000/api/signin/:ebf3c240-8c05-4195-9aec-83e850c8eda4
@@ -139,7 +139,7 @@ app.post('/api/signin/', function (req, res, next) {
     res.setHeader('Set-Cookie', cookieArray);
     return res.status(200).json("User " + username + " Logged On");
   });
-})
+});
 
 // Set variables to correct values to be passed into context paramater of graphql
 app.use(function(req, res, next) {

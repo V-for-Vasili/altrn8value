@@ -1,3 +1,4 @@
+/*jshint sub:true*/
 // Imports
 const axios = require('axios');
 
@@ -34,8 +35,7 @@ type BalanceSheet {
     net_debt: String
     other_ssets: String
     other_liabilities: String
-}
-`;
+}`;
 
 function parse_response(response) {
     let statements = [];
@@ -89,7 +89,7 @@ let balanceSheetYearResolver = async (obj, args, context, info) => {
     } else {
       return parse_response(response);
     }
-}
+};
 
 let balanceSheetQuarterResolver = async (obj, args, context, info) => {
     let response = {};
@@ -104,6 +104,6 @@ let balanceSheetQuarterResolver = async (obj, args, context, info) => {
     } else {
       return parse_response(response);
     }
-}
+};
 
 module.exports = {balanceSheetTypeDef, balanceSheetYearResolver, balanceSheetQuarterResolver};

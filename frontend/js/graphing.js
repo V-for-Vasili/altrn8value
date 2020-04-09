@@ -146,7 +146,10 @@ let Graphing = (function(){
                 let decompItemData = [];
                 ts.historical.forEach(function(day){
                     decompItemData.push([day.date,day.close]);
-                    (datesClose[day.date])? datesClose[day.date]+=day.close * portfolio.stock_list[index].shares : datesClose[day.date] = day.close * portfolio.stock_list[index].shares;
+                    if (datesClose[day.date])
+                        datesClose[day.date] += day.close * portfolio.stock_list[index].shares;
+                    else
+                        datesClose[day.date] = day.close * portfolio.stock_list[index].shares;
                 });
                 decompItem.data = decompItemData;
                 portfolioDecomp.push(decompItem);

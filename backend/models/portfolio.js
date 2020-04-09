@@ -15,7 +15,6 @@ const errorName = formatError.errorName;
 // Import MongoDB Type
 const {Portfolio} = require('../db/Portfolio.js');
 
-
 // portfolio type def
 let portfolioTypeDef = `
   type Stock_Purchase {
@@ -87,12 +86,10 @@ let createPortfolioResolver = async (obj, args, context, info) => {
         }
         // If any of symbols are invalid lengths will differ
     }
-}
-
+};
 
 // Get Portfolio
 let portfolioQueryDef = `portfolio(name: String!): Portfolio`;
-
 
 let portfolioQueryResolver = async (obj, args, context, info) => {
     // Check the user is authenticated
@@ -112,7 +109,7 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
     });
     if(!response) throw new Error(errorName.NOT_FOUND);
     return response;
-}
+};
 
 let portfolioFieldResolvers = {
     stock_list:  async (obj, args, context, info) => {
@@ -154,27 +151,27 @@ let portfolioFieldResolvers = {
     agregate: async (obj, args, context, info) => {
         let stock_list = obj.stock_list;
         let history_list = [];
-        for (i in stock_list) {
+        for (let i in stock_list) {
             try {
                 let symbol = stock_list[i].symbol;
                 let stock = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}`);
-                history_list[i] = {history: stock.data.historical, symbol, amount: stock_list[i].amount}
+                history_list[i] = {history: stock.data.historical, symbol, amount: stock_list[i].amount};
             } catch (err) {
                 console.log(err);
             }
         }
         let agregate = [];
-        for (i in history_list) {
-            for (j in history_list) {
+        for (let i in history_list) {
+            for (let j in history_list) {
                 agregate[j] = {
                     activeStock: 0,
                     value: 0,
                     individual
-                }
+                };
             }
         }
     }
-}
+};
 
 // Delete Portfolio
 let deletePortfolioQueryDef = `
@@ -193,8 +190,7 @@ let deletePortfolioResolver = async (obj, args, context, info) => {
     });
     if (!result) console.log("This is causing the error!!!!!!!!!!!!!!!!!");
     return result;
-}
-
+};
 
 // Edit Portfolio
 let updatePortfolioQueryDef = `
@@ -227,22 +223,18 @@ let updatePortfolioResolver = async (obj, args, context, info) => {
     });
     // return updated portfolio
     return result;
-}
-
+};
 
 // Portfolio list
 
-let portfolioListQueryDef = `
-    portfolioList:[Portfolio]
-`;
+let portfolioListQueryDef = `portfolioList:[Portfolio]`;
 
 let portfolioListResolver = async (obj, args, context, info) => {
     // Check the user is authenticated
     if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
     // Fetch and return all portfolios that are associated with given uid
     return await Portfolio.find({uid: context.uid});
-}
-
+};
 
 module.exports = {portfolioTypeDef,portfolioFieldResolvers,
     portfolioQueryResolver, portfolioQueryDef,
