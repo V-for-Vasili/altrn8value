@@ -94,27 +94,26 @@ let createPortfolioResolver = async (obj, args, context, info) => {
 // Get Portfolio
 let portfolioQueryDef = `portfolio(name: String!): Portfolio`;
 
+
 let portfolioQueryResolver = async (obj, args, context, info) => {
     // Check the user is authenticated
     if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
     let userID = context.uid;
     // Get Portfolio by name from db
-    let result = null;
-    let response = await Portfolio.findOne({uid: userID, name: args.name}, function(err, res) {
+    let response = await Portfolio.findOne({uid: userID, name: args.name},async function(err, docs) {
         if (err) return console.log(err);
         if(!res) throw new Error(errorName.NOT_FOUND);
-        res.stock_list = res.stock_list.map(obj => {
+        docs.stock_list = docs.stock_list.map(obj => {
             let rObj = obj;
             rObj.stock = {};
             rObj.stock.symbol = obj.symbol;
-            rObj.purchaseTime = rObj.purchaseTime.toJSON();
+            rObj.purchaseTime = rObj.purchaseTime;
             return rObj;
         });
-        res.createdAt = res.createdAt.toJSON();
-        result = res;
+        docs.createdAt = res.createdAt.toJSON();
     });
-    if(!result) throw new Error(errorName.NOT_FOUND);
-    return result;
+    if(!response) throw new Error(errorName.NOT_FOUND);
+    return response;
 }
 
 let portfolioFieldResolvers = {

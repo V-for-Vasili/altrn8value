@@ -11,7 +11,6 @@ let Graphing = (function(){
     };
 
     module.update =  function(chart,stocks,series){
-        console.log("updateCalled");
         let option;
         if (stocks.length == 0){
            option = {
@@ -24,6 +23,10 @@ let Graphing = (function(){
                     left:'center',
                     top: 'center'
                   },
+                legend: {
+                    data: stocks,
+                    top:'10%'
+                },
                 series: []
             };
         } else {
@@ -89,39 +92,66 @@ let Graphing = (function(){
         }
         chart.setOption(option,true);
     };
-    module.graphPorfolio = function(chart,porfolio){
-        var porfolioDecomp = [];
-        let stockList = porfolio.stocks.map(obj => {
-            let rObj = obj.symbol;
-            return rObj;
-        });
-        let url = "https://financialmodelingprep.com/api/v3/historical-price-full/" + stockList.toString();
-        $.getJSON(url, function(response) {
-            let rawData = response.historicalStockList;
-            let datesClose = {};
-            rawData.forEach(function(ts,index){
+    module.addSeries = function(chart,sereiesName,TSData){
+        let prevOption = chart.getOption();
+        let names = [];
+        let sereies = [];
+        if(prevOption){
+            
+            names = prevOption.legend[0].data;
+            if (names.includes(sereiesName)) return;
+            sereies = prevOption.series;
+        }
+        names.push(sereiesName);
+        sereies.push(TSData);
+        
+        module.update(chart,names,sereies);
+    };
 
+    module.graphPortfolio = function(chart,portfolioName){ 
+        let prevOption = chart.getOption();
+        if (prevOption){
+            names = prevOption.legend[0].data;
+            if (names.includes(portfolioName)) return;
+        }
+        var portfolioDecomp = [];
+       api.getPortfolioHistoryByName(portfolioName,function(response) {
+           let portfolio = response.data.portfolio;
+           let stock_list = portfolio.stock_list;
+           let allStocksHistory = stock_list.map(obj => {
+               let rObj = {};
+               rObj.symbol = obj.stock.symbol;
+               rObj.historical = obj.stock.history;
+               return rObj;
+           });
+           
+            let datesClose = {};
+            allStocksHistory.forEach(function(ts,index){
                 let decompItem = {name:ts.symbol,type:'line',area:{}};
                 let decompItemData = [];
                 ts.historical.forEach(function(day){
                     decompItemData.push([day.date,day.close]);
-                    (datesClose[day.date])? datesClose[day.date]+=day.close * porfolio.stocks[index].shares : datesClose[day.date] = day.close * porfolio.stocks[index].shares;
+                    (datesClose[day.date])? datesClose[day.date]+=day.close * portfolio.stock_list[index].shares : datesClose[day.date] = day.close * portfolio.stock_list[index].shares;
                 });
                 decompItem.data = decompItemData;
-                porfolioDecomp.push(decompItem);
+                portfolioDecomp.push(decompItem);
             });
 
-            let totalPorfolio = {name:porfolio.name,type:'line',area:{}};
-            let totalPorfolioData = [];
+            let totalPortfolio = {name:portfolioName,type:'line',area:{}};
+            let totalPortfolioData = [];
              Object.keys(datesClose).forEach(function(date){
-                totalPorfolioData.push([date,datesClose[date]]);
+                totalPortfolioData.push([date,datesClose[date]]);
                 });
-                totalPorfolio.data = totalPorfolioData;
-                porfolioDecomp.push(totalPorfolio);
-                console.log(totalPorfolio);
-                module.update(chart,totalPorfolio.name,totalPorfolio);
+                totalPortfolio.data = totalPortfolioData;
+                portfolioDecomp.push(totalPortfolio);
+                module.addSeries(chart,totalPortfolio.name,totalPortfolio);
             });
+    };
 
+    module.graphPortfolios = function(chart, portfolioNames){
+        portfolioNames.forEach(function(name){
+            module.graphPortfolio(chart,name);
+        });
     };
 
     return module;

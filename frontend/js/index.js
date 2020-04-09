@@ -194,6 +194,7 @@ window.onload = (function(){
                 // Clear Graph if no stocks selected
                 //if (rs.series.length == 0) chart.clear();
                 Graphing.update(tsPlot,rs.stockDisplayList,rs.series);
+                
                 //  
                 if ($("#StockSelections").children("tr").length == 0){
                     $("#savePortfolio").hide();
