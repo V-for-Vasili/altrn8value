@@ -9,7 +9,7 @@
 .tm-product-table-container {
     max-height: 265px;
     margin-bottom: 15px;
-    overflow-y: auto;
+    
 }
 
 .tm-product-table tr {

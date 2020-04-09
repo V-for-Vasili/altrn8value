@@ -51,7 +51,7 @@ window.addEventListener('load', function(){
     });
 
     let tsPlot = null;
-    let graphData = {portfolioNames:[],porfotlioSeries:[]}
+    let graphData = {portfolioNames:[],porfotlioSeries:[]};
     $("#viewSelectionsBtn").click(function(){
         let selections = [];
        $("input[type='checkbox']:checked").each(function(){
