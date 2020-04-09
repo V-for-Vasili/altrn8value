@@ -308,7 +308,6 @@ let api = (function(){
           }}`;
           let data = {query: query};
           seng_graphql_request(data,function(code, err, respObj) {
-            // need to transform the response object to return only a list of
             // financial info for different time intervals
             if (code !== 200) return module.notifyErrorListeners(err);
            
@@ -512,6 +511,46 @@ let api = (function(){
         let variables = {name};
         let data = {query: query,variables:variables};
         seng_graphql_request(data, callback);
+    };
+
+    module.getPortfolioHistoryByName = function(name, callback=do_nothing) {
+        if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
+        let query = `query portfolio($name:String!){
+            portfolio(name:$name){
+                name 
+                    stock_list {
+                    stock {
+                    symbol
+                    price
+                    history {
+                        date
+                        open
+                        high
+                        low
+                        close
+                        adjClose
+                        volume
+                        unadjustedVolume
+                        change
+                        changePercent
+                        vwap
+                        label
+                        changeOverTime
+                    }
+                    
+                    }
+                    shares
+                    purchasePrice
+                    purchaseTime
+                }
+            }
+        }`;
+        let variables = {name};
+        let data = {query: query,variables:variables};
+        seng_graphql_request(data, function(code, err, respObj) {
+            //if (code !== 200) return module.notifyErrorListeners(err);
+            callback(respObj);
+        });
     };
 
     // name is the name of the new portfolio

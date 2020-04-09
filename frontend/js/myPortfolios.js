@@ -69,7 +69,8 @@ window.addEventListener('load', function(){
            if (!tsPlot || tsPlot.isDisposed)
            document.getElementById('chartContainer').style.display = "block";
            tsPlot = Graphing.initPlot("chart");
-           //let temp = graphSelectedPortfolios(tsPlot,graphData); 
+           Graphing.graphPortfolios(tsPlot,selections);
+            
        }
     });
 
