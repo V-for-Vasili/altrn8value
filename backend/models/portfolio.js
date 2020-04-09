@@ -46,59 +46,49 @@ let portfolioTypeDef = `
     agregate: [Agregate]
   }`;
 
-  // Create portfolio
-  let createPortfolioQueryDef = `
+// Create portfolio
+let createPortfolioQueryDef = `
   createPortfolio (
     name: String!
     stock_list: [stockListInput!]!
     purchaseValue: Float!
     createdAt:String!
   ): Portfolio
-  `;
+`;
 
-  let createPortfolioResolver = async (obj, args, context, info) => {
+let createPortfolioResolver = async (obj, args, context, info) => {
     // Check the user is authenticated
-    
     if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
     let userID = context.uid;
-    //let userID = "sanicTheHedgehog";
-
     // For each stock in the list check it exists
     let name = args.name;
     // Check whether this exists alread
     let result = await Portfolio.findOne({uid: userID, name});
     if (result) throw new Error(errorName.CONFLICT);
-
     let stockListInput = args.stock_list;
     // if no stock list provided, start with empty list
     if (!stockListInput) stockListInput = [];
     else {
-      // Extract list of symbols
-      let symbols = stockListInput.map(obj => {
-        let rObj = obj.symbol;
-        return rObj;
-      });
-      try {
-      // Check all symbols are valid 
-      let response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbols.toString()}`);
-      let stocks = response.data;
-      if (stocks.length != symbols.length) throw new Error(errorName.NOT_FOUND);
-        // Change date strings to ISO objects so they can be used in queries in MOGODB
-        // let sl = stockListInput.map(obj => {
-        //   let rObj = obj;
-        //   rObj.purchaseTime = Date.parse(obj.purchaseTime);
-        //   return rObj;
-        // });
-        let portfolio =  new Portfolio({uid: userID, name:name, stock_list: stockListInput,purchaseValue:args.purchaseValue , createdAt:args.createdAt});
-        await portfolio.save();
-        
-        return portfolio;
-      } catch (err) {
-        console.log(err);
-      }
-      // If any of symbols are invalid lengths will differ
+        // Extract list of symbols
+        let symbols = stockListInput.map(obj => {
+            let rObj = obj.symbol;
+            return rObj;
+        });
+        try {
+            // Check all symbols are valid
+            let response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbols.toString()}`);
+            let stocks = response.data;
+            if (stocks.length != symbols.length) throw new Error(errorName.NOT_FOUND);
+            // Change date strings to ISO objects so they can be used in queries in MOGODB
+            let portfolio = new Portfolio({uid: userID, name:name, stock_list: stockListInput, purchaseValue:args.purchaseValue, createdAt:args.createdAt});
+            await portfolio.save();
+            return portfolio;
+        } catch (err) {
+            console.log(err);
+        }
+        // If any of symbols are invalid lengths will differ
     }
-  }
+}
 
 
 // Get Portfolio
@@ -114,7 +104,6 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
   let response = await Portfolio.findOne({uid: userID, name: args.name}, function(err, res) {
     if (err) return console.log(err);
     if(!res) throw new Error(errorName.NOT_FOUND);
-    
     res.stock_list = res.stock_list.map(obj => {
       let rObj = obj;
       rObj.stock = {};
@@ -257,7 +246,7 @@ let portfolioListQueryDef = `
 
 let portfolioListResolver = async (obj, args, context, info) => {
   // Check the user is authenticated
-  if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
+  if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
   // Fetch and return all portfolios that are associated with given uid
   return await Portfolio.find({uid: context.uid});
 }

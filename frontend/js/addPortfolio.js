@@ -92,9 +92,9 @@ window.onload = (function () {
     document.querySelector('#addStockForm').addEventListener("submit",function(e){
         e.preventDefault();
         let name = $("#portfolioName").val();
-        let date = new Date();
-        let pObj = NP.submitPortfolio(name,date.toJSON());
-        api.createPortfolio(pObj.name, pObj.stock_list, pObj.purchaseValue,date.toJSON());
+        let date = '' + Math.floor(Date.now()/1000);  // timestamp in seconds
+        let pObj = NP.submitPortfolio(name, date);
+        api.createPortfolio(pObj.name, pObj.stock_list, pObj.purchaseValue, date);
         sessionStorage.setItem("newPortfolio",JSON.stringify([]));
         sessionStorage.removeItem("RS");
         window.location.href = '/myPortfolios.html';

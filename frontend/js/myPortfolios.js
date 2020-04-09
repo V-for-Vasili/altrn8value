@@ -7,7 +7,7 @@ window.addEventListener('load', function(){
         // Display stats about each portfolio as a separate table row
         portfolios.forEach(function(portfolio){
             let totalPurchasePrice = portfolio.purchaseValue;
-            let created = 'TODO';
+            let created = new Date(parseInt(portfolio.createdAt)*1000).toLocaleString("en-US");
             // calculate totalCurrentPrice, change;
             let totalCurrentPrice = 0.0;
             portfolio.stock_list.forEach(function(stockPurchase) {
