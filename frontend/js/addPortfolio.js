@@ -93,7 +93,6 @@ window.onload = (function () {
         e.preventDefault();
         let name = $("#portfolioName").val();
         let date = new Date();
-        console.log(date.toString());
         let pObj = NP.submitPortfolio(name,date.toJSON());
         api.createPortfolio(pObj.name, pObj.stock_list, pObj.purchaseValue,date.toJSON());
         sessionStorage.setItem("newPortfolio",JSON.stringify([]));

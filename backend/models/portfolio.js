@@ -40,9 +40,9 @@ let portfolioTypeDef = `
 
   type Portfolio {
     name: String!
-    stock_list: [Stock_Purchase]!
     purchaseValue: Float!
     createdAt: String!
+    stock_list: [Stock_Purchase]!
     agregate: [Agregate]
   }`;
 

@@ -453,6 +453,8 @@ let api = (function(){
         let query = `{
             portfolioList {
                 name
+                purchaseValue
+                createdAt
                 stock_list {
                     stock {
                         symbol

@@ -6,15 +6,14 @@ window.addEventListener('load', function(){
         let table = $('#portfolioList');
         // Display stats about each portfolio as a separate table row
         portfolios.forEach(function(portfolio){
-            // calculate totalPurchasePrice, totalCurrentPrice, change;
-            let totalPurchasePrice = 0.0;
+            let totalPurchasePrice = portfolio.purchaseValue;
+            let created = 'TODO';
+            // calculate totalCurrentPrice, change;
             let totalCurrentPrice = 0.0;
             portfolio.stock_list.forEach(function(stockPurchase) {
                 totalCurrentPrice = totalCurrentPrice + stockPurchase.stock.price;
-                totalPurchasePrice = totalPurchasePrice + stockPurchase.purchasePrice;
             });
             let change = ((totalCurrentPrice / totalPurchasePrice) - 1.0) * 100;
-            let created = 'unimplemented';
             // Fields in order:
             // Name, Original Cost, Curent Value, Profit Percentage
             let tr = document.createElement('tr');
@@ -23,7 +22,7 @@ window.addEventListener('load', function(){
               <td class="tm-product-name">${portfolio.name}</td>
               <td>${'$ ' + totalCurrentPrice.toFixed(2)}</td>
               <td>${'$ ' + totalPurchasePrice.toFixed(2)}</td>
-              <td>${change} %</td>
+              <td>${change.toFixed(2)} %</td>
               <td>${created}</td>
               <td>
                 <a href="#" class="tm-product-delete-link">
