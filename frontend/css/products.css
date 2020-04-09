@@ -7,7 +7,7 @@
 }
 
 .tm-product-table-container {
-    max-height: 265px;
+    max-height: auto;
     margin-bottom: 15px;
     
 }
