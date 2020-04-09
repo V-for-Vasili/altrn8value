@@ -159,8 +159,9 @@ app.use(function(req, res, next) {
       req.isAuth = true;
       next();
     });
+  } else {
+    next();
   }
-  next();
 });
 
 /*
