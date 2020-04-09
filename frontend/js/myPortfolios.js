@@ -34,16 +34,17 @@ window.addEventListener('load', function(){
             // attach event listener to "delete portfolio btn"
             tr.querySelector('i').addEventListener('click',function(e){
                 // delete this portfolio
-                api.deletePortfolio(portfolio._id, function(code, err, respObj) {
+                api.deletePortfolio(portfolio.name, function(code, err, respObj) {
                     if (code !== 200) return api.notifyErrorListeners(err);
                     tr.parentElement.removeChild(tr);
+                    Graphing.removeSeries(tsPlot,portfolio.name);
                 });
             });
 
             table.prepend(tr);
         });
     }
-
+    let tsPlot = null;
     // call to backend to pull all portfolios for the user,
     // populate the table with portfolio list
     api.getUserPortfoliosList(function(code, err, respObj) {
@@ -51,7 +52,7 @@ window.addEventListener('load', function(){
         populatePortfolioTable(respObj.data.portfolioList);
     });
 
-    let tsPlot = null;
+    
     let graphData = {portfolioNames:[],porfotlioSeries:[]};
     $("#viewSelectionsBtn").click(function(){
         let selections = [];

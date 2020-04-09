@@ -7,6 +7,9 @@ let Graphing = (function(){
             //width: document.getElementById(id).offsetWidth,
             //height: document.getElementById(id).offsetHeight
         });
+        window.onresize = function() {
+            plot.resize();
+        };
         return plot;
     };
 
@@ -106,6 +109,18 @@ let Graphing = (function(){
         sereies.push(TSData);
         
         module.update(chart,names,sereies);
+    };
+    module.removeSeries = function(chart,sereiesName){
+        if (!chart) return;
+        let prevOption = chart.getOption();
+        let names = [];
+        let sereies = [];
+        if(prevOption){
+            names = prevOption.legend[0].data.filter(obj => obj != sereiesName);
+            sereies = prevOption.series.filter(obj => obj.name != sereiesName);
+            module.update(chart,names,sereies);
+        }
+       
     };
 
     module.graphPortfolio = function(chart,portfolioName){ 
