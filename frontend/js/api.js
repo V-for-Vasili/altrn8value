@@ -448,7 +448,7 @@ let api = (function(){
     };
 
     // returns list of portfolios for current user with the current price of each stock
-    module.getUserPortfoliosPrices = function(callback=do_nothing) {
+    module.getUserPortfoliosList = function(callback=do_nothing) {
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let query = `{
             portfolioList {
@@ -456,6 +456,7 @@ let api = (function(){
                 stock_list {
                     stock {
                         symbol
+                        price
                     }
                     shares
                     purchasePrice
@@ -466,8 +467,6 @@ let api = (function(){
         let data = {query: query};
         seng_graphql_request(data, callback);
     };
-    
-
 
     // gets portfolio by name for a current user
     module.getPortfolioByName = function(name, callback=do_nothing) {

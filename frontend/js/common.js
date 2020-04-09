@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-window.onload = (function(){
+window.addEventListener('load', function(){
     "use strict";
     // Contains functions used on every tab
 
@@ -37,5 +37,5 @@ window.onload = (function(){
             };
         }
     });
-})();
+});
 
