@@ -229,9 +229,7 @@ let updatePortfolioResolver = async (obj, args, context, info) => {
 
 // Portfolio list
 
-let portfolioListQueryDef = `
-    portfolioList:[Portfolio]
-`;
+let portfolioListQueryDef = `portfolioList:[Portfolio]`;
 
 let portfolioListResolver = async (obj, args, context, info) => {
     // Check the user is authenticated
