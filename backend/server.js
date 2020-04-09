@@ -32,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // serve frontend statically
 app.use(express.static('frontend'));
+app.use('/docs', express.static('./slate/build'))
 
 
 // Settup Logger
