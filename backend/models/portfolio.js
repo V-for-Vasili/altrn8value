@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 // Imports
 const axios = require('axios');
 const FormatError = require('easygraphql-format-error');

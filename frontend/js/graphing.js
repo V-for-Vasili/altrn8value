@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 let Graphing = (function(){
     let module ={};
     module.initPlot =function(id){

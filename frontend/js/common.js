@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 window.addEventListener('load', function(){
     "use strict";
     // Contains functions used on every tab
