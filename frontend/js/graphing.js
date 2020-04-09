@@ -1,16 +1,16 @@
 let Graphing = (function(){
-    let module ={};
+    let module = {};
+
     module.initPlot =function(id){
         // Initate Blank Canvas Where Historic Price Data will be loaded
-    let plot = echarts.init(document.getElementById(id),'template', {
-        //width: document.getElementById(id).offsetWidth,
-        //height: document.getElementById(id).offsetHeight
+        let plot = echarts.init(document.getElementById(id),'template', {
+            //width: document.getElementById(id).offsetWidth,
+            //height: document.getElementById(id).offsetHeight
         });
         return plot;
     };
 
     module.update =  function(chart,stocks,series){
-        console.log("updateCalled");
         let option;
         if (stocks.length == 0){
            option = {
@@ -99,12 +99,14 @@ let Graphing = (function(){
             let rawData = response.historicalStockList;
             let datesClose = {};
             rawData.forEach(function(ts,index){
-
                 let decompItem = {name:ts.symbol,type:'line',area:{}};
                 let decompItemData = [];
                 ts.historical.forEach(function(day){
                     decompItemData.push([day.date,day.close]);
-                    (datesClose[day.date])? datesClose[day.date]+=day.close * porfolio.stocks[index].shares : datesClose[day.date] = day.close * porfolio.stocks[index].shares;
+                    if (datesClose[day.date])
+                        datesClose[day.date] += day.close * porfolio.stocks[index].shares;
+                    else
+                        datesClose[day.date] = day.close * porfolio.stocks[index].shares;
                 });
                 decompItem.data = decompItemData;
                 porfolioDecomp.push(decompItem);
@@ -112,7 +114,7 @@ let Graphing = (function(){
 
             let totalPorfolio = {name:porfolio.name,type:'line',area:{}};
             let totalPorfolioData = [];
-             Object.keys(datesClose).forEach(function(date){
+            Object.keys(datesClose).forEach(function(date){
                 totalPorfolioData.push([date,datesClose[date]]);
                 });
                 totalPorfolio.data = totalPorfolioData;
@@ -120,7 +122,6 @@ let Graphing = (function(){
                 console.log(totalPorfolio);
                 module.update(chart,totalPorfolio.name,totalPorfolio);
             });
-
     };
 
     return module;

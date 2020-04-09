@@ -77,6 +77,23 @@ let api = (function(){
         return result;
     }
 
+    // src : https://www.w3schools.com/js/js_cookies.asp
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return null;
+    }
+
     //
     // Declarations of the metrics we fetch from the backend
     //
@@ -297,7 +314,7 @@ let api = (function(){
            
             callback(respObj);
         });
-    }
+    };
 
     // if quarter is true, pull quarterly data
     // if quarter is false, pull yearly data
@@ -579,25 +596,25 @@ let api = (function(){
         loginListeners.forEach(function(listener) {
             listener();
         });
-    }
+    };
 
     module.notifyStockDisplayListeners = function() {
         stockDisplayListeners.forEach(function(listener) {
             listener();
         });
-    }
+    };
 
     // notifyErrorListeners from lab 6
     module.notifyErrorListeners  = function(err) {
         errorListeners.forEach(function(listener) {
             listener(err);
         });
-    }
+    };
 
     module.onLogin = function(listener) {
         loginListeners.push(listener);
         listener();
-    }
+    };
 
     module.onStockDisplayChange = function(listener) {
         stockDisplayListeners.push(listener);
@@ -608,25 +625,6 @@ let api = (function(){
         errorListeners.push(listener);
     };
 
-
-    // src : https://www.w3schools.com/js/js_cookies.asp
-    function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i <ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-          }
-          if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-          }
-        }
-        return null;
-    }
-
-   
     //
     // api helper methods
     //
@@ -635,7 +633,7 @@ let api = (function(){
     // https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
     module.is_empty_object = function(obj) {
         return Object.keys(obj).length === 0 && obj.constructor === Object;
-    }
+    };
 
     // Formats numeric outputs for cost calculations
     // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-string
@@ -650,7 +648,7 @@ let api = (function(){
         } catch (e) {
             console.log(e);
         }
-    }
+    };
 
     return module;
 })();

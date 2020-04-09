@@ -28,9 +28,9 @@ window.onload = (function(){
     // attach events to signin and signup btns
     document.querySelector('#signinBtn').onclick = function() {
         submit_form('signIn');
-    }
+    };
     document.querySelector('#signupBtn').onclick = function() {
         submit_form('signUp');
-    }
+    };
 
 })();
