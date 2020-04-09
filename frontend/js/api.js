@@ -447,39 +447,51 @@ let api = (function(){
         });
     };
 
-    // returns list of portfolios for current user
-    module.getUserPortfolios = function(callback=do_nothing) {
+    // returns list of portfolios for current user with the current price of each stock
+    module.getUserPortfoliosPrices = function(callback=do_nothing) {
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
-        let query = `{
-            portfolioList {
-                name
-                stock_list {
-                    stock {
-                        symbol
-                    }
-                    shares
-                }
-            }
-        }`;
+        let query = `query {portfolioList{
+            name
+              stock_list {
+              stock {
+                price
+              }
+                shares
+                purchasePrice
+                purchaseTime
+              }
+          }}`;
         let data = {query: query};
         seng_graphql_request(data, callback);
     };
+    
+
 
     // gets portfolio by name for a current user
     module.getPortfolioByName = function(name, callback=do_nothing) {
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
-        let query = `{
-            portfolio(name:\"${name}\") {
+        let query = `query portfolio($name:String!){
+            porfolio(name:$name){
                 name
-                stock_list {
-                    stock {
-                        symbol
-                    }
-                    amount
+                purchaseValue
+                createdAt
+                stock_list{
+                stock{
+                    symbol
+                    price
+                    exchange
+                    market_cap
+                    change
+                    changes_percentage
+                    avg_volume
                 }
-            }
+                shares
+                purchaseTime
+                }
+            }    
         }`;
-        let data = {query: query};
+        let variables = {name};
+        let data = {query: query,variables:variables};
         seng_graphql_request(data, callback);
     };
 
