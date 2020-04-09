@@ -50,4 +50,26 @@ window.addEventListener('load', function(){
         populatePortfolioTable(respObj.data.portfolioList);
     });
 
+    let tsPlot = null;
+    let graphData = {portfolioNames:[],porfotlioSeries:[]}
+    $("#viewSelectionsBtn").click(function(){
+        let selections = [];
+       $("input[type='checkbox']:checked").each(function(){
+            let row = this.parentElement.parentElement;
+            let portfolioName = $(row).find(".tm-product-name").text();
+            selections.push(portfolioName);
+       });
+       if(selections.length == 0){
+           if(tsPlot && !tsPlot.isDisposed())
+           tsPlot.dispose();
+           document.getElementById('chartContainer').style.display = "none";
+       }
+       else{
+           if (!tsPlot || tsPlot.isDisposed)
+           document.getElementById('chartContainer').style.display = "block";
+           tsPlot = Graphing.initPlot("chart");
+           //let temp = graphSelectedPortfolios(tsPlot,graphData); 
+       }
+    });
+
 });

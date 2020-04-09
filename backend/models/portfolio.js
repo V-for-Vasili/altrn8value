@@ -256,19 +256,10 @@ let portfolioListQueryDef = `
 `;
 
 let portfolioListResolver = async (obj, args, context, info) => {
-    // Check the user is authenticated
-    if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
-    // Fetch and return all portfolios that are associated with given uid
-    let userID = context.uid;
-    //let userID = "sanicTheHedgehog";
-    let portfolioArray = await Portfolio.find({uid: userID});
-    portfolioArray = portfolioArray.map(obj => {
-      let eleArgs = {name:obj.name};
-      let rObj = portfolioQueryResolver(null,eleArgs,context,info);
-      rObj.stock_list = portfolioFieldResolvers.stock_list(rObj,null,context,info);
-      return rObj;
-    });
-  return portfolioArray;
+  // Check the user is authenticated
+  if (!context.uid) throw new Error(errorName.ACCESS_DENIED);
+  // Fetch and return all portfolios that are associated with given uid
+  return await Portfolio.find({uid: context.uid});
 }
 
 
