@@ -16,17 +16,17 @@ let stockListQueryDef = `stockList(searchStr: String!): [StockDescription]`;
 let stockListResolver = async (_, {searchStr}) => {
     let response = {};
     try {
-      response = await axios.get(`https://financialmodelingprep.com/api/v3/search?query=${searchStr}&limit=100`);
-      response = response.data;
+        response = await axios.get(`https://financialmodelingprep.com/api/v3/search?query=${searchStr}&limit=100`);
+        response = response.data;
     } catch (err) {
-      console.log(err);
+        console.log(err);
     }
     if(!response) {
-      console.log('Empty response from stockListResolver.');
-      return null;
+        console.log('Empty response from stockListResolver.');
+        return null;
     } else {
-      return response;
+        return response;
     }
-}
+};
 
 module.exports = {stockDescriptionTypeDef, stockListQueryDef, stockListResolver};
