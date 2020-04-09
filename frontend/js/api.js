@@ -450,17 +450,19 @@ let api = (function(){
     // returns list of portfolios for current user with the current price of each stock
     module.getUserPortfoliosPrices = function(callback=do_nothing) {
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
-        let query = `query {portfolioList{
-            name
-              stock_list {
-              stock {
-                price
-              }
-                shares
-                purchasePrice
-                purchaseTime
-              }
-          }}`;
+        let query = `{
+            portfolioList {
+                name
+                stock_list {
+                    stock {
+                        symbol
+                    }
+                    shares
+                    purchasePrice
+                    purchaseTime
+                }
+            }
+        }`;
         let data = {query: query};
         seng_graphql_request(data, callback);
     };
@@ -505,7 +507,17 @@ let api = (function(){
                 stock_list:$stock_list,
                 purchaseValue:$purchaseValue,
                 createdAt:$createdAt 
-            ){name}}`;
+            ){
+              name
+              stock_list {
+                  stock {
+                      symbol
+                  }
+                  shares
+                  purchasePrice
+                  purchaseTime
+              }
+        }}`;
         let variables ={name,stock_list,purchaseValue,createdAt};
         let data = {query: mutation , variables:variables};
         seng_graphql_request(data, callback);
@@ -517,17 +529,18 @@ let api = (function(){
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let mutation = `mutation {
             deletePortfolio(name:\"${name}\") {
-                name
-                stock_list {
-                    stock {
-                        symbol
-                    }
-                    amount
-                }
+              name
+              stock_list {
+                  stock {
+                      symbol
+                  }
+                  shares
+                  purchasePrice
+                  purchaseTime
+              }
             }
         }`;
-        let variables ={name,stock_list};
-        let data = {query: mutation , variables:variables};
+        let data = {query: mutation};
         seng_graphql_request(data, callback);
     };
 
@@ -535,20 +548,22 @@ let api = (function(){
     // stock_list argument will be the new stock_list stored for this portfolio
     // stock list is of the form [{symbol, amount}]; symbols must not repeat
     // response is the portfolio object after update
-    module.updatePortfolio = function(name, stock_list, callback=do_nothing) {
+    module.updatePortfolio = function(name, stock_list, purchaseValue, callback=do_nothing) {
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
-        let mutation = `mutation {
-            updatePortfolio(name:\"${name}\",$stock_list:[stockListInput!]!) {
-                name
-                stock_list {
-                    stock {
-                        symbol
-                    }
-                    amount
-                }
-            }
-        }`;
-        let data = {query: mutation};
+        let mutation = `mutation updatePortfolio($name:String!,$stock_list:[stockListInput!]!,$purchaseValue:Float!){
+            updatePortfolio(name:$name,stock_list:$stock_list,purchaseValue:$purchaseValue){
+              name
+              stock_list {
+                  stock {
+                      symbol
+                  }
+                  shares
+                  purchasePrice
+                  purchaseTime
+              }
+        }}`;
+        let variables ={name,stock_list,purchaseValue};
+        let data = {query:mutation , variables:variables};
         seng_graphql_request(data, callback);
     };
 
