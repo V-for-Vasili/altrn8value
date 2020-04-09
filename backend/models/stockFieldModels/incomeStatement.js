@@ -1,3 +1,4 @@
+/*jshint sub:true*/
 // Imports
 const axios = require('axios');
 
@@ -80,33 +81,33 @@ function parse_response(response) {
 }
 
 let incomeStatementYearResolver = async (obj, args, context, info) => {
-  let response = {};
-  try {
-    response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/income-statement/${obj.symbol}`);
-    response = response.data.financials;
-  } catch (err) {
-    console.log(err);
-  }
-  if(!response) {
-    return null;
-  } else {
-    return parse_response(response);
-  }
-}
+    let response = {};
+    try {
+        response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/income-statement/${obj.symbol}`);
+        response = response.data.financials;
+    } catch (err) {
+        console.log(err);
+    }
+    if(!response) {
+        return null;
+    } else {
+        return parse_response(response);
+    }
+};
 
 let incomeStatementQuarterResolver = async (obj, args, context, info) => {
-  let response = {};
-  try {
-    response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/income-statement/${obj.symbol}?period=quarter`);
-    response = response.data.financials;
-  } catch (err) {
-    console.log(err);
-  }
-  if(!response) {
-    return null;
-  } else {
-    return parse_response(response);
-  }
-}
+    let response = {};
+    try {
+        response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/income-statement/${obj.symbol}?period=quarter`);
+        response = response.data.financials;
+    } catch (err) {
+        console.log(err);
+    }
+    if (!response) {
+        return null;
+    } else {
+        return parse_response(response);
+    }
+};
 
 module.exports = {incomeStatementTypeDef, incomeStatementYearResolver, incomeStatementQuarterResolver};

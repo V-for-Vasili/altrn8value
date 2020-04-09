@@ -9,6 +9,7 @@ const {cashFlowStatementTypeDef, cashFlowStatementYearResolver, cashFlowStatemen
 const {balanceSheetTypeDef, balanceSheetYearResolver, balanceSheetQuarterResolver} = require("./stockFieldModels/balanceSheet.js");
 const {incomeStatementTypeDef, incomeStatementYearResolver, incomeStatementQuarterResolver} = require("./stockFieldModels/incomeStatement.js");
 
+
 let stockTypeDef = `type Stock {
     symbol: String
     price: Float
@@ -28,9 +29,9 @@ let stockTypeDef = `type Stock {
     income_statement_year: [IncomeStatement]
     income_statement_quarter: [IncomeStatement]
     ${historyQueryDef}
-  }`;
+}`;
 
-let stockQueryDef = `stock(symbol: String!): Stock`
+let stockQueryDef = `stock(symbol: String!): Stock`;
 
 let stockFieldTypeDef=`
   ${companyProfileTypeDef}
@@ -44,40 +45,40 @@ let stockFieldTypeDef=`
 `;
 
 let stockResolver = async (_, {symbol}) => {
-  let response = {};
-  try {
-    response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbol}`);
-    response = response.data[0];
-  } catch (err) {
-    console.log(err);
-  }
-  if(!response) {
-    return null
-  } else {
-    return {
-      exchange: response.exhange,
-      symbol: response.symbol,
-      price: response.price,
-      market_cap: response.marketCap,
-      change: response.change,
-      changes_percentage: response.changesPercentage,
-      avg_volume: response.avgVolume,
+    let response = {};
+    try {
+        response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbol}`);
+        response = response.data[0];
+    } catch (err) {
+        console.log(err);
     }
-  }
-}
+    if(!response) {
+        return null;
+    } else {
+        return {
+            exchange: response.exhange,
+            symbol: response.symbol,
+            price: response.price,
+            market_cap: response.marketCap,
+            change: response.change,
+            changes_percentage: response.changesPercentage,
+            avg_volume: response.avgVolume,
+        };
+    }
+};
 
 let stockFieldResolvers = {
-  company_profile: companyProfileResolver,
-  quote: quoteResolver,
-  rating: ratingResolver,
-  rating_details: ratingDetailResolver,
-  history: historyResolver,
-  cash_flow_statement_year: cashFlowStatementYearResolver,
-  cash_flow_statement_quarter: cashFlowStatementQuarterResolver,
-  balanse_sheet_year: balanceSheetYearResolver,
-  balanse_sheet_quarter: balanceSheetQuarterResolver,
-  income_statement_year: incomeStatementYearResolver,
-  income_statement_quarter: incomeStatementQuarterResolver,
-}
+    company_profile: companyProfileResolver,
+    quote: quoteResolver,
+    rating: ratingResolver,
+    rating_details: ratingDetailResolver,
+    history: historyResolver,
+    cash_flow_statement_year: cashFlowStatementYearResolver,
+    cash_flow_statement_quarter: cashFlowStatementQuarterResolver,
+    balanse_sheet_year: balanceSheetYearResolver,
+    balanse_sheet_quarter: balanceSheetQuarterResolver,
+    income_statement_year: incomeStatementYearResolver,
+    income_statement_quarter: incomeStatementQuarterResolver,
+};
 
 module.exports = {stockTypeDef, stockQueryDef, stockFieldTypeDef, stockResolver, stockFieldResolvers};
