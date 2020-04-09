@@ -1,11 +1,11 @@
-/*jshint esversion: 6 */
 let Graphing = (function(){
-    let module ={};
+    let module = {};
+
     module.initPlot =function(id){
         // Initate Blank Canvas Where Historic Price Data will be loaded
-    let plot = echarts.init(document.getElementById(id),'template', {
-        //width: document.getElementById(id).offsetWidth,
-        //height: document.getElementById(id).offsetHeight
+        let plot = echarts.init(document.getElementById(id),'template', {
+            //width: document.getElementById(id).offsetWidth,
+            //height: document.getElementById(id).offsetHeight
         });
         return plot;
     };

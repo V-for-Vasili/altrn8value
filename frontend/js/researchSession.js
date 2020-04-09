@@ -1,8 +1,5 @@
-/*jshint esversion: 6 */
 let RS = (function(){
-    let module ={
-
-    };
+    let module ={};
 
     function newSession() {
         let rs = {

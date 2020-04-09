@@ -12,7 +12,7 @@
 }(this, function (exports, echarts) {
     var log = function (msg) {
         if (typeof console !== 'undefined') {
-            console && console.error && console.error(msg);
+            if (console && console.error) console.error(msg);
         }
     };
     if (!echarts) {

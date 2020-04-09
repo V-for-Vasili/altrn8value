@@ -1,0 +1,3 @@
+node_modules/**/*
+slate/build/javascripts/*
+frontend/jquery-ui-datepicker/*
