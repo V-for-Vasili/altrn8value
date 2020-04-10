@@ -70,11 +70,11 @@ let Graphing = (function(){
                 },
                 dataZoom: [{
                     type: 'inside',
-                    start: 0,
-                    end: 10
+                    start: 80,
+                    end: 100
                 }, {
-                    start: 0,
-                    end: 10,
+                    start: 80,
+                    end: 100,
                     dataBackground:{
                         lineStyle:{color:'#fff',shadowColor:'#fff'},
                         areaStyle:{color: '#rgb(245, 166, 35)',opacity:1}
