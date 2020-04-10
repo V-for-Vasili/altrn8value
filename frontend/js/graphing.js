@@ -7,6 +7,9 @@ let Graphing = (function(){
             //width: document.getElementById(id).offsetWidth,
             //height: document.getElementById(id).offsetHeight
         });
+        window.onresize = function() {
+            plot.resize();
+        };
         return plot;
     };
 
@@ -67,11 +70,11 @@ let Graphing = (function(){
                 },
                 dataZoom: [{
                     type: 'inside',
-                    start: 0,
-                    end: 10
+                    start: 80,
+                    end: 100
                 }, {
-                    start: 0,
-                    end: 10,
+                    start: 80,
+                    end: 100,
                     dataBackground:{
                         lineStyle:{color:'#fff',shadowColor:'#fff'},
                         areaStyle:{color: '#rgb(245, 166, 35)',opacity:1}
@@ -106,6 +109,18 @@ let Graphing = (function(){
         sereies.push(TSData);
         
         module.update(chart,names,sereies);
+    };
+    module.removeSeries = function(chart,sereiesName){
+        if (!chart) return;
+        let prevOption = chart.getOption();
+        let names = [];
+        let sereies = [];
+        if(prevOption){
+            names = prevOption.legend[0].data.filter(obj => obj != sereiesName);
+            sereies = prevOption.series.filter(obj => obj.name != sereiesName);
+            module.update(chart,names,sereies);
+        }
+       
     };
 
     module.graphPortfolio = function(chart,portfolioName){ 

@@ -98,7 +98,6 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
     // Get Portfolio by name from db
     let response = await Portfolio.findOne({uid: userID, name: args.name},async function(err, docs) {
         if (err) return console.log(err);
-        if(!res) throw new Error(errorName.NOT_FOUND);
         docs.stock_list = docs.stock_list.map(obj => {
             let rObj = obj;
             rObj.stock = {};
@@ -186,11 +185,10 @@ let deletePortfolioResolver = async (obj, args, context, info) => {
     if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
     let userID = context.uid;
     // remove 1 document from db, return result if successful
-    let result = null;
-    let x = await Portfolio.findOneAndDelete({uid:userID, name: args.name}, function(err, item) {
-        result = item;
+    let result = await Portfolio.findOneAndDelete({name: args.name},async function(err, item) {
+        if (err) return console.log(err);
     });
-    if (!result) throw new Error(errorName.NOT_FOUND);
+    if (!result) console.log("This is causing the error!!!!!!!!!!!!!!!!!");
     return result;
 };
 

@@ -23,6 +23,17 @@ let NP = (function(){
             result.stock_list = stock_list;
             return result;
         },
+        updateStockPrice: function(price,symbol){
+            let idx = this.portfolio.stock_list.findIndex(obj => obj.symbol == symbol);
+            console.log(idx);
+            let oldCost = this.portfolio.stock_list[idx].cost;
+            let newCost = this.portfolio.stock_list[idx].shares * price;
+            this.portfolio.stock_list[idx].purchasePrice = price;
+            this.portfolio.stock_list[idx].cost = newCost;
+            this.UpdateportfolioCost(newCost - oldCost);
+            return newCost;
+
+        },
         addStock : function(name,symbol,price){
             let stockObj = {name:name,symbol:symbol,purchasePrice:price,shares:0,cost:0};
             this.portfolio.stock_list.push(stockObj);

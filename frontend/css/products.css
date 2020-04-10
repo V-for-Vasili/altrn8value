@@ -7,9 +7,9 @@
 }
 
 .tm-product-table-container {
-    max-height: auto;
+    max-height: 265px;
     margin-bottom: 15px;
-    
+    overflow-y: scroll;
 }
 
 .tm-product-table tr {

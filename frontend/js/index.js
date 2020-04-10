@@ -4,9 +4,7 @@ window.onload = (function(){
     // show welcome message
     let uname = api.getUsername();
     if (uname) document.querySelector('#welcome_uname').innerHTML = `Welcome back, <b>${uname}</b>`;
-
     FS.init('metrics_table_div','metrics_table_title','metrics_table_thead','metrics_table_tbody');
-   
     // Get sessional Storage Data
     let rs = RS.init();
     //  Initalize Echarts Object
@@ -98,7 +96,7 @@ window.onload = (function(){
             
             // Retrive time sereies for added stock and add to plot
             
-                api.getDailyStoclPriceTS(symbol, function(response) {
+                api.getDailyStoclPriceTS(symbol,"line", function(response) {
                 let data = response.data.stock.history.map(obj =>{
                     let rObj = [obj.date,obj.close];
                     return rObj;  
@@ -210,6 +208,31 @@ window.onload = (function(){
         //api.notifyLoginListeners();
         api.notifyStockDisplayListeners();
     }
+
+    let timeBtns = document.querySelector("#timeBtns");
+    let timeButtons = timeBtns.querySelectorAll('.btn');
+    timeButtons.forEach(function(btn){
+        btn.onclick = function(){
+            timeButtons.forEach(function(btn2){
+                btn2.disabled = false;
+            });
+            btn.disabled = true;
+        };
+    });
+
+    let plotBtns = document.querySelector("#plotBtns");
+    let plotButtons = plotBtns.querySelectorAll('.btn');
+    plotButtons.forEach(function(btn){
+        btn.onclick = function(){
+            plotButtons.forEach(function(btn2){
+                btn2.disabled = false;
+            });
+            btn.disabled = true;
+        };
+    });
+
+    
+
 
     reloadPageContent();
 

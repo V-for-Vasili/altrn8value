@@ -1,6 +1,25 @@
 window.onload = (function () {
     "use strict";
 
+    function Subscription(symbol,callback) {
+        this.on = false;
+        this.activate = function () {
+            this.on = true;
+            this.run();
+        };
+        this.disable = function () {
+            this.on = false;
+        };
+        this.run = function () {
+            var self = this;
+            var poll = setTimeout(function () {
+                api.getStockData(symbol,callback);
+                if(self.on) self.run();
+                else clearTimeout(poll);
+            }, 1000);
+        };
+    }
+
     loadInfo((sessionStorage.getItem("newPortfolio"))? JSON.parse(sessionStorage.getItem("newPortfolio")): []); 
     $("#stockSelect").select2({
         placeholder: 'Select A Stock',
@@ -33,14 +52,16 @@ window.onload = (function () {
         let name = e.params.data.name;
         let symbol = e.params.data.symbol;
         let url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
-        $.getJSON(url, function (response) {
-            let price = response[0].price;
+        api.getCompanyProfile(symbol, function (response) {
+            response = response.data.stock;
+            let name = (response.company_profile)?response.company_profile.company_name:"";
+            let price = response.price;
             NP.addStock(name,symbol,price);
             let tr = document.createElement('tr');
             tr.innerHTML = `
                 <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/></td>
                 <td class="tm-product-name"> ${symbol} | ${name}</td>
-                <td id="${symbol + "Price"}">${api.formatNumeric(price, "$", 2, ".", ",")}</td>
+                <td id="${symbol + "Price"}">${api.formatNumeric(price, "$", 6, ".", ",")}</td>
                 <td><input id="${symbol + "Shares"}"name="stock"type="text"class="form-control table-input validate" placeholder="-" required/></td>
                 <td id="${symbol + "Cost"}">-</td>
                 <td>
@@ -49,38 +70,54 @@ window.onload = (function () {
                 </a>
                 </td>`;
             $('#StockSelections').prepend(tr);
+            let quote = new Subscription(symbol,function(response){
+                let price = response.data.stock.price;
+                $("#" + symbol +"Price").text(api.formatNumeric(price, "$", 6, ".", ","));
+                let newCost = NP.updateStockPrice(price,symbol);
+                let newCostFormatted = api.formatNumeric(newCost, "$", 6, ".", ",");
+                $("#" + symbol + "Cost").text(newCostFormatted);
+                let totalCost = NP.getPorofolioCost();
+                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
+                $("#totalCost").text(totalCost);
+            });
+            quote.activate();
             $("#" + symbol + "Shares").on("change", function (e) {
                 let shares = parseFloat($("#" + symbol + "Shares").val());
                 if (!isNaN(shares)) {
                     let newCost = shares * price ;
                     NP.updateStock(symbol,shares,newCost);
-                    let newCostFormatted = api.formatNumeric(newCost, "$", 2, ".", ",");
+                    let newCostFormatted = api.formatNumeric(newCost, "$", 4, ".", ",");
                     $("#" + symbol + "Cost").text(newCostFormatted);
                 } else {
                     NP.updateStock(symbol,0,0);
                     $("#" + symbol + "Cost").text("-");
                 }
                 let totalCost = NP.getPorofolioCost();
-                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
+                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 4, ".", ",");
                 $("#totalCost").text(totalCost);
             });
+            
 
             // Behaviour For When Stock is removed from selections
             tr.querySelector('i').addEventListener('click', function (e) {
+                quote.disable();
                 tr.parentElement.removeChild(tr);
+                if ($("#StockSelections").children("tr").length == 0){
+                    $("#rowTotal").hide();
+                    $("#saveBtn").hide();
+                    return;
+                }
                 NP.updateStock(symbol,0,0);
                 NP.removeStock(symbol);
+               
                 let totalCost = NP.getPorofolioCost();
-                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
+                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
                 $("#totalCost").text(totalCost);
             });
             // Display Save Button if there is atleast one stock selected
             if ($("#StockSelections").children("tr").length > 0){
                 $("#rowTotal").show();
                 $("#saveBtn").show();
-            } else {
-                $("#rowTotal").hide();
-                $("#saveBtn").hide();
             }
             // Clear Stock Select Bar
             $("#stockSelect").val(null).trigger("change");
@@ -102,10 +139,11 @@ window.onload = (function () {
     // Inital Loading of stock selections from current research session
     function loadInfo(symbols){ 
         symbols.forEach(function(symbol){
-            let url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
-            $.getJSON(url, function (response) {
-                let name = response[0].name;
-                let price = response[0].price;
+            
+            api.getCompanyProfile(symbol, function (response) {
+                response = response.data.stock;
+                let name = (response.company_profile)?response.company_profile.company_name:"";
+                let price = response.price;
                 NP.addStock(name,symbol,price);
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -125,7 +163,7 @@ window.onload = (function () {
                     if (!isNaN(shares)) {
                         let newCost = shares * price ;
                         NP.updateStock(symbol,shares,newCost);
-                        let newCostFormatted = api.formatNumeric(newCost, "$", 2, ".", ",");
+                        let newCostFormatted = api.formatNumeric(newCost, "$", 6, ".", ",");
                         $("#" + symbol + "Cost").text(newCostFormatted);
                     }
                     else {
@@ -133,26 +171,40 @@ window.onload = (function () {
                         $("#" + symbol + "Cost").text("-");
                     }
                     let totalCost = NP.getPorofolioCost();
-                    totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
+                    totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
                     $("#totalCost").text(totalCost);
                 });
+                let quote = new Subscription(symbol,function(response){
+                    let price = response.data.stock.price;
+                    $("#" + symbol +"Price").text(api.formatNumeric(price, "$", 6, ".", ","));
+                    let newCost = NP.updateStockPrice(price,symbol);
+                    let newCostFormatted = api.formatNumeric(newCost, "$", 4, ".", ",");
+                    $("#" + symbol + "Cost").text(newCostFormatted);
+                    let totalCost = NP.getPorofolioCost();
+                    totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
+                    $("#totalCost").text(totalCost);
+                });
+                quote.activate();
 
                 // Behaviour For When Stock is removed from selections
                 tr.querySelector('i').addEventListener('click', function (e) {
+                    quote.disable();
                     tr.parentElement.removeChild(tr);
+                    if ($("#StockSelections").children("tr").length == 0){
+                        $("#rowTotal").hide();
+                        $("#saveBtn").hide();
+                        return;
+                    }
                     NP.updateStock(symbol,0,0);
                     NP.removeStock(symbol);
                     let totalCost = NP.getPorofolioCost();
-                    totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
+                    totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
                     $("#totalCost").text(totalCost);
                 });
                 if ($("#StockSelections").children("tr").length > 0){
                     $("#rowTotal").show();
                     $("#saveBtn").show();
-                } else {
-                    $("#rowTotal").hide();
-                    $("#saveBtn").hide();
-                }
+                } 
                 // Clear Stock Select Bar
                 $("#stockSelect").val(null).trigger("change");
             });

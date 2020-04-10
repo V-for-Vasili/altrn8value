@@ -3,7 +3,7 @@
     -webkit-box-shadow: 1px 1px 5px 0 #455c71;
     -moz-box-shadow: 1px 1px 5px 0 #455c71;
     box-shadow: 1px 1px 5px 0 #455c71;
-    min-height: 350px;
+    min-height: 450px;
     height: 100%;
     max-height: auto;
 }
@@ -32,6 +32,11 @@
 
 .tm-block-scroll {
     overflow-y: scroll;
+}
+.scrollx{
+    overflow-y: hidden;
+    
+    overflow-x: scroll;
 }
 
 .tm-block-overflow {
