@@ -676,6 +676,13 @@ let api = (function(){
         errorListeners.push(listener);
     };
 
+    module.stockQuoteSubscribe = function(symbol,callback=do_nothing){
+        
+    };
+
+    
+
+
     //
     // api helper methods
     //

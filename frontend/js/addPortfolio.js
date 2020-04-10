@@ -1,6 +1,25 @@
 window.onload = (function () {
     "use strict";
 
+    function Subscription(symbol,callback) {
+        this.on = false;
+        this.activate = function () {
+            this.on = true;
+            this.run();
+        };
+        this.disable = function () {
+            this.on = false;
+        };
+        this.run = function () {
+            var self = this;
+            var poll = setTimeout(function () {
+                api.getStockData(symbol,callback);
+                if(self.on) self.run();
+                else clearTimeout(poll);
+            }, 1000);
+        };
+    }
+
     loadInfo((sessionStorage.getItem("newPortfolio"))? JSON.parse(sessionStorage.getItem("newPortfolio")): []); 
     $("#stockSelect").select2({
         placeholder: 'Select A Stock',
@@ -42,7 +61,7 @@ window.onload = (function () {
             tr.innerHTML = `
                 <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/></td>
                 <td class="tm-product-name"> ${symbol} | ${name}</td>
-                <td id="${symbol + "Price"}">${api.formatNumeric(price, "$", 2, ".", ",")}</td>
+                <td id="${symbol + "Price"}">${api.formatNumeric(price, "$", 4, ".", ",")}</td>
                 <td><input id="${symbol + "Shares"}"name="stock"type="text"class="form-control table-input validate" placeholder="-" required/></td>
                 <td id="${symbol + "Cost"}">-</td>
                 <td>
@@ -51,29 +70,42 @@ window.onload = (function () {
                 </a>
                 </td>`;
             $('#StockSelections').prepend(tr);
+            let quote = new Subscription(symbol,function(response){
+                let price = response.data.stock.price;
+                $("#" + symbol +"Price").text(api.formatNumeric(price, "$", 4, ".", ","));
+                let newCost = NP.updateStockPrice(price,symbol);
+                let newCostFormatted = api.formatNumeric(newCost, "$", 4, ".", ",");
+                $("#" + symbol + "Cost").text(newCostFormatted);
+                let totalCost = NP.getPorofolioCost();
+                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 4, ".", ",");
+                $("#totalCost").text(totalCost);
+            });
+            quote.activate();
             $("#" + symbol + "Shares").on("change", function (e) {
                 let shares = parseFloat($("#" + symbol + "Shares").val());
                 if (!isNaN(shares)) {
                     let newCost = shares * price ;
                     NP.updateStock(symbol,shares,newCost);
-                    let newCostFormatted = api.formatNumeric(newCost, "$", 2, ".", ",");
+                    let newCostFormatted = api.formatNumeric(newCost, "$", 4, ".", ",");
                     $("#" + symbol + "Cost").text(newCostFormatted);
                 } else {
                     NP.updateStock(symbol,0,0);
                     $("#" + symbol + "Cost").text("-");
                 }
                 let totalCost = NP.getPorofolioCost();
-                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
+                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 4, ".", ",");
                 $("#totalCost").text(totalCost);
             });
+            
 
             // Behaviour For When Stock is removed from selections
             tr.querySelector('i').addEventListener('click', function (e) {
                 tr.parentElement.removeChild(tr);
                 NP.updateStock(symbol,0,0);
                 NP.removeStock(symbol);
+                quote.disable();
                 let totalCost = NP.getPorofolioCost();
-                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
+                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 4, ".", ",");
                 $("#totalCost").text(totalCost);
             });
             // Display Save Button if there is atleast one stock selected
@@ -139,10 +171,22 @@ window.onload = (function () {
                     totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 2, ".", ",");
                     $("#totalCost").text(totalCost);
                 });
+                let quote = new Subscription(symbol,function(response){
+                    let price = response.data.stock.price;
+                    $("#" + symbol +"Price").text(api.formatNumeric(price, "$", 4, ".", ","));
+                    let newCost = NP.updateStockPrice(price,symbol);
+                    let newCostFormatted = api.formatNumeric(newCost, "$", 4, ".", ",");
+                    $("#" + symbol + "Cost").text(newCostFormatted);
+                    let totalCost = NP.getPorofolioCost();
+                    totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 4, ".", ",");
+                    $("#totalCost").text(totalCost);
+                });
+                quote.activate();
 
                 // Behaviour For When Stock is removed from selections
                 tr.querySelector('i').addEventListener('click', function (e) {
                     tr.parentElement.removeChild(tr);
+                    quote.disable();
                     NP.updateStock(symbol,0,0);
                     NP.removeStock(symbol);
                     let totalCost = NP.getPorofolioCost();
