@@ -54,7 +54,7 @@ window.onload = (function () {
         let url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
         api.getCompanyProfile(symbol, function (response) {
             response = response.data.stock;
-            let name = response.company_profile.company_name;
+            let name = (response.company_profile)?response.company_profile.company_name:"";
             let price = response.price;
             NP.addStock(name,symbol,price);
             let tr = document.createElement('tr');
@@ -142,7 +142,7 @@ window.onload = (function () {
             
             api.getCompanyProfile(symbol, function (response) {
                 response = response.data.stock;
-                let name = response.company_profile.company_name;
+                let name = (response.company_profile)?response.company_profile.company_name:"";
                 let price = response.price;
                 NP.addStock(name,symbol,price);
                 let tr = document.createElement('tr');
