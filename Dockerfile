@@ -10,4 +10,10 @@ EXPOSE 8080
 
 COPY . .
 
+RUN echo "Installing memcached."
+RUN echo $(apt-get update)
+RUN echo $(apt-get -y install memcached)
+RUN echo $(service memcached start)
+RUN echo "Done."
+
 CMD ["npm","start"]
