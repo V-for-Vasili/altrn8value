@@ -311,11 +311,23 @@ let api = (function(){
         seng_graphql_request(data, callback);
     };
 
-    module.getDailyStoclPriceTS = function(symbol,callback=do_nothing){
+    module.getDailyStoclPriceTS = function(symbol,type="line",callback=do_nothing){
         let query = `{stock(symbol:\"${symbol}\"){
-            history(timeseries:"line") {
-              date
-              close
+            symbol
+            price
+            history(timeseries:\"${type}\") {
+                date
+                open
+                high
+                low
+                close
+                adjClose
+                volume
+                unadjustedVolume
+                change
+                changePercent
+                vwap
+                label
             }
           }}`;
           let data = {query: query};

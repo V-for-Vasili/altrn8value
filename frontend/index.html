@@ -119,6 +119,22 @@
 
                 <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
                     <div class="tm-bg-primary-dark tm-block p-4" >
+                        <div id="chartHeader">
+                            <div id="plotBtns" class="statementBtnGroup">
+                                <button class="btn btn-small btn-primary" id="1min">A</button>
+                                <button class="btn btn-small btn-primary" id="5min">B</button>
+                                <button class="btn btn-small btn-primary" id="15min">C</button>
+                            </div>
+                            
+                            <div id="timeBtns" class="statementBtnGroup">
+                                <button class="btn btn-small btn-primary" id="1min">1M</button>
+                                <button class="btn btn-small btn-primary" id="5min">5M</button>
+                                <button class="btn btn-small btn-primary" id="15min">15M</button>
+                                <button class="btn btn-small btn-primary" id="15min">30M</button>
+                                <button class="btn btn-small btn-primary" id="15min">1HR</button>
+                                <button class="btn btn-small btn-primary" id="15min">1DAY</button>
+                            </div>
+                        </div>
                         <div id="chart"></div>
                     </div>
                 </div>
@@ -128,7 +144,7 @@
                         <h2 class="tm-block-title" id="metrics_table_title"></h2>
                         <div class="statementHeader">
                             <select id="companeySelect"></select>
-                            <div id="statementBtnGroup">
+                            <div class="statementBtnGroup">
                                 <button class="btn btn-small btn-primary" id="IS_tab_btn">Income Statement</button>
                                 <button class="btn btn-small btn-primary" id="BS_tab_btn">Balance Sheet</button>
                                 <button class="btn btn-small btn-primary" id="CF_tab_btn">Cash Flow Statement</button>
