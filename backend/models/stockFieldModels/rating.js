@@ -1,6 +1,7 @@
 // Imports
 const axios = require('axios');
 
+
 let ratingTypeDef = `
 type Rating {
   score: Int

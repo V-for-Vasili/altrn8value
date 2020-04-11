@@ -10,10 +10,11 @@ EXPOSE 8080
 
 COPY . .
 
-RUN echo "Installing memcached."
-RUN echo $(apt-get update)
-RUN echo $(apt-get -y install memcached)
-RUN echo $(service memcached start)
-RUN echo "Done."
+EXPOSE 11211/tcp 11211/udp
+
+RUN apt-get update && \
+    apt-get install -y memcached && \
+    service memcached start && \
+    service memcached status
 
 CMD ["npm","start"]
