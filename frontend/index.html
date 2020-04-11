@@ -119,20 +119,21 @@
 
                 <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
                     <div class="tm-bg-primary-dark tm-block p-4" >
-                        <div id="chartHeader">
+                        <div id="chartHeader" hidden>
                             <div id="plotBtns" class="statementBtnGroup">
-                                <button class="btn btn-small btn-primary" id="1min">A</button>
-                                <button class="btn btn-small btn-primary" id="5min">B</button>
-                                <button class="btn btn-small btn-primary" id="15min">C</button>
+                                <button disabled class="btn btn-small btn-primary" id="linePlot"> <i class="fas fa-2x fa-chart-line"></i></button>
+                                <button class="btn btn-small btn-primary" id="areaPlot"> <i class="fas fa-2x fa-chart-area"></i></button>
+                                <button class="btn btn-small btn-primary" id="boxplot"><img src="/img/progress.png" class="boxPlot" alt="boxplot"></button>
+                                
                             </div>
                             
                             <div id="timeBtns" class="statementBtnGroup">
-                                <button class="btn btn-small btn-primary" id="1min">1M</button>
+                                <button  class="btn btn-small btn-primary" id="1min">1M</button>
                                 <button class="btn btn-small btn-primary" id="5min">5M</button>
                                 <button class="btn btn-small btn-primary" id="15min">15M</button>
                                 <button class="btn btn-small btn-primary" id="15min">30M</button>
                                 <button class="btn btn-small btn-primary" id="15min">1HR</button>
-                                <button class="btn btn-small btn-primary" id="15min">1DAY</button>
+                                <button disabled class="btn btn-small btn-primary" id="15min">1DAY</button>
                             </div>
                         </div>
                         <div id="chart"></div>
