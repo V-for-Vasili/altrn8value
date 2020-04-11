@@ -1,5 +1,5 @@
 // Imports
-const axios = require('axios');
+const {retrieveFromCache} = require('../cache.js');
 const FormatError = require('easygraphql-format-error');
 
 // Set up custom errors
@@ -74,9 +74,12 @@ let createPortfolioResolver = async (obj, args, context, info) => {
         });
         try {
             // Check all symbols are valid
-            let response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbols.toString()}`);
-            let stocks = response.data;
+            // Get data from cache
+            let key = `stock_${symbols.toString()}`;
+            let url = `https://financialmodelingprep.com/api/v3/quote/${symbols.toString()}`;
+            let stocks = await retrieveFromCache(key, url, 60);
             if (stocks.length != symbols.length) throw new Error(errorName.NOT_FOUND);
+            // If any of symbols are invalid lengths will differ
             // Change date strings to ISO objects so they can be used in queries in MOGODB
             let portfolio = new Portfolio({uid: userID, name:name, stock_list: stockListInput, purchaseValue:args.purchaseValue, createdAt:args.createdAt});
             await portfolio.save();
@@ -84,7 +87,6 @@ let createPortfolioResolver = async (obj, args, context, info) => {
         } catch (err) {
             console.log(err);
         }
-        // If any of symbols are invalid lengths will differ
     }
 };
 
@@ -96,7 +98,7 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
     if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
     let userID = context.uid;
     // Get Portfolio by name from db
-    let response = await Portfolio.findOne({uid: userID, name: args.name},async function(err, docs) {
+    let response = await Portfolio.findOne({uid: userID, name: args.name}, async function(err, docs) {
         if (err) return console.log(err);
         docs.stock_list = docs.stock_list.map(obj => {
             let rObj = obj;
@@ -112,7 +114,7 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
 };
 
 let portfolioFieldResolvers = {
-    stock_list:  async (obj, args, context, info) => {
+    stock_list: async (obj, args, context, info) => {
         // Check the user is authenticated
         if (!context.isAuth) throw new Error(errorName.ACCESS_DENIED);
         // Get Portfolio by name
@@ -131,8 +133,11 @@ let portfolioFieldResolvers = {
             let purchaseTime =  parent_list[stock_element].purchaseTime;
             let stock = {};
             try {
-                stock = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbol}`);
-                stock = stock.data[0];
+                // get data from cache
+                let key = `stock_${symbol}`;
+                let url = `https://financialmodelingprep.com/api/v3/quote/${symbol}`;
+                stock = await retrieveFromCache(key, url, 60);
+                stock = stock[0];
             } catch (err) {
                 console.log(err);
             }
@@ -153,9 +158,11 @@ let portfolioFieldResolvers = {
         let history_list = [];
         for (let i in stock_list) {
             try {
-                let symbol = stock_list[i].symbol;
-                let stock = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}`);
-                history_list[i] = {history: stock.data.historical, symbol, amount: stock_list[i].amount};
+                // get data from cache
+                let key = `historicalPriceFull_${symbol}`;
+                let url = `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}`;
+                stock = await retrieveFromCache(key, url, 60);
+                history_list[i] = {history: stock.historical, symbol, amount: stock_list[i].amount};
             } catch (err) {
                 console.log(err);
             }
@@ -188,7 +195,7 @@ let deletePortfolioResolver = async (obj, args, context, info) => {
     let result = await Portfolio.findOneAndDelete({name: args.name},async function(err, item) {
         if (err) return console.log(err);
     });
-    if (!result) console.log("This is causing the error!!!!!!!!!!!!!!!!!");
+    if (!result) console.log("error: empty result from Portfolio.findOneAndDelete");
     return result;
 };
 

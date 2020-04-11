@@ -1,5 +1,6 @@
 // Imports
-const axios = require('axios');
+const {retrieveFromCache} = require('../../cache.js');
+
 
 let quoteTypeDef = `
 type Quote {
@@ -22,8 +23,11 @@ type Quote {
 let quoteResolver = async (obj, args, context, info) => {
     let response = {};
     try {
-        response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${obj.symbol}`);
-        response = response.data[0];
+        // get data from cache
+        let key = `quote_${obj.symbol}`;
+        let url = `https://financialmodelingprep.com/api/v3/quote/${obj.symbol}`;
+        response = await retrieveFromCache(key, url, 60);
+        response = response[0];
     } catch (err) {
         console.log(err);
     }

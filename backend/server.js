@@ -3,7 +3,6 @@ const express = require('express');
 const morgan = require('morgan');
 const morganBody = require('morgan-body');
 const bodyParser = require('body-parser');
-const axios = require('axios');
 const cookie = require('cookie');
 const { v4: uuid } = require('uuid');
 const jwt = require('jsonwebtoken');

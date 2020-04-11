@@ -1,6 +1,7 @@
 /*jshint sub:true*/
 // Imports
-const axios = require('axios');
+const {retrieveFromCache} = require('../../cache.js');
+
 
 let ratingDetailTypeDef = `
 type RatingDetail {
@@ -13,8 +14,10 @@ type RatingDetail {
 let ratingDetailResolver = async (obj, args, context, info) => {
     let response = {};
     try {
-        response = await axios.get(`https://financialmodelingprep.com/api/v3/company/rating/${obj.symbol}`);
-        response = response.data;
+        // get data from cache
+        let key = `ratingDetail_${obj.symbol}`;
+        let url = `https://financialmodelingprep.com/api/v3/company/rating/${obj.symbol}`;
+        response = await retrieveFromCache(key, url, 60);
     } catch (err) {
         console.log(err);
     }

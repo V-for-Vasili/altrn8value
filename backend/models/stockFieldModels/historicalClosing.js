@@ -1,6 +1,7 @@
 // Imports
 const axios = require('axios');
 
+
 let historicalClosingTypeDef = `
 type HistoricalClosing {
   date: String
@@ -18,7 +19,7 @@ type HistoricalClosing {
   changeOverTime: Float
 }`;
 
-let historyResolver  =  async (obj, args, context, info) => {
+let historyResolver = async (obj, args, context, info) => {
     let from = args.from;
     let to = args.to;
     let timeseries = args.timeseries;
@@ -27,16 +28,13 @@ let historyResolver  =  async (obj, args, context, info) => {
         if (timeseries == "line") {
             response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${obj.symbol}?serietype=${timeseries}`);
             response = response.data.historical;
-        }
-        else if (timeseries in ["1min","5min","15min","30min","1hour"]) {
+        } else if (timeseries in ["1min","5min","15min","30min","1hour"]) {
             response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-chart/${timeseries}/${obj.symbol}`);
             response = response.data.historical;
-        }  
-        else if (to && from) {
+        } else if (to && from) {
             response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${obj.symbol}?from=${from}&to=${to}`);
             response = response.data.historical;
-        }
-         else {
+        } else {
             response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${obj.symbol}`);
             response = response.data.historical;
         }

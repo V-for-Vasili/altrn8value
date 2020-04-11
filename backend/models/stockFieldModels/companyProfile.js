@@ -1,5 +1,5 @@
 // Imports
-const axios = require('axios');
+const {retrieveFromCache} = require('../../cache.js');
 
 
 let companyProfileTypeDef = `
@@ -16,11 +16,14 @@ type CompanyProfile {
     image: String
 }`;
 
-let companyProfileResolver  =async (obj, args, context, info) => {
+let companyProfileResolver = async (obj, args, context, info) => {
     let response = {};
     try {
-        response = await axios.get(`https://financialmodelingprep.com/api/v3/company/profile/${obj.symbol}`);
-        response = response.data.profile;
+        // get data from cache
+        let key = `companyProfile_${obj.symbol}`;
+        let url = `https://financialmodelingprep.com/api/v3/company/profile/${obj.symbol}`;
+        response = await retrieveFromCache(key, url, 60);
+        response = response.profile;
     } catch (err) {
         console.log(err);
     }
