@@ -15,6 +15,6 @@ EXPOSE 11211/tcp 11211/udp
 RUN apt-get update && \
     apt-get install -y memcached && \
     service memcached start && \
-    service memcached
+    service memcached status
 
 CMD ["npm","start"]
