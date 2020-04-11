@@ -1,5 +1,5 @@
 // Imports
-const axios = require('axios');
+const {retrieveFromCache} = require('../cache.js');
 const {companyProfileTypeDef, companyProfileResolver} = require("./stockFieldModels/companyProfile.js");
 const {historicalClosingTypeDef, historyResolver, historyQueryDef} = require("./stockFieldModels/historicalClosing.js");
 const {quoteTypeDef, quoteResolver} = require("./stockFieldModels/quote.js");
@@ -47,8 +47,8 @@ let stockFieldTypeDef=`
 let stockResolver = async (_, {symbol}) => {
     let response = {};
     try {
-        response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbol}`);
-        response = response.data[0];
+        response = await retrieveFromCache(`quote_${symbol}`, `https://financialmodelingprep.com/api/v3/quote/${symbol}`, 60);
+        response = response[0];
     } catch (err) {
         console.log(err);
     }
