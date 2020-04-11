@@ -8,7 +8,7 @@ let memcached = new Memcached('localhost:11211');
 // Test connection
 console.log('memcached trying to connect');
 memcached.connect('localhost:11211', function(err, conn) {
-    if(err) return console.log('error from memcached: ', err);
+    if (err) return console.log('error from memcached: ', err);
     console.log('memcached running.');
 });
 
@@ -22,6 +22,14 @@ ${type}_${perior}_${symbol}
 or
 
 quote_${symbol}
+
+or
+
+search_${searchStr}
+
+or
+
+rating_${symbol}
 */
 
 /* Data stored in memcached under "key" is returned; If cache miss, memcache is
@@ -42,13 +50,12 @@ let retrieveFromCache = async function(key, url, lifetime) {
                     .then(function(resp) {
                         // process response
                         data = resp.data;
-                        // cache response
-                        memcached.set(key, data, 1000, function(err) {
+                        // save response into cache
+                        memcached.set(key, data, lifetime, function(err) {
                             if (err) console.log('memcached.set error: ', err);
                         });
                         // promise resolved
                         return resolve(data);
-
                     })
                     .catch(function(err) {
                         // process error
@@ -59,4 +66,4 @@ let retrieveFromCache = async function(key, url, lifetime) {
     });
 };
 
-module.exports = {memcached, retrieveFromCache}
+module.exports = {retrieveFromCache}
