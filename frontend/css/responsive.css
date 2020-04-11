@@ -1,8 +1,4 @@
-@media (min-width: 1200px){
-    .container {
-    max-width: 2200px;
-    }   
-}
+
 
 @media (min-width: 1200px) {
     .navbar-expand-xl .navbar-nav .nav-link {
