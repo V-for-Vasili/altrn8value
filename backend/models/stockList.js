@@ -1,5 +1,5 @@
 // Imports
-const {retrieveFromCache} = require('../cache.js');
+const axios = require('axios');
 
 
 let stockDescriptionTypeDef = `
@@ -16,10 +16,8 @@ let stockListQueryDef = `stockList(searchStr: String!): [StockDescription]`;
 let stockListResolver = async (_, {searchStr}) => {
     let response = {};
     try {
-        // get information from cache
-        let key = `search_${searchStr}`;
-        let url = `https://financialmodelingprep.com/api/v3/search?query=${searchStr}&limit=100`;
-        response = await retrieveFromCache(key, url, 60);
+        response = await axios.get(`https://financialmodelingprep.com/api/v3/search?query=${searchStr}&limit=100`);
+        response = response.data;
     } catch (err) {
         console.log(err);
     }
