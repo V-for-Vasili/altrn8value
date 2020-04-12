@@ -64,15 +64,83 @@ window.addEventListener('load', function(){
        if(selections.length == 0){
            if(tsPlot && !tsPlot.isDisposed())
            tsPlot.dispose();
-           document.getElementById('chartContainer').style.display = "none";
+           document.getElementById('chartHeader').style.visibility = "hidden";
+           document.getElementById('chartContainer').style.visibility = "hidden";
        }
        else{
            if (!tsPlot || tsPlot.isDisposed)
-           document.getElementById('chartContainer').style.display = "block";
+           document.getElementById('chartHeader').style.visibility = "visible";
+           document.getElementById('chartContainer').style.visibility = "visible";
            tsPlot = Graphing.initPlot("chart");
-           Graphing.graphPortfolios(tsPlot,selections);
+           Graphing.graphPortfolios(tsPlot,selections,"line");
             
        }
+    });
+
+    let timeBtns = document.querySelector("#timeBtns");
+    let timeButtons = timeBtns.querySelectorAll('.btn');
+    timeButtons.forEach(function(btn){
+        btn.onclick = function(){
+            timeButtons.forEach(function(btn2){
+                btn2.disabled = false;
+            });
+            btn.disabled = true;
+        };
+    });
+
+    let plotBtns = document.querySelector("#plotBtns");
+    let plotButtons = plotBtns.querySelectorAll('.btn');
+    plotButtons.forEach(function(btn){
+        btn.onclick = function(){
+            plotButtons.forEach(function(btn2){
+                btn2.disabled = false;
+            });
+            btn.disabled = true;
+        };
+    });
+
+    $("#linePlot").click( function(e){
+        let ns =Graphing.changeLinePlot(tsPlot,"line");
+    });
+    $("#areaPlot").click(function(e){
+        let ns = Graphing.changeLinePlot(tsPlot,"area");
+    });
+    
+    $("#1min").click(function(e){
+        let selections = tsPlot.getOption().legend[0].data;
+        tsPlot.dispose();
+        tsPlot = Graphing.initPlot("chart");
+        Graphing.graphPortfolios(tsPlot,selections,"1min");
+    });
+    $("#5min").click(function(e){
+        let selections = tsPlot.getOption().legend[0].data;
+        tsPlot.dispose();
+        tsPlot = Graphing.initPlot("chart");
+        Graphing.graphPortfolios(tsPlot,selections,"5min");
+    });
+    $("#15min").click(function(e){
+        let selections = tsPlot.getOption().legend[0].data;
+        tsPlot.dispose();
+        tsPlot = Graphing.initPlot("chart");
+        Graphing.graphPortfolios(tsPlot,selections,"15min");
+    });
+    $("#30min").click(function(e){
+        let selections = tsPlot.getOption().legend[0].data;
+        tsPlot.dispose();
+        tsPlot = Graphing.initPlot("chart");
+        Graphing.graphPortfolios(tsPlot,selections,"30min");
+    });
+    $("#1hour").click(function(e){
+        let selections = tsPlot.getOption().legend[0].data;
+        tsPlot.dispose();
+        tsPlot = Graphing.initPlot("chart");
+        Graphing.graphPortfolios(tsPlot,selections,"1hour");
+    });
+    $("#line").click(function(e){
+        let selections = tsPlot.getOption().legend[0].data;
+        tsPlot.dispose();
+        tsPlot = Graphing.initPlot("chart");
+        Graphing.graphPortfolios(tsPlot,selections,"line");
     });
 
 });

@@ -148,16 +148,17 @@ let Graphing = (function(){
     };
    
 
-    module.graphPortfolio = function(chart,portfolioName){ 
+    module.graphPortfolio = function(chart,portfolioName, seriesType){ 
         let prevOption = chart.getOption();
         if (prevOption){
             names = prevOption.legend[0].data;
             if (names.includes(portfolioName)) return;
         }
         var portfolioDecomp = [];
-       api.getPortfolioHistoryByName(portfolioName,function(response) {
+       api.getPortfolioHistoryByName(portfolioName,seriesType,function(response) {
            let portfolio = response.data.portfolio;
            let stock_list = portfolio.stock_list;
+           console.log("stocklist",stock_list);
            let allStocksHistory = stock_list.map(obj => {
                let rObj = {};
                rObj.symbol = obj.stock.symbol;
@@ -167,9 +168,17 @@ let Graphing = (function(){
            // Find min date in which all stocks in porfolio existed
            let minDate = new Date("1970-01-01");
            allStocksHistory.forEach(function(obj){
-               let date = new Date(obj.historical[0].date);
-               if (date > minDate) minDate = date;
+               if (seriesType == "line"){
+                let date = new Date(obj.historical[0].date);
+                if (date > minDate) minDate = date;
+               }
+               else{
+                let date = new Date(obj.historical[obj.historical.length-1].date);
+                if (date > minDate) minDate = date;
+               }
+               
            });
+           console.log("mindate is",minDate);
             let datesClose = {};
             allStocksHistory.forEach(function(ts,index){
                 let decompItem = {name:ts.symbol,type:'line',areaStyle:null};
@@ -184,7 +193,7 @@ let Graphing = (function(){
                 });
                 decompItem.data = decompItemData;
                 portfolioDecomp.push(decompItem);
-                console.log(decompItem);
+                console.log("Decomp Item is",decompItem);
             });
 
             let totalPortfolio = {name:portfolioName,type:'line',areaStyle:null};
@@ -195,14 +204,14 @@ let Graphing = (function(){
                 totalPortfolio.data = totalPortfolioData;
                 portfolioDecomp.push(totalPortfolio);
                 module.addSeries(chart,totalPortfolio.name,totalPortfolio);
-                console.log(totalPortfolio);
+               
             });
     };
 
-    module.graphPortfolios = function(chart, portfolioNames){
+    module.graphPortfolios = function(chart, portfolioNames,seriesType){
         
         portfolioNames.forEach(function(name){
-            module.graphPortfolio(chart,name);
+            module.graphPortfolio(chart,name,seriesType);
         });
        
 
