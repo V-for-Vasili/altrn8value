@@ -564,7 +564,7 @@ let api = (function(){
         seng_graphql_request(data, callback);
     };
 
-    module.getPortfolioHistoryByName = function(name, callback=do_nothing) {
+    module.getPortfolioHistoryByName = function(name,seriesType, callback=do_nothing) {
         if (!module.isLoggedIn()) return module.notifyErrorListeners('Must be logged in.');
         let query = `query portfolio($name:String!){
             portfolio(name:$name){
@@ -573,7 +573,7 @@ let api = (function(){
                     stock {
                     symbol
                     price
-                    history {
+                    history(timeseries:\"${seriesType}\") {
                         date
                         open
                         high

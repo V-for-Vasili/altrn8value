@@ -115,11 +115,26 @@
   </div>
   <div class="container">
     <div class="row tm-content-row">
-      <div id="chartContainer" style="display: none;" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
-        <div class="tm-bg-primary-dark tm-block p-4" >
-            <div id="chart"></div>
+      <div  class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
+        <div id="chartContainer" style="visibility: hidden;" class="tm-bg-primary-dark tm-block p-4" >
+          <div id="chartHeader">
+            <div id="plotBtns" class="statementBtnGroup">
+                <button disabled class="btn btn-small btn-primary" id="linePlot"> <i class="fas fa-2x fa-chart-line"></i></button>
+                <button class="btn btn-small btn-primary" id="areaPlot"> <i class="fas fa-2x fa-chart-area"></i></button>
+                <!-- <button class="btn btn-small btn-primary" id="boxplot"><img src="/img/progress.png" class="boxPlot" alt="boxplot"></button> -->
+            </div>
+            <div id="timeBtns" class="statementBtnGroup ">
+                <button  class="btn btn-small btn-primary" id="1min">1M</button>
+                <button class="btn btn-small btn-primary" id="5min">5M</button>
+                <button class="btn btn-small btn-primary" id="15min">15M</button>
+                <button class="btn btn-small btn-primary" id="30min">30M</button>
+                <button class="btn btn-small btn-primary" id="1hour">1HR</button>
+                <button  class="btn btn-small btn-primary" id="line">1DAY</button>
+            </div>
+          </div>
+              <div id="chart"></div>
         </div>
-    </div>
+      </div>
     </div>
   </div>
   
