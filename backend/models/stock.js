@@ -1,4 +1,5 @@
 // Imports
+const axios = require('axios');
 const {retrieveFromCache} = require('../cache.js');
 const {companyProfileTypeDef, companyProfileResolver} = require("./stockFieldModels/companyProfile.js");
 const {historicalClosingTypeDef, historyResolver, historyQueryDef} = require("./stockFieldModels/historicalClosing.js");
@@ -67,6 +68,23 @@ let stockResolver = async (_, {symbol}) => {
     }
 };
 
+let stocksQueryDef = `stocks(symbols: [String!]!): [Stock!]!`;
+let stocksResolver = async (_, {symbols}) => {
+    let response = {};
+    try {
+        response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbols.toString()}`);
+    } catch (err) {
+        console.log(err);
+    }
+    if(!response) {
+        return null;
+    } else {
+        return response.data;
+    }
+};
+
+
+
 let stockFieldResolvers = {
     company_profile: companyProfileResolver,
     quote: quoteResolver,
@@ -81,4 +99,4 @@ let stockFieldResolvers = {
     income_statement_quarter: incomeStatementQuarterResolver,
 };
 
-module.exports = {stockTypeDef, stockQueryDef, stockFieldTypeDef, stockResolver, stockFieldResolvers};
+module.exports = {stockTypeDef, stockQueryDef,stocksQueryDef, stockFieldTypeDef, stockResolver, stockFieldResolvers,stocksResolver};

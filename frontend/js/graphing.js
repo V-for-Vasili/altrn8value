@@ -1,3 +1,5 @@
+
+
 let Graphing = (function(){
     let module = {};
 
@@ -122,6 +124,29 @@ let Graphing = (function(){
         }
        
     };
+    module.changeLinePlot = function(chart,type){
+        let prevOption = chart.getOption();
+        let names = prevOption.legend[0].data;
+        let sereies = prevOption.series;
+        let newSereis=  [];
+        if (type=="line"){
+          newSereis = sereies.map(obj =>{
+              let rObj = obj;
+              rObj.areaStyle = null;
+              return rObj;
+          });
+        }
+        else if (type=="area"){
+            newSereis = sereies.map(obj =>{
+                let rObj = obj;
+                rObj.areaStyle = {};
+                return rObj;
+            });
+        }
+        module.update(chart,names,newSereis);
+        return newSereis;
+    };
+   
 
     module.graphPortfolio = function(chart,portfolioName){ 
         let prevOption = chart.getOption();
@@ -139,23 +164,30 @@ let Graphing = (function(){
                rObj.historical = obj.stock.history;
                return rObj;
            });
-           
+           // Find min date in which all stocks in porfolio existed
+           let minDate = new Date("1970-01-01");
+           allStocksHistory.forEach(function(obj){
+               let date = new Date(obj.historical[0].date);
+               if (date > minDate) minDate = date;
+           });
             let datesClose = {};
             allStocksHistory.forEach(function(ts,index){
-                let decompItem = {name:ts.symbol,type:'line',area:{}};
+                let decompItem = {name:ts.symbol,type:'line',areaStyle:null};
                 let decompItemData = [];
                 ts.historical.forEach(function(day){
-                    decompItemData.push([day.date,day.close]);
-                    if (datesClose[day.date])
-                        datesClose[day.date] += day.close * portfolio.stock_list[index].shares;
-                    else
-                        datesClose[day.date] = day.close * portfolio.stock_list[index].shares;
+                    if(minDate <= new Date(day.date)){
+                        decompItemData.push([day.date,day.close]);
+                        if (datesClose[day.date])
+                            datesClose[day.date] += day.close * portfolio.stock_list[index].shares;
+                        else datesClose[day.date] = day.close * portfolio.stock_list[index].shares;
+                    }
                 });
                 decompItem.data = decompItemData;
                 portfolioDecomp.push(decompItem);
+                console.log(decompItem);
             });
 
-            let totalPortfolio = {name:portfolioName,type:'line',area:{}};
+            let totalPortfolio = {name:portfolioName,type:'line',areaStyle:null};
             let totalPortfolioData = [];
              Object.keys(datesClose).forEach(function(date){
                 totalPortfolioData.push([date,datesClose[date]]);
@@ -163,13 +195,18 @@ let Graphing = (function(){
                 totalPortfolio.data = totalPortfolioData;
                 portfolioDecomp.push(totalPortfolio);
                 module.addSeries(chart,totalPortfolio.name,totalPortfolio);
+                console.log(totalPortfolio);
             });
     };
 
     module.graphPortfolios = function(chart, portfolioNames){
+        
         portfolioNames.forEach(function(name){
             module.graphPortfolio(chart,name);
         });
+       
+
+       
     };
 
     return module;

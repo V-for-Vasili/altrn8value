@@ -12,7 +12,9 @@ let RS = (function(){
             metricTableCurrTab: 0,          // tab currenttly displayed in metric table
                                             // 0,1,2 = IS, BS, CF respectively
 
-            series: []                      // Contains Time sereies data for stock in stockDisplayList
+            series: [],                      // Contains Time sereies data for stock in stockDisplayList
+            seriesType: "line",
+            seriesTime: "line"
         };
         sessionStorage.setItem("RS",JSON.stringify(rs));
         return rs;
@@ -61,6 +63,19 @@ let RS = (function(){
 
     module.changeStatement = function(rs, val){
         rs.metricTableCurrTab = val;
+        module.update(rs);
+        return rs;
+    };
+    module.changePlotType = function(rs,type,newSeries){
+        rs.seriesType = type;
+        rs.series = newSeries;
+        module.update(rs);
+        return rs;
+    };
+
+    module.changePlotTime = function(rs,time,newSeries){
+        rs.seriesTime = time;
+        rs.series = newSeries;
         module.update(rs);
         return rs;
     };

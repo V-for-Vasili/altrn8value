@@ -335,7 +335,36 @@ let api = (function(){
             // financial info for different time intervals
             if (code !== 200) return module.notifyErrorListeners(err);
            
-            callback(respObj);
+           return callback(respObj);
+        });
+    };
+
+    module.getDailyStocksTS =  function(symbols,type="line",callback=do_nothing){
+        let query = `query stocks($symbols:[String!]!){stocks(symbols:$symbols){
+            symbol
+            price
+            history(timeseries:\"${type}\") {
+                date
+                open
+                high
+                low
+                close
+                adjClose
+                volume
+                unadjustedVolume
+                change
+                changePercent
+                vwap
+                label
+            }
+          }}`;
+          let variables = {symbols:symbols};
+          let data = {query: query,variables:variables};
+          seng_graphql_request(data,function(code, err, respObj) {
+            // financial info for different time intervals
+            if (code !== 200) return module.notifyErrorListeners(err);
+           
+           return callback(respObj);
         });
     };
 

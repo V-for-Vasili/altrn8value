@@ -23,14 +23,17 @@ let historyResolver  =  async (obj, args, context, info) => {
     let to = args.to;
     let timeseries = args.timeseries;
     let response = {};
+    
+
     try {
         if (timeseries == "line") {
             response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${obj.symbol}?serietype=${timeseries}`);
             response = response.data.historical;
         }
-        else if (timeseries in ["1min","5min","15min","30min","1hour"]) {
+        else if (["1min","5min","15min","30min","1hour"].includes(timeseries)) {
+            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Entered");
             response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-chart/${timeseries}/${obj.symbol}`);
-            response = response.data.historical;
+            response = response.data;
         }  
         else if (to && from) {
             response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${obj.symbol}?from=${from}&to=${to}`);

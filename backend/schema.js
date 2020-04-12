@@ -6,7 +6,7 @@ const {portfolioTypeDef, portfolioQueryResolver,
     deletePortfolioQueryDef, deletePortfolioResolver,
     updatePortfolioQueryDef, updatePortfolioResolver,
     portfolioListQueryDef, portfolioListResolver} = require('./models/portfolio.js');
-const {stockTypeDef, stockQueryDef, stockFieldTypeDef, stockResolver, stockFieldResolvers} = require('./models/stock.js');
+const {stockTypeDef, stockQueryDef,stocksQueryDef ,stockFieldTypeDef, stockResolver,stocksResolver ,stockFieldResolvers} = require('./models/stock.js');
 const {stockDescriptionTypeDef, stockListQueryDef, stockListResolver} = require('./models/stockList.js');
 
 const typeDefs = `
@@ -18,6 +18,7 @@ const typeDefs = `
   type Query {
     ${stockListQueryDef}
     ${stockQueryDef}
+    ${stocksQueryDef}
     ${portfolioListQueryDef}
     ${portfolioQueryDef}
   }
@@ -32,6 +33,7 @@ const resolvers = {
   Query: {
     stockList: stockListResolver,
     stock: stockResolver,
+    stocks: stocksResolver,
     portfolioList: portfolioListResolver,
     portfolio: portfolioQueryResolver,
   },

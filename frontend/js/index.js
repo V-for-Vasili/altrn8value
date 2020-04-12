@@ -90,18 +90,19 @@ window.onload = (function(){
                 //  
                 if ($("#StockSelections").children("tr").length == 0){
                     $("#savePortfolio").hide();
+                    $("#chartHeader").css("visibility","hidden");
                 }
             });
             // Check whether all ready selected
             
             // Retrive time sereies for added stock and add to plot
             
-                api.getDailyStoclPriceTS(symbol,"line", function(response) {
+                api.getDailyStoclPriceTS(symbol,rs.seriesTime, function(response) {
                 let data = response.data.stock.history.map(obj =>{
                     let rObj = [obj.date,obj.close];
                     return rObj;  
                 });
-                let series = {name:symbol,type:'line',area:{},data:data};
+                let series = {name:symbol,type:'line',areaStyle:(rs.seriesType == "line")?null:{},data:data};
                 rs = RS.addStock(rs,symbol,name,series);
                 Graphing.update(tsPlot,rs.stockDisplayList,rs.series);
                 reloadPageContent();
@@ -117,8 +118,13 @@ window.onload = (function(){
             });
             
             // Display Save Portfolio Button of Authorized and Has atleast one selection
-            if (api.isLoggedIn()  && $("#StockSelections").children("tr").length > 0){
-                $("#savePortfolio").show();
+            if ($("#StockSelections").children("tr").length > 0){
+                if (api.isLoggedIn()){
+                    $("#savePortfolio").show();
+                }
+                $("#chartHeader").css("visibility","visible");
+              
+                
             }
             // Clear Stock Select Bar
             $("#singleSearch").val(null).trigger("change");
@@ -162,8 +168,25 @@ window.onload = (function(){
             window.location.href = '/addPortfolio.html';
         }
     });
+    $("#linePlot").click( function(e){
+        let ns =Graphing.changeLinePlot(tsPlot,"line");
+        rs =RS.changePlotType(rs,"line",ns);
+    });
+    $("#areaPlot").click(function(e){
+        let ns = Graphing.changeLinePlot(tsPlot,"area");
+        rs = RS.changePlotType(rs,"area",ns);
+    });
+    
 
     function populateStockSelections(rs){
+        if (rs.seriesType == "area"){
+            console.log("Entered");
+           document.getElementById("linePlot").disabled = false;
+           document.getElementById("areaPlot").disabled = true;
+        }
+        document.getElementById(rs.seriesTime).disabled = true;
+
+
         $('#StockSelections').innerHTML ='';
         rs.stockDisplayList.forEach(function(ele,idx){
             let symbol = ele;
@@ -195,12 +218,18 @@ window.onload = (function(){
                 //  
                 if ($("#StockSelections").children("tr").length == 0){
                     $("#savePortfolio").hide();
+                    $("#chartHeader").css("visibility","hidden");
+                    
                 }
             });
             $('#StockSelections').prepend(tr);
         });
-        if (api.isLoggedIn()  && $("#StockSelections").children("tr").length > 0){
-            $("#savePortfolio").show();
+        if ( $("#StockSelections").children("tr").length > 0){
+            if ( api.isLoggedIn()){
+                $("#savePortfolio").show();
+            }
+            $("#chartHeader").css("visibility","visible");
+            
         }
     }
 
@@ -230,6 +259,124 @@ window.onload = (function(){
             btn.disabled = true;
         };
     });
+
+    $("#1min").click(function(e){
+        let prevOption = tsPlot.getOption();
+        let symbols = prevOption.legend[0].data;
+        let newSeries = [];
+        api.getDailyStocksTS(symbols,"1min",function(res){
+            let data = res.data.stocks;
+            data.forEach(function(stockObj){
+                let stockData = stockObj.history.map(obj =>{
+                    let rObj = [obj.date,obj.close];
+                    return rObj;  
+                });
+                let seriesItem = {name:stockObj.symbol,type:'line',areaStyle:(rs.seriesType == "line")?null:{},data:stockData};
+                newSeries.push(seriesItem);
+            });
+            console.log(newSeries);
+            Graphing.update(tsPlot,symbols,newSeries);
+            rs = RS.changePlotTime(rs,"1min",newSeries);
+        });
+    });
+    
+    $("#5min").click(function(e){
+        let prevOption = tsPlot.getOption();
+        let symbols = prevOption.legend[0].data;
+        let newSeries = [];
+        api.getDailyStocksTS(symbols,"5min",function(res){
+            let data = res.data.stocks;
+            data.forEach(function(stockObj){
+                let stockData = stockObj.history.map(obj =>{
+                    let rObj = [obj.date,obj.close];
+                    return rObj;  
+                });
+                let seriesItem = {name:stockObj.symbol,type:'line',areaStyle:(rs.seriesType == "line")?null:{},data:stockData};
+                newSeries.push(seriesItem);
+            });
+            Graphing.update(tsPlot,symbols,newSeries);
+            rs = RS.changePlotTime(rs,"5min",newSeries);
+        });
+    });
+
+    $("#15min").click(function(e){
+        let prevOption = tsPlot.getOption();
+        let symbols = prevOption.legend[0].data;
+        let newSeries = [];
+        api.getDailyStocksTS(symbols,"5min",function(res){
+            let data = res.data.stocks;
+            data.forEach(function(stockObj){
+                let stockData = stockObj.history.map(obj =>{
+                    let rObj = [obj.date,obj.close];
+                    return rObj;  
+                });
+                let seriesItem = {name:stockObj.symbol,type:'line',areaStyle:(rs.seriesType == "line")?null:{},data:stockData};
+                newSeries.push(seriesItem);
+            });
+            Graphing.update(tsPlot,symbols,newSeries);
+            rs = RS.changePlotTime(rs,"5min",newSeries);
+        });
+    });
+
+    $("#30min").click(function(e){
+        let prevOption = tsPlot.getOption();
+        let symbols = prevOption.legend[0].data;
+        let newSeries = [];
+        api.getDailyStocksTS(symbols,"5min",function(res){
+            let data = res.data.stocks;
+            data.forEach(function(stockObj){
+                let stockData = stockObj.history.map(obj =>{
+                    let rObj = [obj.date,obj.close];
+                    return rObj;  
+                });
+                let seriesItem = {name:stockObj.symbol,type:'line',areaStyle:(rs.seriesType == "line")?null:{},data:stockData};
+                newSeries.push(seriesItem);
+            });
+            Graphing.update(tsPlot,symbols,newSeries);
+            rs = RS.changePlotTime(rs,"30min",newSeries);
+        });
+    });
+    
+    $("#1hour").click(function(e){
+        let prevOption = tsPlot.getOption();
+        let symbols = prevOption.legend[0].data;
+        let newSeries = [];
+        api.getDailyStocksTS(symbols,"1hour",function(res){
+            let data = res.data.stocks;
+            data.forEach(function(stockObj){
+                let stockData = stockObj.history.map(obj =>{
+                    let rObj = [obj.date,obj.close];
+                    return rObj;  
+                });
+                let seriesItem = {name:stockObj.symbol,type:'line',areaStyle:(rs.seriesType == "line")?null:{},data:stockData};
+                newSeries.push(seriesItem);
+            });
+            Graphing.update(tsPlot,symbols,newSeries);
+            rs = RS.changePlotTime(rs,"1hour",newSeries);
+        });
+    });
+
+    $("#line").click(function(e){
+        let prevOption = tsPlot.getOption();
+        let symbols = prevOption.legend[0].data;
+        let newSeries = [];
+        api.getDailyStocksTS(symbols,"line",function(res){
+            let data = res.data.stocks;
+            data.forEach(function(stockObj){
+                let stockData = stockObj.history.map(obj =>{
+                    let rObj = [obj.date,obj.close];
+                    return rObj;  
+                });
+                let seriesItem = {name:stockObj.symbol,type:'line',areaStyle:(rs.seriesType == "line")?null:{},data:stockData};
+                newSeries.push(seriesItem);
+            });
+            Graphing.update(tsPlot,symbols,newSeries);
+            rs = RS.changePlotTime(rs,"line",newSeries);
+        });
+    });
+
+    
+
 
     
 
