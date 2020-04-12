@@ -1,9 +1,9 @@
 let NP = (function(){
+    "use strict";
     let np = {
         portfolio : {
             stock_list : [],
             purchaseValue : 0,
-            
         },
         getPorofolio: function(){
             return this.portfolio;
@@ -32,7 +32,6 @@ let NP = (function(){
             this.portfolio.stock_list[idx].cost = newCost;
             this.UpdateportfolioCost(newCost - oldCost);
             return newCost;
-
         },
         addStock : function(name,symbol,price){
             let stockObj = {name:name,symbol:symbol,purchasePrice:price,shares:0,cost:0};
@@ -52,7 +51,7 @@ let NP = (function(){
         UpdateportfolioCost : function(amount){
             this.portfolio.purchaseValue += amount;
         },
-        getPorofolioCost :  function(){
+        getPorofolioCost : function(){
             return this.portfolio.purchaseValue;
         }
     };

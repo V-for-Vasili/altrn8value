@@ -52,7 +52,6 @@ window.addEventListener('load', function(){
         populatePortfolioTable(respObj.data.portfolioList);
     });
 
-    
     let graphData = {portfolioNames:[],porfotlioSeries:[]};
     $("#viewSelectionsBtn").click(function(){
         let selections = [];
@@ -65,13 +64,11 @@ window.addEventListener('load', function(){
            if(tsPlot && !tsPlot.isDisposed())
            tsPlot.dispose();
            document.getElementById('chartContainer').style.display = "none";
-       }
-       else{
+       } else{
            if (!tsPlot || tsPlot.isDisposed)
            document.getElementById('chartContainer').style.display = "block";
            tsPlot = Graphing.initPlot("chart");
            Graphing.graphPortfolios(tsPlot,selections);
-            
        }
     });
 

@@ -1,5 +1,6 @@
 let RS = (function(){
-    let module ={};
+    "use strict";
+    let module = {};
 
     function newSession() {
         let rs = {
@@ -26,6 +27,7 @@ let RS = (function(){
         else rs = JSON.parse(sessionStorage.getItem("RS"));
         return rs;
     };
+
     module.update = function(rs){
         sessionStorage.setItem("RS",JSON.stringify(rs));
     };
@@ -51,8 +53,7 @@ let RS = (function(){
             // hide metric table, reset PAGE_INFO to default value
             FS.hideMetricsTable(this.id);
             return newSession();
-        } 
-        else {
+        } else {
             if (rs.metricTableCurrStock && rs.metricTableCurrStock.localeCompare(symbol) == 0){
                 rs.metricTableCurrStock = rs.stockDisplayList[0];
             }
@@ -66,6 +67,7 @@ let RS = (function(){
         module.update(rs);
         return rs;
     };
+
     module.changePlotType = function(rs,type,newSeries){
         rs.seriesType = type;
         rs.series = newSeries;

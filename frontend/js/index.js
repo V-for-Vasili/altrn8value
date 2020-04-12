@@ -54,9 +54,9 @@ window.onload = (function(){
 
     // Setup Select Bar For Financial Statements
     $("#companeySelect").select2({
-      placeholder: 'Select A Stock',
-      theme: "flat",
-      allowClear: true,
+        placeholder: 'Select A Stock',
+        theme: "flat",
+        allowClear: true,
     });
 
     // Behavoiour For when a stock is selected from the drop down list
@@ -94,10 +94,8 @@ window.onload = (function(){
                 }
             });
             // Check whether all ready selected
-            
-            // Retrive time sereies for added stock and add to plot
-            
-                api.getDailyStoclPriceTS(symbol,rs.seriesTime, function(response) {
+            // Retrive time series for added stock and add to plot
+                api.getDailyStockPriceTS(symbol,rs.seriesTime, function(response) {
                 let data = response.data.stock.history.map(obj =>{
                     let rObj = [obj.date,obj.close];
                     return rObj;  
@@ -108,7 +106,7 @@ window.onload = (function(){
                 reloadPageContent();
                 
             });
-            // Add Selected Comaney to FS select companey bar
+            // Add Selected Company to FS select companey bar
             let opt = new Option(name,symbol,false,true);
             $('#companeySelect').append(opt).trigger('change').trigger({
                 type: 'select2:select',
@@ -116,15 +114,12 @@ window.onload = (function(){
                     data: {name: name,id:symbol}
                 }
             });
-            
             // Display Save Portfolio Button of Authorized and Has atleast one selection
             if ($("#StockSelections").children("tr").length > 0){
                 if (api.isLoggedIn()){
                     $("#savePortfolio").show();
                 }
                 $("#chartHeader").css("visibility","visible");
-              
-                
             }
             // Clear Stock Select Bar
             $("#singleSearch").val(null).trigger("change");
@@ -176,16 +171,14 @@ window.onload = (function(){
         let ns = Graphing.changeLinePlot(tsPlot,"area");
         rs = RS.changePlotType(rs,"area",ns);
     });
-    
 
     function populateStockSelections(rs){
         if (rs.seriesType == "area"){
             console.log("Entered");
-           document.getElementById("linePlot").disabled = false;
-           document.getElementById("areaPlot").disabled = true;
+            document.getElementById("linePlot").disabled = false;
+            document.getElementById("areaPlot").disabled = true;
         }
         document.getElementById(rs.seriesTime).disabled = true;
-
 
         $('#StockSelections').innerHTML ='';
         rs.stockDisplayList.forEach(function(ele,idx){
@@ -214,12 +207,9 @@ window.onload = (function(){
                 // Clear Graph if no stocks selected
                 //if (rs.series.length == 0) chart.clear();
                 Graphing.update(tsPlot,rs.stockDisplayList,rs.series);
-                
-                //  
                 if ($("#StockSelections").children("tr").length == 0){
                     $("#savePortfolio").hide();
                     $("#chartHeader").css("visibility","hidden");
-                    
                 }
             });
             $('#StockSelections').prepend(tr);
@@ -229,7 +219,6 @@ window.onload = (function(){
                 $("#savePortfolio").show();
             }
             $("#chartHeader").css("visibility","visible");
-            
         }
     }
 
@@ -279,7 +268,8 @@ window.onload = (function(){
             rs = RS.changePlotTime(rs,"1min",newSeries);
         });
     });
-    
+
+    // Attach event to 5min selection
     $("#5min").click(function(e){
         let prevOption = tsPlot.getOption();
         let symbols = prevOption.legend[0].data;
@@ -299,6 +289,7 @@ window.onload = (function(){
         });
     });
 
+    // Attach event to 15min selection
     $("#15min").click(function(e){
         let prevOption = tsPlot.getOption();
         let symbols = prevOption.legend[0].data;
@@ -318,6 +309,7 @@ window.onload = (function(){
         });
     });
 
+    // Attach event to 30min selection
     $("#30min").click(function(e){
         let prevOption = tsPlot.getOption();
         let symbols = prevOption.legend[0].data;
@@ -336,7 +328,8 @@ window.onload = (function(){
             rs = RS.changePlotTime(rs,"30min",newSeries);
         });
     });
-    
+
+    // Attach event to 1hr selection
     $("#1hour").click(function(e){
         let prevOption = tsPlot.getOption();
         let symbols = prevOption.legend[0].data;
@@ -356,6 +349,7 @@ window.onload = (function(){
         });
     });
 
+    // Attach event to line selection
     $("#line").click(function(e){
         let prevOption = tsPlot.getOption();
         let symbols = prevOption.legend[0].data;
@@ -374,12 +368,6 @@ window.onload = (function(){
             rs = RS.changePlotTime(rs,"line",newSeries);
         });
     });
-
-    
-
-
-    
-
 
     reloadPageContent();
 

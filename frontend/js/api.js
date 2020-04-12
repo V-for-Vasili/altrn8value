@@ -311,7 +311,7 @@ let api = (function(){
         seng_graphql_request(data, callback);
     };
 
-    module.getDailyStoclPriceTS = function(symbol,type="line",callback=do_nothing){
+    module.getDailyStockPriceTS = function(symbol,type="line",callback=do_nothing){
         let query = `{stock(symbol:\"${symbol}\"){
             symbol
             price

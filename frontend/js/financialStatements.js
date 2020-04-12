@@ -1,6 +1,6 @@
 let FS = (function(){
-    let module ={
-        
+    "use strict";
+    let module = {
         init : function(id,titleId,colHeadId,bodyId){
             this.id = id;
             this.titleId = titleId;
@@ -30,20 +30,17 @@ let FS = (function(){
         },
         showMetricsTable : function() {
             document.getElementById(this.id).style.display = 'block';
-            //document.getElementById(this.id).style.visibility = 'visible';
-            
         },
         hideMetricsTable : function() {
             document.getElementById(this.id).style.display = 'none';
-            //document.getElementById(this).style.visibility = 'hidden';
         },
         // generates columns for metrics table
         generateMetricTableColumns: function() {
-        let content = '';
-        for (let year of api.years) {
-            content += `<th scope="col">${year}</th>`;
-        }
-        return content;
+            let content = '';
+            for (let year of api.years) {
+                content += `<th scope="col">${year}</th>`;
+            }
+            return content;
         },
         getInfoByYear: function(respObj) {
             let infoByYear = {};
@@ -79,7 +76,7 @@ let FS = (function(){
                         let tr = document.createElement('tr');
                         c = FS.assignClass(title,m,api.years.length,table);
                         tr.classList.add(c.tr);
-                        
+
                         tr.innerHTML = `<th scope="row" class="${c.head}">${(c.flag)?c.newM:m}</th>`;
                         for (let idx1 in api.years) {
                             let year = api.years[idx1];
@@ -118,10 +115,6 @@ let FS = (function(){
                             c.head = "ra";
                             c.cell = "raTotal";
                             break;
-                            //c.append = document.createElement('tr');
-                            //c.append.classList.add("seperator");
-                            //c.append.innerHTML = `<th scope="row" class="SeperatorTitle">Operating Expenses :</th>` + "<td></td>".repeat(len);
-                            //break;
                         case "Operating Expenses":
                             c.head = "ra";
                             c.cell = "raTotal";
