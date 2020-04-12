@@ -50,6 +50,7 @@ window.addEventListener('load', function(){
     api.getUserPortfoliosList(function(code, err, respObj) {
         if (code !== 200) return api.notifyErrorListeners(err);
         populatePortfolioTable(respObj.data.portfolioList);
+    
     });
 
     let graphData = {portfolioNames:[],porfotlioSeries:[]};
@@ -63,15 +64,23 @@ window.addEventListener('load', function(){
        if(selections.length == 0){
            if(tsPlot && !tsPlot.isDisposed())
            tsPlot.dispose();
+           document.getElementById('tblsContainer').style.display = "none";
            document.getElementById('chartHeader').style.visibility = "hidden";
            document.getElementById('chartContainer').style.visibility = "hidden";
        }
        else{
            if (!tsPlot || tsPlot.isDisposed)
+           document.getElementById('tblsContainer').style.display = "";
            document.getElementById('chartHeader').style.visibility = "visible";
            document.getElementById('chartContainer').style.visibility = "visible";
            tsPlot = Graphing.initPlot("chart");
            Graphing.graphPortfolios(tsPlot,selections,"line");
+           api.getUserPortfoliosList(function(code, err, respObj) {
+            
+            populatePortfolioDecompTable(respObj.data.portfolioList,selections);
+        
+        });
+
             
        }
     });
@@ -141,5 +150,50 @@ window.addEventListener('load', function(){
         tsPlot = Graphing.initPlot("chart");
         Graphing.graphPortfolios(tsPlot,selections,"line");
     });
+
+    function populatePortfolioDecompTable(portfolios,selections) {
+        let selectionObjs = portfolios.filter(obj => selections.includes(obj.name));
+        let table = document.getElementById("portfolioTables");
+        table.innerHTML ='';
+        // Display stats about each portfolio as a separate table row
+        selectionObjs.forEach(function(portfolio){
+            
+            let div = document.createElement('div');
+            div.innerHTML = `<p class="titleLG"> ${"Portfolio: "+ portfolio.name}</p>
+            <table class="table table-hover tm-table-small tm-product-table">
+            <thead>
+              <tr>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">STOCK NAME</th>
+                <th scope="col">SHARES</th>
+                <th scope="col">CURRENT VALUE</th>
+                <th scope="col">PURCHASE PRICE</th>
+                <th scope="col">PROFIT</th>
+              </tr>
+            </thead>
+            <tbody id="${"tbl"+portfolio.name}">
+            </tbody>`;
+            table.prepend(div);
+            
+            portfolio.stock_list.forEach(function(stockPurchase) {
+                let purchasePrice = stockPurchase.purchasePrice;
+                let pricePerShare = stockPurchase.stock.price;
+                let shares = stockPurchase.shares;
+                let profit = (pricePerShare -purchasePrice)/purchasePrice;
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${stockPurchase.stock.symbol.toLowerCase()}.png"/></td>
+                <td class="tm-product-name">${stockPurchase.stock.symbol}</td>
+                <td>${shares}</td>
+                <td>${'$ ' + pricePerShare.toFixed(2)}</td>
+                <td>${'$ ' + purchasePrice.toFixed(2)}</td>
+                <td>${profit.toFixed(2)} %</td>`;
+                document.getElementById("tbl"+portfolio.name).prepend(tr);
+            });
+            
+           
+        });
+    }
+
 
 });

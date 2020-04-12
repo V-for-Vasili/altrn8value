@@ -153,7 +153,7 @@ let Graphing = (function(){
     module.graphPortfolio = function(chart, portfolioName, seriesType){ 
         let prevOption = chart.getOption();
         if (prevOption){
-            names = prevOption.legend[0].data;
+            let names = prevOption.legend[0].data;
             if (names.includes(portfolioName)) return;
         }
         let portfolioDecomp = [];

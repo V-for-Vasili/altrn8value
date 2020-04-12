@@ -36,7 +36,7 @@
           </button>
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mx-auto h-100">
+              <ul class="navbar-nav mx-auto h+400">
                   <li class="nav-item">
                       <a class="nav-link " href="index.html">
                           <i class="fas fa-money-check"></i> Stock Analysis
@@ -103,10 +103,11 @@
               <tbody id="portfolioList">
               </tbody>
             </table>
-            <button class="btn btn-primary btn-block text-uppercase mt-2" id="viewSelectionsBtn">
-              View Selections
-            </button>
+            
           </div>
+          <button class="btn btn-primary btn-block text-uppercase mt-2" id="viewSelectionsBtn">
+            View Selections
+          </button>
           <!-- table container -->
          
         </div>
@@ -116,7 +117,7 @@
   <div class="container">
     <div class="row tm-content-row">
       <div  class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
-        <div id="chartContainer" style="visibility: hidden;" class="tm-bg-primary-dark tm-block p-4" >
+        <div id="chartContainer" class="tm-bg-primary-dark tm-block p-4" style="visibility: hidden;" >
           <div id="chartHeader">
             <div id="plotBtns" class="statementBtnGroup">
                 <button disabled class="btn btn-small btn-primary" id="linePlot"> <i class="fas fa-2x fa-chart-line"></i></button>
@@ -133,6 +134,14 @@
             </div>
           </div>
               <div id="chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-5">
+    <div class="row tm-content-row">
+      <div id="tblsContainer" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col" style="display: none;">
+        <div id="portfolioTables" class="tm-bg-primary-dark tm-block tm-block-products">
         </div>
       </div>
     </div>
