@@ -12,8 +12,8 @@ window.onload = (function () {
             this.on = false;
         };
         this.run = function () {
-            var self = this;
-            var poll = setTimeout(function () {
+            let self = this;
+            let poll = setTimeout(function () {
                 api.getStockData(symbol,callback);
                 if(self.on) self.run();
                 else clearTimeout(poll);
@@ -21,7 +21,9 @@ window.onload = (function () {
         };
     }
 
+    // Check if portfolio is stored in session storage, if so display it
     loadInfo((sessionStorage.getItem("newPortfolio"))? JSON.parse(sessionStorage.getItem("newPortfolio")): []); 
+    // attach event to stock search selector
     $("#stockSelect").select2({
         placeholder: 'Select A Stock',
         theme: "flat",
@@ -165,8 +167,7 @@ window.onload = (function () {
                         NP.updateStock(symbol,shares,newCost);
                         let newCostFormatted = api.formatNumeric(newCost, "$", 6, ".", ",");
                         $("#" + symbol + "Cost").text(newCostFormatted);
-                    }
-                    else {
+                    } else {
                         NP.updateStock(symbol,0,0);
                         $("#" + symbol + "Cost").text("-");
                     }

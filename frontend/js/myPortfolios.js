@@ -1,6 +1,8 @@
 window.addEventListener('load', function(){
     "use strict";
 
+    // based on portfolio object populates the portfolioList table element on
+    // the page
     function populatePortfolioTable(portfolios) {
         let table = $('#portfolioList');
         // Display stats about each portfolio as a separate table row
@@ -51,41 +53,40 @@ window.addEventListener('load', function(){
     api.getUserPortfoliosList(function(code, err, respObj) {
         if (code !== 200) return api.notifyErrorListeners(err);
         populatePortfolioTable(respObj.data.portfolioList);
-    
     });
 
     let graphData = {portfolioNames:[],porfotlioSeries:[]};
+    // handle view selection event on viewSelectionsBtn
     $("#viewSelectionsBtn").click(function(){
         let selections = [];
-       $("input[type='checkbox']:checked").each(function(){
+        $("input[type='checkbox']:checked").each(function(){
             let row = this.parentElement.parentElement;
             let portfolioName = $(row).find(".tm-product-name").text();
             selections.push(portfolioName);
-       });
-       if(selections.length == 0){
-           if(tsPlot && !tsPlot.isDisposed())
-           tsPlot.dispose();
-           document.getElementById('tblsContainer').style.display = "none";
-           document.getElementById('chartHeader').style.visibility = "hidden";
-           document.getElementById('chartContainer').style.visibility = "hidden";
-       }
-       else{
-           if (!tsPlot || tsPlot.isDisposed)
-           document.getElementById('tblsContainer').style.display = "";
-           document.getElementById('chartHeader').style.visibility = "visible";
-           document.getElementById('chartContainer').style.visibility = "visible";
-           tsPlot = Graphing.initPlot("chart");
-           Graphing.graphPortfolios(tsPlot,selections,"line");
-           api.getUserPortfoliosList(function(code, err, respObj) {
-            
-            populatePortfolioDecompTable(respObj.data.portfolioList,selections);
-        
         });
-
-            
-       }
+        if(selections.length == 0){
+            if(tsPlot && !tsPlot.isDisposed())
+            tsPlot.dispose();
+            // hide appropriate page elements
+            document.getElementById('tblsContainer').style.display = "none";
+            document.getElementById('chartHeader').style.visibility = "hidden";
+            document.getElementById('chartContainer').style.visibility = "hidden";
+       } else {
+            if (!tsPlot || tsPlot.isDisposed)
+            // show appropriate page elements
+            document.getElementById('tblsContainer').style.display = "";
+            document.getElementById('chartHeader').style.visibility = "visible";
+            document.getElementById('chartContainer').style.visibility = "visible";
+            tsPlot = Graphing.initPlot("chart");
+            Graphing.graphPortfolios(tsPlot,selections,"line");
+            // get portfolios for current user and populate the table
+            api.getUserPortfoliosList(function(code, err, respObj) {
+                populatePortfolioDecompTable(respObj.data.portfolioList,selections);
+            });
+        }
     });
 
+    // attach onclick events to timeBtns
     let timeBtns = document.querySelector("#timeBtns");
     let timeButtons = timeBtns.querySelectorAll('.btn');
     timeButtons.forEach(function(btn){
@@ -97,6 +98,7 @@ window.addEventListener('load', function(){
         };
     });
 
+    // attach onclick events to plotBtns
     let plotBtns = document.querySelector("#plotBtns");
     let plotButtons = plotBtns.querySelectorAll('.btn');
     plotButtons.forEach(function(btn){
@@ -109,12 +111,13 @@ window.addEventListener('load', function(){
     });
 
     $("#linePlot").click( function(e){
-        let ns =Graphing.changeLinePlot(tsPlot,"line");
+        let ns = Graphing.changeLinePlot(tsPlot,"line");
     });
     $("#areaPlot").click(function(e){
         let ns = Graphing.changeLinePlot(tsPlot,"area");
     });
-    
+
+    // attach events to 1min, 5min etc. selection buttons
     $("#1min").click(function(e){
         let selections = tsPlot.getOption().legend[0].data;
         tsPlot.dispose();
@@ -152,13 +155,15 @@ window.addEventListener('load', function(){
         Graphing.graphPortfolios(tsPlot,selections,"line");
     });
 
+    // populates portfolioTables element to show information on selected
+    // portfolios based on portfolios object
     function populatePortfolioDecompTable(portfolios,selections) {
         let selectionObjs = portfolios.filter(obj => selections.includes(obj.name));
         let table = document.getElementById("portfolioTables");
         table.innerHTML ='';
         // Display stats about each portfolio as a separate table row
         selectionObjs.forEach(function(portfolio){
-            
+            // Show column names
             let div = document.createElement('div');
             div.innerHTML = `<p class="titleLG"> ${"Portfolio: "+ portfolio.name}</p>
             <table class="table table-hover tm-table-small tm-product-table">
@@ -175,7 +180,8 @@ window.addEventListener('load', function(){
             <tbody id="${"tbl"+portfolio.name}">
             </tbody>`;
             table.prepend(div);
-            
+
+            // create a table row for each selected portfolio
             portfolio.stock_list.forEach(function(stockPurchase) {
                 let purchasePrice = stockPurchase.purchasePrice;
                 let pricePerShare = stockPurchase.stock.price;
@@ -191,10 +197,7 @@ window.addEventListener('load', function(){
                 <td>${profit.toFixed(2)} %</td>`;
                 document.getElementById("tbl"+portfolio.name).prepend(tr);
             });
-            
-           
         });
     }
-
 
 });

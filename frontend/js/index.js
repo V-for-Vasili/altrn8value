@@ -225,6 +225,7 @@ window.onload = (function(){
         api.notifyStockDisplayListeners();
     }
 
+    // add onclick events to timeBtns
     let timeBtns = document.querySelector("#timeBtns");
     let timeButtons = timeBtns.querySelectorAll('.btn');
     timeButtons.forEach(function(btn){
@@ -236,6 +237,7 @@ window.onload = (function(){
         };
     });
 
+    // add onclick events to plotBtns
     let plotBtns = document.querySelector("#plotBtns");
     let plotButtons = plotBtns.querySelectorAll('.btn');
     plotButtons.forEach(function(btn){
@@ -247,6 +249,7 @@ window.onload = (function(){
         };
     });
 
+    // Attach event to 1min selection
     $("#1min").click(function(e){
         let prevOption = tsPlot.getOption();
         let symbols = prevOption.legend[0].data;

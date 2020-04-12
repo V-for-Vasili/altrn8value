@@ -1,6 +1,7 @@
 let FS = (function(){
     "use strict";
     let module = {
+        // Initializes new portfolio
         init : function(id,titleId,colHeadId,bodyId){
             this.id = id;
             this.titleId = titleId;
@@ -10,6 +11,7 @@ let FS = (function(){
         initColHeaders : function(){
             document.getElementById(this.headId).innerHTML = `<tr><th scope="col">Account:</th>${this.generateMetricTableColumns()}</tr>`;
         },
+        // updates metrics table based on info in rs
         update: function(rs){
             if (rs.stockDisplayList.length == 0) {
                 // no stocks in display list
@@ -42,6 +44,7 @@ let FS = (function(){
             }
             return content;
         },
+        // formats the respObj so that the info is accessible by year
         getInfoByYear: function(respObj) {
             let infoByYear = {};
             respObj.forEach(function(item) {
@@ -54,6 +57,8 @@ let FS = (function(){
             }
             return infoByYear;
         },
+        // function to display data on the main page;
+        // apiFunction is one of getIncomeStatement, getBalanceSheet, getCashFlowStmt
         populateMetricsTable : function(apiFunction, companyName, metrics, title) {
             // set title
             document.getElementById(this.titleId).innerHTML = title;
@@ -77,6 +82,7 @@ let FS = (function(){
                         c = FS.assignClass(title,m,api.years.length,table);
                         tr.classList.add(c.tr);
 
+                        // create a tr element with the information
                         tr.innerHTML = `<th scope="row" class="${c.head}">${(c.flag)?c.newM:m}</th>`;
                         for (let idx1 in api.years) {
                             let year = api.years[idx1];
@@ -88,6 +94,7 @@ let FS = (function(){
                         table.append(tr);
                     }
                 }
+                // make the table visible
                 FS.showMetricsTable();
             });
         },
@@ -104,7 +111,7 @@ let FS = (function(){
         displayCF : function (companyName) {
             this.populateMetricsTable(api.getCashFlowStmt, companyName, api.getCashFlowStmtMetricNames(), "Cash Flow Statement");
         },
-
+        // needed to pretty print data on the page
         assignClass:function(fs,accountName,numYears,tbl){
             let c={head:'',cell:'',append:'',flag:false, td:''};
             let a;
