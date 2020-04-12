@@ -38,6 +38,7 @@ let historyResolver = async (obj, args, context, info) => {
         } else if (timeseries == "1min") {
             // We do not cache this
             response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-chart/${timeseries}/${obj.symbol}`);
+            response = response.data;
             
         } else if (["5min","15min","30min","1hour"].includes(timeseries)) {
             // get data from cache
@@ -49,7 +50,7 @@ let historyResolver = async (obj, args, context, info) => {
         } else if (to && from) {
             // We do not cache this because of key explosion
             response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${obj.symbol}?from=${from}&to=${to}`);
-            
+            response = response.data;
         } else {
             // get data from cache
             // Cache for 60s

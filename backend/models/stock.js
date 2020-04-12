@@ -1,4 +1,5 @@
 // Imports
+const axios = require('axios');
 const {companyProfileTypeDef, companyProfileResolver} = require("./stockFieldModels/companyProfile.js");
 const {historicalClosingTypeDef, historyResolver, historyQueryDef} = require("./stockFieldModels/historicalClosing.js");
 const {quoteTypeDef, quoteResolver} = require("./stockFieldModels/quote.js");
