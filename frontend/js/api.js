@@ -65,6 +65,8 @@ let api = (function(){
         return names;
     }
 
+    /* Transforms return object into more readable format to be displayed
+    in table on the main page. */
     function transform_financial_metrics_result(respObj, metrics_table) {
         let result = [];
         respObj.forEach(function(data) {
@@ -267,7 +269,6 @@ let api = (function(){
         seng_graphql_request(data, function(code, err, respObj) {
             // financial info for different time intervals
             if (code !== 200) return module.notifyErrorListeners(err);
-           
             callback(respObj);
         });
     };
@@ -290,7 +291,6 @@ let api = (function(){
         seng_graphql_request(data, function(code, err, respObj) {
             // financial info for different time intervals
             if (code !== 200) return module.notifyErrorListeners(err);
-           
             callback(respObj);
         });
     };
@@ -334,8 +334,7 @@ let api = (function(){
           seng_graphql_request(data,function(code, err, respObj) {
             // financial info for different time intervals
             if (code !== 200) return module.notifyErrorListeners(err);
-           
-           return callback(respObj);
+            return callback(respObj);
         });
     };
 
@@ -363,8 +362,7 @@ let api = (function(){
           seng_graphql_request(data,function(code, err, respObj) {
             // financial info for different time intervals
             if (code !== 200) return module.notifyErrorListeners(err);
-           
-           return callback(respObj);
+            return callback(respObj);
         });
     };
 
@@ -717,12 +715,7 @@ let api = (function(){
         errorListeners.push(listener);
     };
 
-    module.stockQuoteSubscribe = function(symbol,callback=do_nothing){
-        
-    };
-
-    
-
+    module.stockQuoteSubscribe = function(symbol,callback=do_nothing) {};
 
     //
     // api helper methods

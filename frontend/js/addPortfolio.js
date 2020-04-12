@@ -1,6 +1,7 @@
 window.onload = (function () {
     "use strict";
 
+    /* sets up a poll to pull stock quote data every second */
     function Subscription(symbol,callback) {
         this.on = false;
         this.activate = function () {
@@ -96,7 +97,6 @@ window.onload = (function () {
                 totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 4, ".", ",");
                 $("#totalCost").text(totalCost);
             });
-            
 
             // Behaviour For When Stock is removed from selections
             tr.querySelector('i').addEventListener('click', function (e) {
@@ -139,7 +139,7 @@ window.onload = (function () {
     // Inital Loading of stock selections from current research session
     function loadInfo(symbols){ 
         symbols.forEach(function(symbol){
-            
+
             api.getCompanyProfile(symbol, function (response) {
                 response = response.data.stock;
                 let name = (response.company_profile)?response.company_profile.company_name:"";
@@ -210,6 +210,7 @@ window.onload = (function () {
             });
         });
     }
+
     // Formats options for select stock bar
     function formatState(state) {
         if (!state.id) {
