@@ -1,6 +1,10 @@
 # project-altrn8-value
 (Pronounced: "Alternate Value")
 
+**Url:** https://altern8value.digital/  
+**Video:**  
+**API Documentation:** https://altern8value.digital/docs/#introduction  
+
 ## Team Mebers: ##
 - Sean van Wyk, 1003228946, vanwykse
 - John Landon Edwards, 1004242161 , edwar361
