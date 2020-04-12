@@ -25,7 +25,6 @@ let NP = (function(){
         },
         updateStockPrice: function(price,symbol){
             let idx = this.portfolio.stock_list.findIndex(obj => obj.symbol == symbol);
-            console.log(idx);
             let oldCost = this.portfolio.stock_list[idx].cost;
             let newCost = this.portfolio.stock_list[idx].shares * price;
             this.portfolio.stock_list[idx].purchasePrice = price;

@@ -160,7 +160,6 @@ let Graphing = (function(){
         api.getPortfolioHistoryByName(portfolioName,seriesType,function(response) {
            let portfolio = response.data.portfolio;
            let stock_list = portfolio.stock_list;
-           console.log("stocklist",stock_list);
            let allStocksHistory = stock_list.map(obj => {
                let rObj = {};
                rObj.symbol = obj.stock.symbol;
@@ -178,8 +177,7 @@ let Graphing = (function(){
                 if (date > minDate) minDate = date;
                }
                
-           });
-           console.log("mindate is",minDate);
+            });
             let datesClose = {};
             allStocksHistory.forEach(function(ts,index){
                 let decompItem = {name:ts.symbol,type:'line',areaStyle:null};
@@ -194,7 +192,6 @@ let Graphing = (function(){
                 });
                 decompItem.data = decompItemData;
                 portfolioDecomp.push(decompItem);
-                console.log("Decomp Item is",decompItem);
             });
             let totalPortfolio = {name:portfolioName,type:'line',areaStyle:null};
             let totalPortfolioData = [];

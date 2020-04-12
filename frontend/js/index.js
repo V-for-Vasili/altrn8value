@@ -156,7 +156,6 @@ window.onload = (function(){
     });
 
     $('#savePortfolio').on('click',function(e){
-        console.log("entered");
         if(api.isLoggedIn()){
             let data = rs.stockDisplayList;
             sessionStorage.setItem('newPortfolio',JSON.stringify(data));
@@ -174,7 +173,6 @@ window.onload = (function(){
 
     function populateStockSelections(rs){
         if (rs.seriesType == "area"){
-            console.log("Entered");
             document.getElementById("linePlot").disabled = false;
             document.getElementById("areaPlot").disabled = true;
         }
@@ -263,7 +261,6 @@ window.onload = (function(){
                 let seriesItem = {name:stockObj.symbol,type:'line',areaStyle:(rs.seriesType == "line")?null:{},data:stockData};
                 newSeries.push(seriesItem);
             });
-            console.log(newSeries);
             Graphing.update(tsPlot,symbols,newSeries);
             rs = RS.changePlotTime(rs,"1min",newSeries);
         });
