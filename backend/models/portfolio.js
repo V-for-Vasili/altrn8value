@@ -107,7 +107,8 @@ let portfolioQueryResolver = async (obj, args, context, info) => {
             rObj.purchaseTime = rObj.purchaseTime;
             return rObj;
         });
-        docs.createdAt = res.createdAt.toJSON();
+        // Json timestamp so that it is parsed properly by frontend
+        docs.createdAt = docs.createdAt.toJSON();
     });
     if(!response) throw new Error(errorName.NOT_FOUND);
     return response;

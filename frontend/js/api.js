@@ -416,6 +416,7 @@ let api = (function(){
             respObj = respObj.data.stock[metric];
             // Transform the result to attah correct metric names, for example
             // "R&D Expenses" in place of "rd_expenses"
+            if (!respObj) return module.notifyErrorListeners(`No Income Statement data available for symbol ${symbol}`);
             let result = transform_financial_metrics_result(respObj, module.incomeStatementMetrics);
             callback(code, err, result);
         });
@@ -469,6 +470,7 @@ let api = (function(){
             respObj = respObj.data.stock[metric];
             // Transform the result to attah correct metric names, for example
             // "R&D Expenses" in place of "rd_expenses"
+            if (!respObj) return module.notifyErrorListeners(`No Balance Sheet data available for symbol ${symbol}`);
             let result = transform_financial_metrics_result(respObj, module.balanceSheetMetrics);
             callback(code, err, result);
         });
@@ -508,6 +510,7 @@ let api = (function(){
             respObj = respObj.data.stock[metric];
             // Transform the result to attah correct metric names, for example
             // "R&D Expenses" in place of "rd_expenses"
+            if (!respObj) return module.notifyErrorListeners(`No Cash Flow data available for symbol ${symbol}`);
             let result = transform_financial_metrics_result(respObj, module.cashFlowStmtMetrics);
             callback(code, err, result);
         });
