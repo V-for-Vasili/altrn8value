@@ -126,6 +126,7 @@ let Graphing = (function(){
         }
     };
 
+    /* changes an existing graph on the chart */
     module.changeLinePlot = function(chart,type){
         let prevOption = chart.getOption();
         let names = prevOption.legend[0].data;
@@ -172,7 +173,7 @@ let Graphing = (function(){
                if (seriesType == "line"){
                    let date = new Date(obj.historical[0].date);
                    if (date > minDate) minDate = date;
-               } else{
+               } else {
                 let date = new Date(obj.historical[obj.historical.length-1].date);
                 if (date > minDate) minDate = date;
                }
@@ -195,13 +196,13 @@ let Graphing = (function(){
             });
             let totalPortfolio = {name:portfolioName,type:'line',areaStyle:null};
             let totalPortfolioData = [];
-             Object.keys(datesClose).forEach(function(date){
+            Object.keys(datesClose).forEach(function(date){
                 totalPortfolioData.push([date,datesClose[date]]);
-                });
-                totalPortfolio.data = totalPortfolioData;
-                portfolioDecomp.push(totalPortfolio);
-                module.addSeries(chart,totalPortfolio.name,totalPortfolio);
             });
+            totalPortfolio.data = totalPortfolioData;
+            portfolioDecomp.push(totalPortfolio);
+            module.addSeries(chart,totalPortfolio.name,totalPortfolio);
+        });
     };
 
     /* Plots all portfolios as separate graphs on the chart */
