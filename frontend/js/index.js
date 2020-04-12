@@ -294,7 +294,7 @@ window.onload = (function(){
         let prevOption = tsPlot.getOption();
         let symbols = prevOption.legend[0].data;
         let newSeries = [];
-        api.getDailyStocksTS(symbols,"5min",function(res){
+        api.getDailyStocksTS(symbols,"15min",function(res){
             let data = res.data.stocks;
             data.forEach(function(stockObj){
                 let stockData = stockObj.history.map(obj =>{
@@ -314,7 +314,7 @@ window.onload = (function(){
         let prevOption = tsPlot.getOption();
         let symbols = prevOption.legend[0].data;
         let newSeries = [];
-        api.getDailyStocksTS(symbols,"5min",function(res){
+        api.getDailyStocksTS(symbols,"30min",function(res){
             let data = res.data.stocks;
             data.forEach(function(stockObj){
                 let stockData = stockObj.history.map(obj =>{
