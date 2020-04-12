@@ -1,6 +1,6 @@
 /*jshint sub:true*/
 // Imports
-const axios = require('axios');
+const {retrieveFromCache} = require('../../cache.js');
 
 
 let incomeStatementTypeDef = `
@@ -83,8 +83,11 @@ function parse_response(response) {
 let incomeStatementYearResolver = async (obj, args, context, info) => {
     let response = {};
     try {
-        response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/income-statement/${obj.symbol}`);
-        response = response.data.financials;
+        // get data from cache
+        let key = `incomeStatement_year_${obj.symbol}`;
+        let url = `https://financialmodelingprep.com/api/v3/financials/income-statement/${obj.symbol}`;
+        response = await retrieveFromCache(key, url, 60);
+        response = response.financials;
     } catch (err) {
         console.log(err);
     }
@@ -98,8 +101,11 @@ let incomeStatementYearResolver = async (obj, args, context, info) => {
 let incomeStatementQuarterResolver = async (obj, args, context, info) => {
     let response = {};
     try {
-        response = await axios.get(`https://financialmodelingprep.com/api/v3/financials/income-statement/${obj.symbol}?period=quarter`);
-        response = response.data.financials;
+        // get data from cache
+        let key = `incomeStatement_quarter_${obj.symbol}`;
+        let url = `https://financialmodelingprep.com/api/v3/financials/income-statement/${obj.symbol}?period=quarter`;
+        response = await retrieveFromCache(key, url, 60);
+        response = response.financials;
     } catch (err) {
         console.log(err);
     }

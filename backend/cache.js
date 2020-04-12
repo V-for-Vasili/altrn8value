@@ -14,14 +14,11 @@ memcached.connect('localhost:11211', function(err, conn) {
 
 /*
 Memcached key should be of the form:
+
 ${type}_${perior}_${symbol}
-    type is one of:     balanceSheet, cashFlow, companyProfile, incomeStatement etc.
+    type is one of:     balanceSheet, cashFlow, incomeStatement etc.
     period is one of:   year, quarter
     symbol uniquely identifies company (ex: TSLA)
-
-or
-
-quote_${symbol}
 
 or
 
@@ -29,7 +26,14 @@ search_${searchStr}
 
 or
 
-rating_${symbol}
+${type}_${symbol}
+    type is one of:     stock, stocks, quote, rating, ratingDetail, companyProfile,
+                        historicalPriceFull, historicalPriceFull_line
+
+or
+
+historicalChart_${timeseries}_${symbol}
+    timeseries is one of:   5min, 15min, 30min, 1hour
 */
 
 /* Data stored in memcached under "key" is returned; If cache miss, memcache is
@@ -66,4 +70,4 @@ let retrieveFromCache = async function(key, url, lifetime) {
     });
 };
 
-module.exports = {retrieveFromCache}
+module.exports = {retrieveFromCache};
