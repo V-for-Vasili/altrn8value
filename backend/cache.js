@@ -70,4 +70,4 @@ let retrieveFromCache = async function(key, url, lifetime) {
     });
 };
 
-module.exports = {retrieveFromCache}
+module.exports = {retrieveFromCache};
