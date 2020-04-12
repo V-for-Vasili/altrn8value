@@ -3,9 +3,11 @@ title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - javascript
-  - ruby
-  - python
+  - HTTP
+  - js-jQuery
+  - js-XHR
+  - node.js
+  - Python
 
 toc_footers:
   - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
@@ -19,51 +21,130 @@ search: true
 # Introduction
 ## About the API
 
+Altern8value, is a stock portfolio backtesting tool. The idea behind Altern8value is that you choose a portfolio of stock and see its historic performance as well as how the portfolio improves over time. Our open api allows uses to programatically use this tool to potentially connect it with AI and advanced scripts to find more optimal portfolios and connect messured metrics with possible successful portfolio managment.
+
 ## Financial Modeling Prep
 
+None of what we are doing would be possible with out the API published by Financial Modeling Prep, we also have worked closely with their fouder to keep our API moving smoothly and reduce lag. If you want to know more or get data from their API dirrectly go to https://financialmodelingprep.com/ and check them out. They are doing great things and I encourage anyone developing a fintech app to use their service.
+
 ## Executing Graphql Queries
+
+Altern8value takes advantage of graphql's flexible querrying system this means that querries are made to only one endpoint with the actual query schema sent in the body of the message, some examples of this can be found on the pannel to the right.
+
+``` shell
+curl --location --request POST 'https://altern8value.digital/graphql/' \
+--header 'Content-Type: application/json' \
+--data-raw '{"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}'
+```
+
+``` HTTP
+POST /graphql/ HTTP/1.1
+Host: altern8value.digital
+Content-Type: application/json
+
+{"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}
+```
+
+```js-jQuery
+let settings = {
+  "url": "https://altern8value.digital/graphql/",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    query: "query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}",
+    variables: {}
+  })
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+```
+
+``` js-XHR
+let data = JSON.stringify({
+  query: "query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}",
+  variables: {}
+});
+
+let xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function() {
+  if(this.readyState === 4) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("POST", "https://altern8value.digital/graphql/");
+xhr.setRequestHeader("Content-Type", "application/json");
+
+xhr.send(data);
+```
+
+``` node.js
+let https = require('follow-redirects').https;
+let fs = require('fs');
+
+let options = {
+  'method': 'POST',
+  'hostname': 'altern8value.digital',
+  'path': '/graphql/',
+  'headers': {
+    'Content-Type': 'application/json'
+  },
+  'maxRedirects': 20
+};
+
+let req = https.request(options, function (res) {
+  let chunks = [];
+
+  res.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on("end", function (chunk) {
+    let body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+
+  res.on("error", function (error) {
+    console.error(error);
+  });
+});
+
+let postData = JSON.stringify({
+  query: "query {\n  stock(symbol: "AAPL") {price, exchange, market_cap}\n}",
+  variables: {}
+});
+
+req.write(postData);
+
+req.end();
+```
+
+``` Python
+import http.client
+import mimetypes
+conn = http.client.HTTPSConnection("altern8value.digital")
+payload = "{\"query\":\"query {\\n  stock(symbol: \\\"AAPL\\\") {price, exchange, market_cap}\\n}\",\"variables\":{}}"
+headers = {
+  'Content-Type': 'application/json'
+}
+conn.request("POST", "/graphql/", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
 
 ## Graphiql
 
 # Authentication
 
-> To authorize, use this code:
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
 
 # Stock
 
