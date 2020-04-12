@@ -38,6 +38,7 @@ window.addEventListener('load', function(){
                     if (code !== 200) return api.notifyErrorListeners(err);
                     tr.parentElement.removeChild(tr);
                     Graphing.removeSeries(tsPlot,portfolio.name);
+                    document.getElementById("viewSelectionsBtn").click();
                 });
             });
 
