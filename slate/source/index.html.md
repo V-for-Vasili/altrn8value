@@ -320,7 +320,7 @@ Parameter | Type| Required| Default | Description
 --------- | --- | ------- |-------- | -----------
 symbol | String | Yes| None | The Symbol of the Stock data to be querried.
 
-### Object Fields
+## Portfolio Object
 
 Parameter                   | Type                      |  Description
 --------------------------- | ------------------------- |  -----------
@@ -357,7 +357,7 @@ Parameter | Type| Required| Default | Description
 --------- | --- | ------- |-------- | -----------
 symbol | String | Yes| None | The Symbol of the Stock data to be querried.
 
-### Object Fields
+## Stock Purchase Object
 
 Parameter                   | Type                      |  Description
 --------------------------- | ------------------------- |  -----------
@@ -391,7 +391,7 @@ Parameter | Type| Required| Default | Description
 --------- | --- | ------- |-------- | -----------
 symbol | String | Yes| None | The Symbol of the Stock data to be querried.
 
-### Object Fields
+## Agregate Object
 
 Parameter                   | Type                      |  Description
 --------------------------- | ------------------------- |  -----------
@@ -426,7 +426,7 @@ Parameter | Type| Required| Default | Description
 --------- | --- | ------- |-------- | -----------
 symbol | String | Yes| None | The Symbol of the Stock data to be querried.
 
-### Object Fields
+## Stock Description Object
 
 Parameter                   | Type                      |  Description
 --------------------------- | ------------------------- |  -----------
