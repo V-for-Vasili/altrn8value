@@ -212,6 +212,42 @@ net_cash_marketcap              | String                    | The corresponding 
 
 ## Balance Sheet
 
+The Balance Sheed object is defined by the following type definition:
+
+`type IncomeStatement {`  
+&nbsp;&nbsp;&nbsp;&nbsp;`date: String`   
+&nbsp;&nbsp;&nbsp;&nbsp;`cash_and_cash_equivalents: String`   
+&nbsp;&nbsp;&nbsp;&nbsp;`short_term_investments: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`cash_and_short_term_investments: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`receivables: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`inventories: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_current_assets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`property_plant_and_equipment_net: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`goodwill_and_intangible_assets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`long_term_investments: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`tax_assets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_non_current_assets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_assets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`payables: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`short_term_debt: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_current_liabilities: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`long_term_debt: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_debt: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`deferred_revenue: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`tax_liabilities: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`deposit_liabilities: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_non_current_liabilities: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_liabilities: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`other_comprehensive_income: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`retained_earnings_deficit: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_shareholders_equity: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`investments: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`net_debt: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`other_ssets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`other_liabilities: String String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`net_profit_margin: String`  
+`}`  
+
 ## Income Statement
 
 The Income Statement object is defined by the following type definition:
@@ -330,29 +366,29 @@ changeOverTime              | Float                     | Amount of change over 
 
 The Portfolio object is defined by the following type definition:
 
-`type Portfolio {`  
-&nbsp;&nbsp;&nbsp;&nbsp;`name: String!`  
-&nbsp;&nbsp;&nbsp;&nbsp;`purchaseValue: Float!`  
-&nbsp;&nbsp;&nbsp;&nbsp;`createdAt: String!`  
-&nbsp;&nbsp;&nbsp;&nbsp;`stock_list: [Stock_Purchase]!`  
-&nbsp;&nbsp;&nbsp;&nbsp;`agregate: [Agregate]`  
-`}`  
+type Portfolio {
+&nbsp;&nbsp;&nbsp;&nbsp;name: String!
+&nbsp;&nbsp;&nbsp;&nbsp;purchaseValue: Float!
+&nbsp;&nbsp;&nbsp;&nbsp;createdAt: String!
+&nbsp;&nbsp;&nbsp;&nbsp;stock_list: [Stock_Purchase]!
+&nbsp;&nbsp;&nbsp;&nbsp;agregate: [Agregate]
+}
 
 ## Query
 
-The Stock object is returned by the following graphql query
+The Portfolio object is returned by the following graphql query
 
 ### Query TypeDef
 
-The Query to get Stock data is defined by the following type definition
+The Query to get Portfolio data is defined by the following type definition
 
-`stock(symbol: String!): Stock`  
+portfolio(name: String!): Portfolio
 
 ### Query Parameters
 
 Parameter | Type| Required| Default | Description
 --------- | --- | ------- |-------- | -----------
-symbol | String | Yes| None | The Symbol of the Stock data to be querried.
+name | String | Yes| None | The name of the Portfolio retrieved.
 
 ### Object Fields
 
@@ -364,6 +400,21 @@ createdAt                   | String                    | Number of seconds from
 stock_list                  | [Stock_Purchase]          | List of stock symbols and corresponding amounts in the portfolio
 agregate                    | [Agregate]                | List of prices of this porfolio at different points in history
 
+## Agregate
+
+The Agregate object is defined by the following type definition:
+
+type Agregate {
+&nbsp;&nbsp;&nbsp;&nbsp;value: Int
+&nbsp;&nbsp;&nbsp;&nbsp;date: Int
+}
+
+### Object Fields
+
+Parameter                   | Type                      |  Description
+--------------------------- | ------------------------- |  -----------
+value                       | Int                       | Value of object in USD at data
+data                        | Int                       | Date represented as integer
 # Stock Purchase
 
 The Stock Purchase object is defined by the following type definition:
@@ -391,7 +442,7 @@ Parameter | Type| Required| Default | Description
 --------- | --- | ------- |-------- | -----------
 symbol | String | Yes| None | The Symbol of the Stock data to be querried.
 
-### Object Fields
+## Stock Purchase Object
 
 Parameter                   | Type                      |  Description
 --------------------------- | ------------------------- |  -----------
@@ -399,38 +450,6 @@ stock                       | Stock                     | Stock object represent
 shares                      | Float                     | Number of shares of the stock
 purchasePrice               | Float                     | Price at the time of purchase
 purchaseTime                | String                    | Number of seconds from Unix epoch to the time of purchase
-
-# Agregate
-
-The Agregate object is defined by the following type definition:
-
-`type Agregate {`  
-&nbsp;&nbsp;&nbsp;&nbsp;`value: Int`  
-&nbsp;&nbsp;&nbsp;&nbsp;`date: Int`  
-`}`  
-
-## Query
-
-The Stock object is returned by the following graphql query
-
-### Query TypeDef
-
-The Query to get Stock data is defined by the following type definition
-
-`stock(symbol: String!): Stock`  
-
-### Query Parameters
-
-Parameter | Type| Required| Default | Description
---------- | --- | ------- |-------- | -----------
-symbol | String | Yes| None | The Symbol of the Stock data to be querried.
-
-### Object Fields
-
-Parameter                   | Type                      |  Description
---------------------------- | ------------------------- |  -----------
-value                       | Int                       | Value of object in USD at data
-data                        | Int                       | Date represented as integer
 
 # Stock Description
 
@@ -450,17 +469,15 @@ The Stock object is returned by the following graphql query
 
 ### Query TypeDef
 
-The Query to get Stock data is defined by the following type definition
-
-`stock(symbol: String!): Stock`  
+`stockList(searchStr: String!): [StockDescription]`
 
 ### Query Parameters
 
 Parameter | Type| Required| Default | Description
 --------- | --- | ------- |-------- | -----------
-symbol | String | Yes| None | The Symbol of the Stock data to be querried.
+String    | String | Yes  | None    | String to search stock symbol for.
 
-### Object Fields
+## Stock Description Object
 
 Parameter                   | Type                      |  Description
 --------------------------- | ------------------------- |  -----------

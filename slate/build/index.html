@@ -201,7 +201,7 @@
       <script src="javascripts/all-c5541673.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;HTTP&quot;,&quot;js-jQuery&quot;,&quot;js-XHR&quot;,&quot;node.js&quot;,&quot;Python&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;javascript&quot;,&quot;python&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -212,11 +212,8 @@
       <img src="images/logo-1e815a84.png" class="logo" alt="Logo" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="HTTP">HTTP</a>
-              <a href="#" data-language-name="js-jQuery">js-jQuery</a>
-              <a href="#" data-language-name="js-XHR">js-XHR</a>
-              <a href="#" data-language-name="node.js">node.js</a>
-              <a href="#" data-language-name="Python">Python</a>
+              <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="python">python</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -247,9 +244,6 @@
             <a href="#stock" class="toc-h1 toc-link" data-title="Stock">Stock</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#example" class="toc-h2 toc-link" data-title="Example">Example</a>
-                  </li>
-                  <li>
                     <a href="#query" class="toc-h2 toc-link" data-title="Query">Query</a>
                   </li>
                   <li>
@@ -273,7 +267,10 @@
             <a href="#portfolio" class="toc-h1 toc-link" data-title="Portfolio">Portfolio</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#object-fields-4" class="toc-h2 toc-link" data-title="Object Fields">Object Fields</a>
+                    <a href="#query-2" class="toc-h2 toc-link" data-title="Query">Query</a>
+                  </li>
+                  <li>
+                    <a href="#agregate" class="toc-h2 toc-link" data-title="Agregate">Agregate</a>
                   </li>
               </ul>
           </li>
@@ -281,15 +278,10 @@
             <a href="#stock-purchase" class="toc-h1 toc-link" data-title="Stock Purchase">Stock Purchase</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#object-fields-5" class="toc-h2 toc-link" data-title="Object Fields">Object Fields</a>
+                    <a href="#query-3" class="toc-h2 toc-link" data-title="Query">Query</a>
                   </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#agregate" class="toc-h1 toc-link" data-title="Agregate">Agregate</a>
-              <ul class="toc-list-h2">
                   <li>
-                    <a href="#object-fields-6" class="toc-h2 toc-link" data-title="Object Fields">Object Fields</a>
+                    <a href="#stock-purchase-object" class="toc-h2 toc-link" data-title="Stock Purchase Object">Stock Purchase Object</a>
                   </li>
               </ul>
           </li>
@@ -297,7 +289,10 @@
             <a href="#stock-description" class="toc-h1 toc-link" data-title="Stock Description">Stock Description</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#object-fields-7" class="toc-h2 toc-link" data-title="Object Fields">Object Fields</a>
+                    <a href="#query-4" class="toc-h2 toc-link" data-title="Query">Query</a>
+                  </li>
+                  <li>
+                    <a href="#stock-description-object" class="toc-h2 toc-link" data-title="Stock Description Object">Stock Description Object</a>
                   </li>
               </ul>
           </li>
@@ -319,105 +314,51 @@
 <h2 id='executing-graphql-queries'>Executing Graphql Queries</h2>
 <p>Altern8value takes advantage of graphql&#39;s flexible querrying system this means that querries are made to only one endpoint with the actual query schema sent in the body of the message, some examples of this can be found on the pannel to the right.</p>
 <pre class="highlight shell tab-shell"><code>curl --location --request POST <span class="s1">'https://altern8value.digital/graphql/'</span> <span class="se">\</span>
---header <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
---data-raw <span class="s1">'{"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}'</span>
-</code></pre><pre class="highlight plaintext"><code>POST /graphql/ HTTP/1.1
-Host: altern8value.digital
-Content-Type: application/json
-{"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}
-</code></pre><pre class="highlight plaintext"><code>let settings = {
-  "url": "https://altern8value.digital/graphql/",
-  "method": "POST",
-  "timeout": 0,
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "data": JSON.stringify({
-    query: "query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}",
-    variables: {}
-  })
-};
+--header <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+--data-raw <span class="s2">"{"</span>query<span class="s2">":"</span>query <span class="o">{</span> stock<span class="o">(</span>symbol: <span class="se">\"</span>AAPL<span class="se">\"</span><span class="o">)</span> <span class="o">{</span>price, exchange, market_cap<span class="o">}}</span><span class="s2">","</span>variables<span class="s2">":{}}"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">settings</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"https://altern8value.digital/graphql/"</span><span class="p">,</span>
+  <span class="s2">"method"</span><span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+  <span class="s2">"timeout"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s2">"headers"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span>
+  <span class="p">},</span>
+  <span class="s2">"data"</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+    <span class="na">query</span><span class="p">:</span> <span class="s2">"query {  stock(symbol: \"AAPL\") {price, exchange, market_cap}}"</span><span class="p">,</span>
+    <span class="na">variables</span><span class="p">:</span> <span class="p">{}</span>
+  <span class="p">})</span>
+<span class="p">};</span>
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-});  
-</code></pre><pre class="highlight plaintext"><code>let data = JSON.stringify({
-  query: "query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}",
-  variables: {}
-});
-
-let xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function() {
-  if(this.readyState === 4) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://altern8value.digital/graphql/");
-xhr.setRequestHeader("Content-Type", "application/json");
-
-xhr.send(data);
-</code></pre><pre class="highlight plaintext"><code>let https = require('follow-redirects').https;
-let fs = require('fs');
-
-let options = {
-  'method': 'POST',
-  'hostname': 'altern8value.digital',
-  'path': '/graphql/',
-  'headers': {
-    'Content-Type': 'application/json'
-  },
-  'maxRedirects': 20
-};
-
-let req = https.request(options, function (res) {
-  let chunks = [];
-
-  res.on("data", function (chunk) {
-    chunks.push(chunk);
-  });
-
-  res.on("end", function (chunk) {
-    let body = Buffer.concat(chunks);
-    console.log(body.toString());
-  });
-
-  res.on("error", function (error) {
-    console.error(error);
-  });
-});
-
-let postData = JSON.stringify({
-  query: "query {\n  stock(symbol: "AAPL") {price, exchange, market_cap}\n}",
-  variables: {}
-});
-
-req.write(postData);
-
-req.end();
-</code></pre><pre class="highlight plaintext"><code>import http.client
-import mimetypes
-conn = http.client.HTTPSConnection("altern8value.digital")
-payload = "{\"query\":\"query {\\n  stock(symbol: \\\"AAPL\\\") {price, exchange, market_cap}\\n}\",\"variables\":{}}"
-headers = {
-  'Content-Type': 'application/json'
-}
-conn.request("POST", "/graphql/", payload, headers)
-res = conn.getresponse()
-data = res.read()
-print(data.decode("utf-8"))
-</code></pre><h2 id='graphiql'>Graphiql</h2><h1 id='authentication'>Authentication</h1><h1 id='stock'>Stock</h1>
+<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nx">settings</span><span class="p">).</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+<span class="p">});</span>  
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">http.client</span>
+<span class="kn">import</span> <span class="nn">mimetypes</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="s">"altern8value.digital"</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s">"{</span><span class="se">\"</span><span class="s">query</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">query {  stock(symbol: </span><span class="se">\\\"</span><span class="s">AAPL</span><span class="se">\\\"</span><span class="s">) {price, exchange, market_cap}}</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">variables</span><span class="se">\"</span><span class="s">:{}}"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span>
+<span class="p">}</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="s">"/graphql/"</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span>
+</code></pre><h2 id='graphiql'>Graphiql</h2>
+<p>Through GraphQL our app has enables the graphiql graphql query editor,
+this is a great way to try out our api and test your querries. You can
+ find this editor at https://altern8value.digital/graphql/<br>
+ However this does not work with routes that require login.</p>
+<h1 id='authentication'>Authentication</h1>
+<p>Authentication is implemented through use of JSON Webtokens. When a user signs in/signs up they recieve in the response a token in the form of an HTTPOnly cookie. When graphQL queries are made that are restricted for authourized users, the cookie containing this token should be contained within their request, its first checked for validation, if valid, then additonal context is passed into the graphql request specifying they are authorized.This conext value can only be set from within the server.Addiotnally the decoded payload of the token contains the user id which is used to locate data unqiue to that user and required required for the restriced queries. If no cookie is founud or the token fails validation then the context is set to unauthorized and the user will be restriced to queries for unauthorized users.  </p>
+<h1 id='stock'>Stock</h1>
 <p>The Stock Object is the interface used to pull all stock data from
 the backend about any stock that can be purchased and added to a portfolio.</p>
-<h2 id='example'>Example</h2><pre class="highlight plaintext"><code>
-</code></pre><h2 id='query'>Query</h2>
+<h2 id='query'>Query</h2>
 <p>The Stock object is returned by the following graphql query</p>
 <h3 id='query-typedef'>Query TypeDef</h3>
 <p>The Query to get Stock data is defined by the following type definition</p>
 
-<p><code>stock(symbol: String!): Stock</code></p>
+<p><code>stock(symbol: String!): Stock</code>  </p>
 <h3 id='query-parameters'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -650,136 +591,78 @@ the backend about any stock that can be purchased and added to a portfolio.</p>
 </tr>
 </tbody></table>
 <h2 id='balance-sheet'>Balance Sheet</h2>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>date</td>
-<td>String</td>
-<td>Date the statement was reported</td>
-</tr>
-<tr>
-<td>cash_and_cash_equivalents</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>short_term_investments</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>cash_and_short_term_investments</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>receivables:</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>inventories</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>total_current_assets</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>property_plant_and_equipment_net</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>goodwill_and_intangible_assets</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>long_term_investments</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>tax_assets</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>total_non_current_assets</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>total_assets</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>payables</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>short_term_debt</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>long_term_debt</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-<tr>
-<td>total_debt</td>
-<td>String</td>
-<td>The corresponding accounts value</td>
-</tr>
-</tbody></table>
+<p>The Balance Sheed object is defined by the following type definition:</p>
+
+<p><code>type IncomeStatement {</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>date: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>cash_and_cash_equivalents: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>short_term_investments: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>cash_and_short_term_investments: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>receivables: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>inventories: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>total_current_assets: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>property_plant_and_equipment_net: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>goodwill_and_intangible_assets: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>long_term_investments: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>tax_assets: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>total_non_current_assets: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>total_assets: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>payables: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>short_term_debt: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>total_current_liabilities: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>long_term_debt: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>total_debt: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>deferred_revenue: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>tax_liabilities: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>deposit_liabilities: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>total_non_current_liabilities: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>total_liabilities: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>other_comprehensive_income: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>retained_earnings_deficit: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>total_shareholders_equity: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>investments: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_debt: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>other_ssets: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>other_liabilities: String String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_profit_margin: String</code><br>
+<code>}</code>  </p>
 <h2 id='income-statement'>Income Statement</h2>
 <p>The Income Statement object is defined by the following type definition:</p>
 
-<p><code>type IncomeStatement {</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>date: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>revenue: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>revenue_growth: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>cost_of_revenue: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>gross_profit: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>rd_expenses: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>sga_expense: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>operating_expenses: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>operating_income: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>interest_expense: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>earnings_before_tax: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>income_tax_expense: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>net_ncome_non_controlling_int: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>net_income_discontinued_ops: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>net_income: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>preferred_dividends: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>net_income_com: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>eps: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>eps_diluted: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>weighted_average_shs_out: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>weighted_average_shs_out_dil: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>dividend_per_share: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>gross_margin: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>ebitda_margin: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>ebit_margin: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>profit_margin: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>free_cash_flow_margin: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>ebitda: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>ebit: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>consolidated_income: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>earnings_before_tax_margin: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>net_profit_margin: String</code>
-<code>}</code></p>
+<p><code>type IncomeStatement {</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>date: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>revenue: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>revenue_growth: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>cost_of_revenue: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>gross_profit: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>rd_expenses: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>sga_expense: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>operating_expenses: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>operating_income: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>interest_expense: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>earnings_before_tax: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>income_tax_expense: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_ncome_non_controlling_int: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_income_discontinued_ops: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_income: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>preferred_dividends: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_income_com: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>eps: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>eps_diluted: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>weighted_average_shs_out: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>weighted_average_shs_out_dil: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>dividend_per_share: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>gross_margin: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>ebitda_margin: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>ebit_margin: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>profit_margin: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>free_cash_flow_margin: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>ebitda: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>ebit: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>consolidated_income: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>earnings_before_tax_margin: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_profit_margin: String</code><br>
+<code>}</code>  </p>
 <h3 id='object-fields-2'>Object Fields</h3>
 <table><thead>
 <tr>
@@ -952,21 +835,21 @@ the backend about any stock that can be purchased and added to a portfolio.</p>
 <h2 id='historical-closing'>Historical Closing</h2>
 <p>The Historical Closing object is defined by the following type definition:</p>
 
-<p><code>type HistoricalClosing {</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>date: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>open: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>high: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>low: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>close: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>adjClose: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>volume: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>unadjustedVolume: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>change: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>changePercent: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>vwap: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>label: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>changeOverTime: Float</code>
-<code>}</code></p>
+<p><code>type HistoricalClosing {</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>date: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>open: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>high: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>low: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>close: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>adjClose: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>volume: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>unadjustedVolume: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>change: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>changePercent: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>vwap: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>label: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>changeOverTime: Float</code><br>
+<code>}</code>  </p>
 <h3 id='object-fields-3'>Object Fields</h3>
 <table><thead>
 <tr>
@@ -1034,13 +917,37 @@ the backend about any stock that can be purchased and added to a portfolio.</p>
 <h1 id='portfolio'>Portfolio</h1>
 <p>The Portfolio object is defined by the following type definition:</p>
 
-<p><code>type Portfolio {</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>name: String!</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>purchaseValue: Float!</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>createdAt: String!</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>stock_list: [Stock_Purchase]!</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>agregate: [Agregate]</code>
-<code>}</code></p>
+<p>type Portfolio {
+&nbsp;&nbsp;&nbsp;&nbsp;name: String!
+&nbsp;&nbsp;&nbsp;&nbsp;purchaseValue: Float!
+&nbsp;&nbsp;&nbsp;&nbsp;createdAt: String!
+&nbsp;&nbsp;&nbsp;&nbsp;stock_list: [Stock_Purchase]!
+&nbsp;&nbsp;&nbsp;&nbsp;agregate: [Agregate]
+}</p>
+<h2 id='query-2'>Query</h2>
+<p>The Portfolio object is returned by the following graphql query</p>
+<h3 id='query-typedef-2'>Query TypeDef</h3>
+<p>The Query to get Portfolio data is defined by the following type definition</p>
+
+<p>portfolio(name: String!): Portfolio</p>
+<h3 id='query-parameters-2'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Yes</td>
+<td>None</td>
+<td>The name of the Portfolio retrieved.</td>
+</tr>
+</tbody></table>
 <h3 id='object-fields-4'>Object Fields</h3>
 <table><thead>
 <tr>
@@ -1075,16 +982,66 @@ the backend about any stock that can be purchased and added to a portfolio.</p>
 <td>List of prices of this porfolio at different points in history</td>
 </tr>
 </tbody></table>
+<h2 id='agregate'>Agregate</h2>
+<p>The Agregate object is defined by the following type definition:</p>
+
+<p>type Agregate {
+&nbsp;&nbsp;&nbsp;&nbsp;value: Int
+&nbsp;&nbsp;&nbsp;&nbsp;date: Int
+}</p>
+<h3 id='object-fields-5'>Object Fields</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>value</td>
+<td>Int</td>
+<td>Value of object in USD at data</td>
+</tr>
+<tr>
+<td>data</td>
+<td>Int</td>
+<td>Date represented as integer</td>
+</tr>
+</tbody></table>
 <h1 id='stock-purchase'>Stock Purchase</h1>
 <p>The Stock Purchase object is defined by the following type definition:</p>
 
-<p><code>type Stock_Purchase {</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>stock: Stock</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>shares: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>purchasePrice: Float</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>purchaseTime: String</code>
-<code>}</code></p>
-<h3 id='object-fields-5'>Object Fields</h3>
+<p><code>type Stock_Purchase {</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>stock: Stock</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>shares: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>purchasePrice: Float</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>purchaseTime: String</code><br>
+<code>}</code>  </p>
+<h2 id='query-3'>Query</h2>
+<p>The Stock object is returned by the following graphql query</p>
+<h3 id='query-typedef-3'>Query TypeDef</h3>
+<p>The Query to get Stock data is defined by the following type definition</p>
+
+<p><code>stock(symbol: String!): Stock</code>  </p>
+<h3 id='query-parameters-3'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>String</td>
+<td>Yes</td>
+<td>None</td>
+<td>The Symbol of the Stock data to be querried.</td>
+</tr>
+</tbody></table>
+<h2 id='stock-purchase-object'>Stock Purchase Object</h2>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1113,43 +1070,39 @@ the backend about any stock that can be purchased and added to a portfolio.</p>
 <td>Number of seconds from Unix epoch to the time of purchase</td>
 </tr>
 </tbody></table>
-<h1 id='agregate'>Agregate</h1>
-<p>The Agregate object is defined by the following type definition:</p>
+<h1 id='stock-description'>Stock Description</h1>
+<p>The Stock Description object is defined by the following type definition:</p>
 
-<p><code>type Agregate {</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>value: Int</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>date: Int</code>
-<code>}</code></p>
-<h3 id='object-fields-6'>Object Fields</h3>
+<p><code>type StockDescription {</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>symbol: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>name: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>currency: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>stockExchange: String</code><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>exchangeShortName: String</code><br>
+<code>}</code>  </p>
+<h2 id='query-4'>Query</h2>
+<p>The Stock object is returned by the following graphql query</p>
+<h3 id='query-typedef-4'>Query TypeDef</h3>
+<p><code>stockList(searchStr: String!): [StockDescription]</code></p>
+<h3 id='query-parameters-4'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
 <th>Type</th>
+<th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>value</td>
-<td>Int</td>
-<td>Value of object in USD at data</td>
-</tr>
-<tr>
-<td>data</td>
-<td>Int</td>
-<td>Date represented as integer</td>
+<td>String</td>
+<td>String</td>
+<td>Yes</td>
+<td>None</td>
+<td>String to search stock symbol for.</td>
 </tr>
 </tbody></table>
-<h1 id='stock-description'>Stock Description</h1>
-<p>The Stock Description object is defined by the following type definition:</p>
-
-<p><code>type StockDescription {</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>symbol: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>name: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>currency: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>stockExchange: String</code>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>exchangeShortName: String</code>
-<code>}</code></p>
-<h3 id='object-fields-7'>Object Fields</h3>
+<h2 id='stock-description-object'>Stock Description Object</h2>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1218,11 +1171,8 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="HTTP">HTTP</a>
-                <a href="#" data-language-name="js-jQuery">js-jQuery</a>
-                <a href="#" data-language-name="js-XHR">js-XHR</a>
-                <a href="#" data-language-name="node.js">node.js</a>
-                <a href="#" data-language-name="Python">Python</a>
+                <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="python">python</a>
           </div>
       </div>
     </div>
