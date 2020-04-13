@@ -201,7 +201,7 @@
       <script src="javascripts/all-c5541673.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;javascript&quot;,&quot;ruby&quot;,&quot;python&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;HTTP&quot;,&quot;js-jQuery&quot;,&quot;js-XHR&quot;,&quot;node.js&quot;,&quot;Python&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -212,9 +212,11 @@
       <img src="images/logo-1e815a84.png" class="logo" alt="Logo" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="javascript">javascript</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
+              <a href="#" data-language-name="HTTP">HTTP</a>
+              <a href="#" data-language-name="js-jQuery">js-jQuery</a>
+              <a href="#" data-language-name="js-XHR">js-XHR</a>
+              <a href="#" data-language-name="node.js">node.js</a>
+              <a href="#" data-language-name="Python">Python</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -281,37 +283,104 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='introduction'>Introduction</h1><h2 id='about-the-api'>About the API</h2><h2 id='financial-modeling-prep'>Financial Modeling Prep</h2><h2 id='executing-graphql-queries'>Executing Graphql Queries</h2><h2 id='graphiql'>Graphiql</h2><h1 id='authentication'>Authentication</h1>
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+        <h1 id='introduction'>Introduction</h1><h2 id='about-the-api'>About the API</h2>
+<p>Altern8value, is a stock portfolio backtesting tool. The idea behind Altern8value is that you choose a portfolio of stock and see its historic performance as well as how the portfolio improves over time. Our open api allows uses to programatically use this tool to potentially connect it with AI and advanced scripts to find more optimal portfolios and connect messured metrics with possible successful portfolio managment.</p>
+<h2 id='financial-modeling-prep'>Financial Modeling Prep</h2>
+<p>None of what we are doing would be possible with out the API published by Financial Modeling Prep, we also have worked closely with their fouder to keep our API moving smoothly and reduce lag. If you want to know more or get data from their API dirrectly go to https://financialmodelingprep.com/ and check them out. They are doing great things and I encourage anyone developing a fintech app to use their service.</p>
+<h2 id='executing-graphql-queries'>Executing Graphql Queries</h2>
+<p>Altern8value takes advantage of graphql&#39;s flexible querrying system this means that querries are made to only one endpoint with the actual query schema sent in the body of the message, some examples of this can be found on the pannel to the right.</p>
+<pre class="highlight shell tab-shell"><code>curl --location --request POST <span class="s1">'https://altern8value.digital/graphql/'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+--data-raw <span class="s1">'{"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}'</span>
+</code></pre><pre class="highlight plaintext"><code>POST /graphql/ HTTP/1.1
+Host: altern8value.digital
+Content-Type: application/json
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+{"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}
+</code></pre><pre class="highlight plaintext"><code>let settings = {
+  "url": "https://altern8value.digital/graphql/",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    query: "query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}",
+    variables: {}
+  })
+};
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+</code></pre><pre class="highlight plaintext"><code>let data = JSON.stringify({
+  query: "query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}",
+  variables: {}
+});
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
-</blockquote>
+let xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+xhr.addEventListener("readystatechange", function() {
+  if(this.readyState === 4) {
+    console.log(this.responseText);
+  }
+});
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+xhr.open("POST", "https://altern8value.digital/graphql/");
+xhr.setRequestHeader("Content-Type", "application/json");
 
-<p><code>Authorization: meowmeowmeow</code></p>
+xhr.send(data);
+</code></pre><pre class="highlight plaintext"><code>let https = require('follow-redirects').https;
+let fs = require('fs');
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-<h1 id='stock'>Stock</h1>
+let options = {
+  'method': 'POST',
+  'hostname': 'altern8value.digital',
+  'path': '/graphql/',
+  'headers': {
+    'Content-Type': 'application/json'
+  },
+  'maxRedirects': 20
+};
+
+let req = https.request(options, function (res) {
+  let chunks = [];
+
+  res.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on("end", function (chunk) {
+    let body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+
+  res.on("error", function (error) {
+    console.error(error);
+  });
+});
+
+let postData = JSON.stringify({
+  query: "query {\n  stock(symbol: "AAPL") {price, exchange, market_cap}\n}",
+  variables: {}
+});
+
+req.write(postData);
+
+req.end();
+</code></pre><pre class="highlight plaintext"><code>import http.client
+import mimetypes
+conn = http.client.HTTPSConnection("altern8value.digital")
+payload = "{\"query\":\"query {\\n  stock(symbol: \\\"AAPL\\\") {price, exchange, market_cap}\\n}\",\"variables\":{}}"
+headers = {
+  'Content-Type': 'application/json'
+}
+conn.request("POST", "/graphql/", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+</code></pre><h2 id='graphiql'>Graphiql</h2><h1 id='authentication'>Authentication</h1><h1 id='stock'>Stock</h1>
 <p>The Stock Object is the interface used to pull all stock data from
 the backend about any stock that can be purchased and added to a portfolio.</p>
 <h2 id='example'>Example</h2><pre class="highlight plaintext"><code>
@@ -526,9 +595,11 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="javascript">javascript</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
+                <a href="#" data-language-name="HTTP">HTTP</a>
+                <a href="#" data-language-name="js-jQuery">js-jQuery</a>
+                <a href="#" data-language-name="js-XHR">js-XHR</a>
+                <a href="#" data-language-name="node.js">node.js</a>
+                <a href="#" data-language-name="Python">Python</a>
           </div>
       </div>
     </div>

@@ -31,19 +31,17 @@ None of what we are doing would be possible with out the API published by Financ
 
 Altern8value takes advantage of graphql's flexible querrying system this means that querries are made to only one endpoint with the actual query schema sent in the body of the message, some examples of this can be found on the pannel to the right.
 
-``` shell
+```shell
 curl --location --request POST 'https://altern8value.digital/graphql/' \
 --header 'Content-Type: application/json' \
 --data-raw '{"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}'
 ```
-
-``` HTTP
+```HTTP
 POST /graphql/ HTTP/1.1
 Host: altern8value.digital
 Content-Type: application/json
-
 {"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}
-```
+```  
 
 ```js-jQuery
 let settings = {
@@ -61,8 +59,8 @@ let settings = {
 
 $.ajax(settings).done(function (response) {
   console.log(response);
-});
-```
+});  
+```  
 
 ``` js-XHR
 let data = JSON.stringify({
@@ -83,7 +81,7 @@ xhr.open("POST", "https://altern8value.digital/graphql/");
 xhr.setRequestHeader("Content-Type", "application/json");
 
 xhr.send(data);
-```
+```  
 
 ``` node.js
 let https = require('follow-redirects').https;
@@ -124,7 +122,7 @@ let postData = JSON.stringify({
 req.write(postData);
 
 req.end();
-```
+```  
 
 ``` Python
 import http.client
