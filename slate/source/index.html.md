@@ -249,6 +249,26 @@ net_cash_marketcap              | String                    | The corresponding 
 
 ## Balance Sheet
 
+Parameter                        | Type                      |  Description
+-------------------------------- | ------------------------- |  -----------
+date                             | String                    | Date the statement was reported
+cash_and_cash_equivalents        | String                    | The corresponding accounts value
+short_term_investments           | String                    | The corresponding accounts value
+cash_and_short_term_investments  | String                    | The corresponding accounts value
+receivables:                     | String                    | The corresponding accounts value
+inventories                      | String                    | The corresponding accounts value
+total_current_assets             | String                    | The corresponding accounts value
+property_plant_and_equipment_net | String                    | The corresponding accounts value
+goodwill_and_intangible_assets   | String                    | The corresponding accounts value
+long_term_investments            | String                    | The corresponding accounts value
+tax_assets                       | String                    | The corresponding accounts value
+total_non_current_assets         | String                    | The corresponding accounts value
+total_assets                     | String                    | The corresponding accounts value
+payables                         | String                    | The corresponding accounts value
+short_term_debt                  | String                    | The corresponding accounts value
+long_term_debt                   | String                    | The corresponding accounts value
+total_debt                       | String                    | The corresponding accounts value
+
 ## Income Statement
 
 The Income Statement object is defined by the following type definition:
