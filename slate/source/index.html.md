@@ -330,6 +330,22 @@ createdAt                   | String                    | Number of seconds from
 stock_list                  | [Stock_Purchase]          | List of stock symbols and corresponding amounts in the portfolio
 agregate                    | [Agregate]                | List of prices of this porfolio at different points in history
 
+## Agregate
+
+The Agregate object is defined by the following type definition:
+
+`type Agregate {`  
+&nbsp;&nbsp;&nbsp;&nbsp;`value: Int`  
+&nbsp;&nbsp;&nbsp;&nbsp;`date: Int`  
+`}`  
+
+### Object Fields
+
+Parameter                   | Type                      |  Description
+--------------------------- | ------------------------- |  -----------
+value                       | Int                       | Value of object in USD at data
+data                        | Int                       | Date represented as integer
+
 # Stock Purchase
 
 The Stock Purchase object is defined by the following type definition:
@@ -366,38 +382,6 @@ shares                      | Float                     | Number of shares of th
 purchasePrice               | Float                     | Price at the time of purchase
 purchaseTime                | String                    | Number of seconds from Unix epoch to the time of purchase
 
-# Agregate
-
-The Agregate object is defined by the following type definition:
-
-`type Agregate {`  
-&nbsp;&nbsp;&nbsp;&nbsp;`value: Int`  
-&nbsp;&nbsp;&nbsp;&nbsp;`date: Int`  
-`}`  
-
-## Query
-
-The Stock object is returned by the following graphql query
-
-### Query TypeDef
-
-The Query to get Stock data is defined by the following type definition
-
-`stock(symbol: String!): Stock`  
-
-### Query Parameters
-
-Parameter | Type| Required| Default | Description
---------- | --- | ------- |-------- | -----------
-symbol | String | Yes| None | The Symbol of the Stock data to be querried.
-
-### Object Fields
-
-Parameter                   | Type                      |  Description
---------------------------- | ------------------------- |  -----------
-value                       | Int                       | Value of object in USD at data
-data                        | Int                       | Date represented as integer
-
 # Stock Description
 
 The Stock Description object is defined by the following type definition:
@@ -412,7 +396,7 @@ The Stock Description object is defined by the following type definition:
 
 ## Query
 
-The Stock object is returned by the following graphql query
+The Stock Description object is returned by the following graphql query
 
 ### Query TypeDef
 
