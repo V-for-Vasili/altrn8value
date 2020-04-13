@@ -239,6 +239,26 @@
           </li>
           <li>
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#request" class="toc-h2 toc-link" data-title="Request:">Request:</a>
+                  </li>
+                  <li>
+                    <a href="#response" class="toc-h2 toc-link" data-title="Response:">Response:</a>
+                  </li>
+                  <li>
+                    <a href="#example" class="toc-h2 toc-link" data-title="Example:">Example:</a>
+                  </li>
+                  <li>
+                    <a href="#request-2" class="toc-h2 toc-link" data-title="Request:">Request:</a>
+                  </li>
+                  <li>
+                    <a href="#response-2" class="toc-h2 toc-link" data-title="Response:">Response:</a>
+                  </li>
+                  <li>
+                    <a href="#example-2" class="toc-h2 toc-link" data-title="Example:">Example:</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#stock" class="toc-h1 toc-link" data-title="Stock">Stock</a>
@@ -349,7 +369,33 @@ this is a great way to try out our api and test your querries. You can
  find this editor at https://altern8value.digital/graphql/<br>
  However this does not work with routes that require login.</p>
 <h1 id='authentication'>Authentication</h1>
-<p>Authentication is implemented through use of JSON Webtokens. When a user signs in/signs up they recieve in the response a token in the form of an HTTPOnly cookie. When graphQL queries are made that are restricted for authourized users, the cookie containing this token should be contained within their request, its first checked for validation, if valid, then additonal context is passed into the graphql request specifying they are authorized.This conext value can only be set from within the server.Addiotnally the decoded payload of the token contains the user id which is used to locate data unqiue to that user and required required for the restriced queries. If no cookie is founud or the token fails validation then the context is set to unauthorized and the user will be restriced to queries for unauthorized users.  </p>
+<p>Authentication is implemented through use of JSON Webtokens. When a user signs in/signs up they recieve in the response a token in the form of an HTTPOnly cookie. When graphQL queries are made that are restricted for authourized users, the cookie containing this token should be contained within their request, its first checked for validation, if valid, then additonal context is passed into the graphql request specifying they are authorized.This conext value can only be set from within the server.Addiotnally the decoded payload of the token contains the user id which is used to locate data unqiue to that user and required required for the restriced queries. If no cookie is founud or the token fails validation then the context is set to unauthorized and the user will be restriced to queries for unauthorized users.</p>
+<h2 id='request'>Request:</h2>
+<p>Method: POST<br>
+URL: https://altern8value.digital/api/signup/<br>
+Header: Content-Type: application/json<br>
+Body : {&quot;username&quot;:&quot;fred&quot; , &quot;password&quot;:&quot;1234&quot;}  </p>
+<h2 id='response'>Response:</h2>
+<p>Status codes: 200:sucessful<br>
+Header: Content-Type: application/json<br>
+Header: Set-cookie : &quot;token=s%3AiIKZetd8KuAjnUvRz1p8Qlv&quot;<br>
+Body: &quot;User  fred Signed Up &amp; Logged On&quot;  </p>
+<h2 id='example'>Example:</h2>
+<p><code>shell curl -H &quot;Content-Type: application/json&quot; -X POST -d &#39;{&quot;username&quot;:&quot;alice&quot;,&quot;password&quot;:&quot;1234&quot;}&#39; https://altern8value.digital/api/signup
+</code> </p>
+<h2 id='request-2'>Request:</h2>
+<p>Method: POST
+URL: https://altern8value.digital/api/signup/api/signin/<br>
+Header: Content-Type: application/json
+Body : {&quot;username&quot;:&quot;fred&quot; , &quot;password&quot;:&quot;1234&quot;}</p>
+<h2 id='response-2'>Response:</h2>
+<p>Status code: 200:sucessful 
+Header: Content-Type: application/json<br>
+Header: Set-cookie : &quot;token=s%3AiIKZetd8KuAjnUvRz1p8Qlv&quot;<br>
+Body: &quot;User fred Logged On&quot;  </p>
+<h2 id='example-2'>Example:</h2>
+<p><code>shell curl -H &quot;Content-Type: application/json&quot; -X POST -d &#39;{&quot;username&quot;:&quot;alice&quot;,&quot;password&quot;:&quot;1234&quot;}&#39; https://altern8value.digital/api/signup/api/signin/
+</code> </p>
 <h1 id='stock'>Stock</h1>
 <p>The Stock Object is the interface used to pull all stock data from
 the backend about any stock that can be purchased and added to a portfolio.</p>
