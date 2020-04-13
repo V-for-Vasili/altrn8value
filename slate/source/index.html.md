@@ -228,8 +228,26 @@ history                     | List of HistoricalClosing  | The Historical Closin
 
 
 ## Cash Flow Statement
+Parameter                       | Type                      |  Description
+------------------------------- | ------------------------- |  -----------
+date                            | String                    | Date the statement was reported
+depreciation_and_amortization   | String                    | The corresponding accounts value
+stock_based_compensation        | String                    | The corresponding accounts value
+operating_cash_flow             | String                    | The corresponding accounts value
+capital_expenditure: String     | String                    | The corresponding accounts value
+acquisitions_and_disposals      | String                    | The corresponding accounts value
+investment_purchases_and_sales  | String                    | The corresponding accounts value
+investing_cash_flow             | String                    | The corresponding accounts value
+issuance_repayment_of_debt      | String                    | The corresponding accounts value
+issuance_buybacks_of_shares     | String                    | The corresponding accounts value
+dividend_payments               | String                    | The corresponding accounts value
+financing_cash_flow             | String                    | The corresponding accounts value
+effect_of_forex_changes_on_cash | String                    | The corresponding accounts value
+net_cash_flow_change_in_cash    | String                    | The corresponding accounts value
+free_cash_flow                  | String                    | The corresponding accounts value
+net_cash_marketcap              | String                    | The corresponding accounts value
 
-## Balanse Sheet
+## Balance Sheet
 
 ## Income Statement
 
