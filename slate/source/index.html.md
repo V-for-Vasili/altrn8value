@@ -271,6 +271,81 @@ total_debt                       | String                    | The corresponding
 
 ## Income Statement
 
+The Income Statement object is defined by the following type definition:
+
+`type IncomeStatement {`
+&nbsp;&nbsp;&nbsp;&nbsp;`date: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`revenue: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`revenue_growth: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`cost_of_revenue: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`gross_profit: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`rd_expenses: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`sga_expense: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`operating_expenses: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`operating_income: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`interest_expense: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`earnings_before_tax: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`income_tax_expense: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`net_ncome_non_controlling_int: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`net_income_discontinued_ops: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`net_income: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`preferred_dividends: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`net_income_com: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`eps: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`eps_diluted: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`weighted_average_shs_out: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`weighted_average_shs_out_dil: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`dividend_per_share: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`gross_margin: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`ebitda_margin: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`ebit_margin: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`profit_margin: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`free_cash_flow_margin: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`ebitda: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`ebit: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`consolidated_income: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`earnings_before_tax_margin: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`net_profit_margin: String`
+`}`
+
+### Object Fields
+
+Parameter                   | Type                      |  Description
+--------------------------- | ------------------------- |  -----------
+date                        | String                    | Date of the statement
+revenue                     | String                    | Revenue
+revenue_growth              | String                    | Revenue Growth
+cost_of_revenue             | String                    | Cost of Revenue
+gross_profit                | String                    | Gross Profit
+rd_expenses                 | String                    | R&D Expenses
+sga_expense                 | String                    | SG&A Expense
+operating_expenses          | String                    | Operating Expenses
+operating_income            | String                    | Operating Income
+interest_expense            | String                    | Interest Expense
+earnings_before_tax         | String                    | Earnings before Tax
+income_tax_expense          | String                    | Income Tax Expense
+net_ncome_non_controlling_int | String                    | Net Income - Non-Controlling int
+net_income_discontinued_ops | String                    | Net Income - Discontinued ops
+net_income                  | String                    | Net Income
+preferred_dividends         | String                    | Preferred Dividends
+net_income_com              | String                    | Net Income Com
+eps                         | String                    | EPS
+eps_diluted                 | String                    | EPS Diluted
+weighted_average_shs_out    | String                    | Weighted Average Shs Out
+weighted_average_shs_out_dil  | String                    | Weighted Average Shs Out (Dil)
+dividend_per_share          | String                    | Dividend per Share
+gross_margin                | String                    | Gross Margin
+ebitda_margin               | String                    | EBITDA Margin
+ebit_margin                 | String                    | EBIT Margin
+profit_margin               | String                    | Profit Margin
+free_cash_flow_margin       | String                    | Free Cash Flow margin
+ebitda                      | String                    | EBITDA
+ebit                        | String                    | EBIT
+consolidated_income         | String                    | Consolidated Income
+earnings_before_tax_margin  | String                    | Earnings Before Tax Margin
+net_profit_margin           | String                    | Net Profit Margin
+
+
 ## Historical Closing
 
 The Historical Closing object is defined by the following type definition:
