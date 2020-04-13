@@ -3,11 +3,8 @@ title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - HTTP
-  - js-jQuery
-  - js-XHR
-  - node.js
-  - Python
+  - javascript
+  - python
 
 toc_footers:
   - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
@@ -33,17 +30,11 @@ Altern8value takes advantage of graphql's flexible querrying system this means t
 
 ```shell
 curl --location --request POST 'https://altern8value.digital/graphql/' \
---header 'Content-Type: application/json' \
---data-raw '{"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}'
-```
-```HTTP
-POST /graphql/ HTTP/1.1
-Host: altern8value.digital
-Content-Type: application/json
-{"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}
+--header "Content-Type: application/json" \
+--data-raw "{"query":"query { stock(symbol: \"AAPL\") {price, exchange, market_cap}}","variables":{}}"
 ```  
 
-```js-jQuery
+```javascript
 let settings = {
   "url": "https://altern8value.digital/graphql/",
   "method": "POST",
@@ -52,7 +43,7 @@ let settings = {
     "Content-Type": "application/json"
   },
   "data": JSON.stringify({
-    query: "query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}",
+    query: "query {  stock(symbol: \"AAPL\") {price, exchange, market_cap}}",
     variables: {}
   })
 };
@@ -62,73 +53,11 @@ $.ajax(settings).done(function (response) {
 });  
 ```  
 
-``` js-XHR
-let data = JSON.stringify({
-  query: "query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}",
-  variables: {}
-});
-
-let xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
-
-xhr.addEventListener("readystatechange", function() {
-  if(this.readyState === 4) {
-    console.log(this.responseText);
-  }
-});
-
-xhr.open("POST", "https://altern8value.digital/graphql/");
-xhr.setRequestHeader("Content-Type", "application/json");
-
-xhr.send(data);
-```  
-
-``` node.js
-let https = require('follow-redirects').https;
-let fs = require('fs');
-
-let options = {
-  'method': 'POST',
-  'hostname': 'altern8value.digital',
-  'path': '/graphql/',
-  'headers': {
-    'Content-Type': 'application/json'
-  },
-  'maxRedirects': 20
-};
-
-let req = https.request(options, function (res) {
-  let chunks = [];
-
-  res.on("data", function (chunk) {
-    chunks.push(chunk);
-  });
-
-  res.on("end", function (chunk) {
-    let body = Buffer.concat(chunks);
-    console.log(body.toString());
-  });
-
-  res.on("error", function (error) {
-    console.error(error);
-  });
-});
-
-let postData = JSON.stringify({
-  query: "query {\n  stock(symbol: "AAPL") {price, exchange, market_cap}\n}",
-  variables: {}
-});
-
-req.write(postData);
-
-req.end();
-```  
-
-``` Python
+``` python
 import http.client
 import mimetypes
 conn = http.client.HTTPSConnection("altern8value.digital")
-payload = "{\"query\":\"query {\\n  stock(symbol: \\\"AAPL\\\") {price, exchange, market_cap}\\n}\",\"variables\":{}}"
+payload = "{\"query\":\"query {  stock(symbol: \\\"AAPL\\\") {price, exchange, market_cap}}\",\"variables\":{}}"
 headers = {
   'Content-Type': 'application/json'
 }
@@ -136,9 +65,15 @@ conn.request("POST", "/graphql/", payload, headers)
 res = conn.getresponse()
 data = res.read()
 print(data.decode("utf-8"))
-```
+```  
 
 ## Graphiql
+
+Through GraphQL our app has enables the graphiql graphql query editor,
+this is a great way to try out our api and test your querries. You can
+ find this editor at https://altern8value.digital/graphql/  
+ However this does not work with routes that require login.
+
 
 # Authentication
 
@@ -149,12 +84,6 @@ print(data.decode("utf-8"))
 The Stock Object is the interface used to pull all stock data from
 the backend about any stock that can be purchased and added to a portfolio.
 
-## Example
-
-```
-
-```
-
 ## Query
 
 The Stock object is returned by the following graphql query
@@ -163,7 +92,7 @@ The Stock object is returned by the following graphql query
 
 The Query to get Stock data is defined by the following type definition
 
-`stock(symbol: String!): Stock`
+`stock(symbol: String!): Stock`  
 
 ### Query Parameters
 
@@ -249,64 +178,44 @@ net_cash_marketcap              | String                    | The corresponding 
 
 ## Balance Sheet
 
-Parameter                        | Type                      |  Description
--------------------------------- | ------------------------- |  -----------
-date                             | String                    | Date the statement was reported
-cash_and_cash_equivalents        | String                    | The corresponding accounts value
-short_term_investments           | String                    | The corresponding accounts value
-cash_and_short_term_investments  | String                    | The corresponding accounts value
-receivables:                     | String                    | The corresponding accounts value
-inventories                      | String                    | The corresponding accounts value
-total_current_assets             | String                    | The corresponding accounts value
-property_plant_and_equipment_net | String                    | The corresponding accounts value
-goodwill_and_intangible_assets   | String                    | The corresponding accounts value
-long_term_investments            | String                    | The corresponding accounts value
-tax_assets                       | String                    | The corresponding accounts value
-total_non_current_assets         | String                    | The corresponding accounts value
-total_assets                     | String                    | The corresponding accounts value
-payables                         | String                    | The corresponding accounts value
-short_term_debt                  | String                    | The corresponding accounts value
-long_term_debt                   | String                    | The corresponding accounts value
-total_debt                       | String                    | The corresponding accounts value
-
 ## Income Statement
 
 The Income Statement object is defined by the following type definition:
 
-`type IncomeStatement {`
-&nbsp;&nbsp;&nbsp;&nbsp;`date: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`revenue: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`revenue_growth: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`cost_of_revenue: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`gross_profit: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`rd_expenses: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`sga_expense: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`operating_expenses: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`operating_income: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`interest_expense: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`earnings_before_tax: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`income_tax_expense: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`net_ncome_non_controlling_int: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`net_income_discontinued_ops: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`net_income: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`preferred_dividends: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`net_income_com: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`eps: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`eps_diluted: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`weighted_average_shs_out: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`weighted_average_shs_out_dil: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`dividend_per_share: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`gross_margin: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`ebitda_margin: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`ebit_margin: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`profit_margin: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`free_cash_flow_margin: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`ebitda: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`ebit: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`consolidated_income: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`earnings_before_tax_margin: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`net_profit_margin: String`
-`}`
+`type IncomeStatement {`  
+&nbsp;&nbsp;&nbsp;&nbsp;`date: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`revenue: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`revenue_growth: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`cost_of_revenue: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`gross_profit: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`rd_expenses: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`sga_expense: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`operating_expenses: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`operating_income: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`interest_expense: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`earnings_before_tax: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`income_tax_expense: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`net_ncome_non_controlling_int: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`net_income_discontinued_ops: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`net_income: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`preferred_dividends: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`net_income_com: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`eps: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`eps_diluted: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`weighted_average_shs_out: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`weighted_average_shs_out_dil: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`dividend_per_share: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`gross_margin: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`ebitda_margin: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`ebit_margin: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`profit_margin: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`free_cash_flow_margin: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`ebitda: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`ebit: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`consolidated_income: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`earnings_before_tax_margin: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`net_profit_margin: String`  
+`}`  
 
 ### Object Fields
 
@@ -350,21 +259,21 @@ net_profit_margin           | String                    | Net Profit Margin
 
 The Historical Closing object is defined by the following type definition:
 
-`type HistoricalClosing {`
-&nbsp;&nbsp;&nbsp;&nbsp;`date: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`open: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`high: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`low: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`close: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`adjClose: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`volume: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`unadjustedVolume: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`change: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`changePercent: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`vwap: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`label: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`changeOverTime: Float`
-`}`
+`type HistoricalClosing {`  
+&nbsp;&nbsp;&nbsp;&nbsp;`date: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`open: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`high: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`low: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`close: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`adjClose: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`volume: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`unadjustedVolume: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`change: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`changePercent: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`vwap: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`label: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`changeOverTime: Float`  
+`}`  
 
 ### Object Fields
 
@@ -387,13 +296,29 @@ changeOverTime              | Float                     | Amount of change over 
 
 The Portfolio object is defined by the following type definition:
 
-`type Portfolio {`
-&nbsp;&nbsp;&nbsp;&nbsp;`name: String!`
-&nbsp;&nbsp;&nbsp;&nbsp;`purchaseValue: Float!`
-&nbsp;&nbsp;&nbsp;&nbsp;`createdAt: String!`
-&nbsp;&nbsp;&nbsp;&nbsp;`stock_list: [Stock_Purchase]!`
-&nbsp;&nbsp;&nbsp;&nbsp;`agregate: [Agregate]`
-`}`
+`type Portfolio {`  
+&nbsp;&nbsp;&nbsp;&nbsp;`name: String!`  
+&nbsp;&nbsp;&nbsp;&nbsp;`purchaseValue: Float!`  
+&nbsp;&nbsp;&nbsp;&nbsp;`createdAt: String!`  
+&nbsp;&nbsp;&nbsp;&nbsp;`stock_list: [Stock_Purchase]!`  
+&nbsp;&nbsp;&nbsp;&nbsp;`agregate: [Agregate]`  
+`}`  
+
+## Query
+
+The Stock object is returned by the following graphql query
+
+### Query TypeDef
+
+The Query to get Stock data is defined by the following type definition
+
+`stock(symbol: String!): Stock`  
+
+### Query Parameters
+
+Parameter | Type| Required| Default | Description
+--------- | --- | ------- |-------- | -----------
+symbol | String | Yes| None | The Symbol of the Stock data to be querried.
 
 ### Object Fields
 
@@ -409,12 +334,28 @@ agregate                    | [Agregate]                | List of prices of this
 
 The Stock Purchase object is defined by the following type definition:
 
-`type Stock_Purchase {`
-&nbsp;&nbsp;&nbsp;&nbsp;`stock: Stock`
-&nbsp;&nbsp;&nbsp;&nbsp;`shares: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`purchasePrice: Float`
-&nbsp;&nbsp;&nbsp;&nbsp;`purchaseTime: String`
-`}`
+`type Stock_Purchase {`  
+&nbsp;&nbsp;&nbsp;&nbsp;`stock: Stock`  
+&nbsp;&nbsp;&nbsp;&nbsp;`shares: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`purchasePrice: Float`  
+&nbsp;&nbsp;&nbsp;&nbsp;`purchaseTime: String`  
+`}`  
+
+## Query
+
+The Stock object is returned by the following graphql query
+
+### Query TypeDef
+
+The Query to get Stock data is defined by the following type definition
+
+`stock(symbol: String!): Stock`  
+
+### Query Parameters
+
+Parameter | Type| Required| Default | Description
+--------- | --- | ------- |-------- | -----------
+symbol | String | Yes| None | The Symbol of the Stock data to be querried.
 
 ### Object Fields
 
@@ -429,10 +370,26 @@ purchaseTime                | String                    | Number of seconds from
 
 The Agregate object is defined by the following type definition:
 
-`type Agregate {`
-&nbsp;&nbsp;&nbsp;&nbsp;`value: Int`
-&nbsp;&nbsp;&nbsp;&nbsp;`date: Int`
-`}`
+`type Agregate {`  
+&nbsp;&nbsp;&nbsp;&nbsp;`value: Int`  
+&nbsp;&nbsp;&nbsp;&nbsp;`date: Int`  
+`}`  
+
+## Query
+
+The Stock object is returned by the following graphql query
+
+### Query TypeDef
+
+The Query to get Stock data is defined by the following type definition
+
+`stock(symbol: String!): Stock`  
+
+### Query Parameters
+
+Parameter | Type| Required| Default | Description
+--------- | --- | ------- |-------- | -----------
+symbol | String | Yes| None | The Symbol of the Stock data to be querried.
 
 ### Object Fields
 
@@ -445,13 +402,29 @@ data                        | Int                       | Date represented as in
 
 The Stock Description object is defined by the following type definition:
 
-`type StockDescription {`
-&nbsp;&nbsp;&nbsp;&nbsp;`symbol: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`name: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`currency: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`stockExchange: String`
-&nbsp;&nbsp;&nbsp;&nbsp;`exchangeShortName: String`
-`}`
+`type StockDescription {`  
+&nbsp;&nbsp;&nbsp;&nbsp;`symbol: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`name: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`currency: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`stockExchange: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`exchangeShortName: String`  
+`}`  
+
+## Query
+
+The Stock object is returned by the following graphql query
+
+### Query TypeDef
+
+The Query to get Stock data is defined by the following type definition
+
+`stock(symbol: String!): Stock`  
+
+### Query Parameters
+
+Parameter | Type| Required| Default | Description
+--------- | --- | ------- |-------- | -----------
+symbol | String | Yes| None | The Symbol of the Stock data to be querried.
 
 ### Object Fields
 
