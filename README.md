@@ -2,7 +2,7 @@
 (Pronounced: "Alternate Value")
 
 **Url:** https://altern8value.digital/  
-**Video:**  
+**Video:** https://youtu.be/eFVJnS1gllQ  
 **API Documentation:** https://altern8value.digital/docs/#introduction  
 
 ## Team Mebers: ##
