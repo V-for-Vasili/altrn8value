@@ -259,18 +259,47 @@
                     <a href="#cash-flow-statement" class="toc-h2 toc-link" data-title="Cash Flow Statement">Cash Flow Statement</a>
                   </li>
                   <li>
-                    <a href="#balanse-sheet" class="toc-h2 toc-link" data-title="Balanse Sheet">Balanse Sheet</a>
+                    <a href="#balance-sheet" class="toc-h2 toc-link" data-title="Balance Sheet">Balance Sheet</a>
                   </li>
                   <li>
                     <a href="#income-statement" class="toc-h2 toc-link" data-title="Income Statement">Income Statement</a>
                   </li>
                   <li>
-                    <a href="#history" class="toc-h2 toc-link" data-title="History">History</a>
+                    <a href="#historical-closing" class="toc-h2 toc-link" data-title="Historical Closing">Historical Closing</a>
                   </li>
               </ul>
           </li>
           <li>
             <a href="#portfolio" class="toc-h1 toc-link" data-title="Portfolio">Portfolio</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#object-fields-4" class="toc-h2 toc-link" data-title="Object Fields">Object Fields</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#stock-purchase" class="toc-h1 toc-link" data-title="Stock Purchase">Stock Purchase</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#object-fields-5" class="toc-h2 toc-link" data-title="Object Fields">Object Fields</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#agregate" class="toc-h1 toc-link" data-title="Agregate">Agregate</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#object-fields-6" class="toc-h2 toc-link" data-title="Object Fields">Object Fields</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#stock-description" class="toc-h1 toc-link" data-title="Stock Description">Stock Description</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#object-fields-7" class="toc-h2 toc-link" data-title="Object Fields">Object Fields</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
@@ -295,7 +324,6 @@
 </code></pre><pre class="highlight plaintext"><code>POST /graphql/ HTTP/1.1
 Host: altern8value.digital
 Content-Type: application/json
-
 {"query":"query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}","variables":{}}
 </code></pre><pre class="highlight plaintext"><code>let settings = {
   "url": "https://altern8value.digital/graphql/",
@@ -312,7 +340,7 @@ Content-Type: application/json
 
 $.ajax(settings).done(function (response) {
   console.log(response);
-});
+});  
 </code></pre><pre class="highlight plaintext"><code>let data = JSON.stringify({
   query: "query {\n  stock(symbol: \"AAPL\") {price, exchange, market_cap}\n}",
   variables: {}
@@ -532,12 +560,635 @@ the backend about any stock that can be purchased and added to a portfolio.</p>
 <td>The Historical Closing data of the stock querried</td>
 </tr>
 </tbody></table>
-<h2 id='cash-flow-statement'>Cash Flow Statement</h2><h2 id='balanse-sheet'>Balanse Sheet</h2><h2 id='income-statement'>Income Statement</h2><h2 id='history'>History</h2><h1 id='portfolio'>Portfolio</h1><h1 id='errors'>Errors</h1>
+<h2 id='cash-flow-statement'>Cash Flow Statement</h2>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>date</td>
+<td>String</td>
+<td>Date the statement was reported</td>
+</tr>
+<tr>
+<td>depreciation_and_amortization</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>stock_based_compensation</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>operating_cash_flow</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>capital_expenditure: String</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>acquisitions_and_disposals</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>investment_purchases_and_sales</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>investing_cash_flow</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>issuance_repayment_of_debt</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>issuance_buybacks_of_shares</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>dividend_payments</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>financing_cash_flow</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>effect_of_forex_changes_on_cash</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>net_cash_flow_change_in_cash</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>free_cash_flow</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>net_cash_marketcap</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+</tbody></table>
+<h2 id='balance-sheet'>Balance Sheet</h2>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>date</td>
+<td>String</td>
+<td>Date the statement was reported</td>
+</tr>
+<tr>
+<td>cash_and_cash_equivalents</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>short_term_investments</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>cash_and_short_term_investments</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>receivables:</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>inventories</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>total_current_assets</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>property_plant_and_equipment_net</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>goodwill_and_intangible_assets</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>long_term_investments</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>tax_assets</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>total_non_current_assets</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>total_assets</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>payables</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>short_term_debt</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>long_term_debt</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+<tr>
+<td>total_debt</td>
+<td>String</td>
+<td>The corresponding accounts value</td>
+</tr>
+</tbody></table>
+<h2 id='income-statement'>Income Statement</h2>
+<p>The Income Statement object is defined by the following type definition:</p>
+
+<p><code>type IncomeStatement {</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>date: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>revenue: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>revenue_growth: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>cost_of_revenue: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>gross_profit: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>rd_expenses: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>sga_expense: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>operating_expenses: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>operating_income: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>interest_expense: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>earnings_before_tax: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>income_tax_expense: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_ncome_non_controlling_int: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_income_discontinued_ops: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_income: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>preferred_dividends: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_income_com: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>eps: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>eps_diluted: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>weighted_average_shs_out: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>weighted_average_shs_out_dil: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>dividend_per_share: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>gross_margin: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>ebitda_margin: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>ebit_margin: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>profit_margin: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>free_cash_flow_margin: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>ebitda: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>ebit: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>consolidated_income: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>earnings_before_tax_margin: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>net_profit_margin: String</code>
+<code>}</code></p>
+<h3 id='object-fields-2'>Object Fields</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>date</td>
+<td>String</td>
+<td>Date of the statement</td>
+</tr>
+<tr>
+<td>revenue</td>
+<td>String</td>
+<td>Revenue</td>
+</tr>
+<tr>
+<td>revenue_growth</td>
+<td>String</td>
+<td>Revenue Growth</td>
+</tr>
+<tr>
+<td>cost_of_revenue</td>
+<td>String</td>
+<td>Cost of Revenue</td>
+</tr>
+<tr>
+<td>gross_profit</td>
+<td>String</td>
+<td>Gross Profit</td>
+</tr>
+<tr>
+<td>rd_expenses</td>
+<td>String</td>
+<td>R&amp;D Expenses</td>
+</tr>
+<tr>
+<td>sga_expense</td>
+<td>String</td>
+<td>SG&amp;A Expense</td>
+</tr>
+<tr>
+<td>operating_expenses</td>
+<td>String</td>
+<td>Operating Expenses</td>
+</tr>
+<tr>
+<td>operating_income</td>
+<td>String</td>
+<td>Operating Income</td>
+</tr>
+<tr>
+<td>interest_expense</td>
+<td>String</td>
+<td>Interest Expense</td>
+</tr>
+<tr>
+<td>earnings_before_tax</td>
+<td>String</td>
+<td>Earnings before Tax</td>
+</tr>
+<tr>
+<td>income_tax_expense</td>
+<td>String</td>
+<td>Income Tax Expense</td>
+</tr>
+<tr>
+<td>net_ncome_non_controlling_int</td>
+<td>String</td>
+<td>Net Income - Non-Controlling int</td>
+</tr>
+<tr>
+<td>net_income_discontinued_ops</td>
+<td>String</td>
+<td>Net Income - Discontinued ops</td>
+</tr>
+<tr>
+<td>net_income</td>
+<td>String</td>
+<td>Net Income</td>
+</tr>
+<tr>
+<td>preferred_dividends</td>
+<td>String</td>
+<td>Preferred Dividends</td>
+</tr>
+<tr>
+<td>net_income_com</td>
+<td>String</td>
+<td>Net Income Com</td>
+</tr>
+<tr>
+<td>eps</td>
+<td>String</td>
+<td>EPS</td>
+</tr>
+<tr>
+<td>eps_diluted</td>
+<td>String</td>
+<td>EPS Diluted</td>
+</tr>
+<tr>
+<td>weighted_average_shs_out</td>
+<td>String</td>
+<td>Weighted Average Shs Out</td>
+</tr>
+<tr>
+<td>weighted_average_shs_out_dil</td>
+<td>String</td>
+<td>Weighted Average Shs Out (Dil)</td>
+</tr>
+<tr>
+<td>dividend_per_share</td>
+<td>String</td>
+<td>Dividend per Share</td>
+</tr>
+<tr>
+<td>gross_margin</td>
+<td>String</td>
+<td>Gross Margin</td>
+</tr>
+<tr>
+<td>ebitda_margin</td>
+<td>String</td>
+<td>EBITDA Margin</td>
+</tr>
+<tr>
+<td>ebit_margin</td>
+<td>String</td>
+<td>EBIT Margin</td>
+</tr>
+<tr>
+<td>profit_margin</td>
+<td>String</td>
+<td>Profit Margin</td>
+</tr>
+<tr>
+<td>free_cash_flow_margin</td>
+<td>String</td>
+<td>Free Cash Flow margin</td>
+</tr>
+<tr>
+<td>ebitda</td>
+<td>String</td>
+<td>EBITDA</td>
+</tr>
+<tr>
+<td>ebit</td>
+<td>String</td>
+<td>EBIT</td>
+</tr>
+<tr>
+<td>consolidated_income</td>
+<td>String</td>
+<td>Consolidated Income</td>
+</tr>
+<tr>
+<td>earnings_before_tax_margin</td>
+<td>String</td>
+<td>Earnings Before Tax Margin</td>
+</tr>
+<tr>
+<td>net_profit_margin</td>
+<td>String</td>
+<td>Net Profit Margin</td>
+</tr>
+</tbody></table>
+<h2 id='historical-closing'>Historical Closing</h2>
+<p>The Historical Closing object is defined by the following type definition:</p>
+
+<p><code>type HistoricalClosing {</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>date: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>open: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>high: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>low: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>close: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>adjClose: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>volume: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>unadjustedVolume: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>change: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>changePercent: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>vwap: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>label: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>changeOverTime: Float</code>
+<code>}</code></p>
+<h3 id='object-fields-3'>Object Fields</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>date</td>
+<td>String</td>
+<td>Date of the closing</td>
+</tr>
+<tr>
+<td>open</td>
+<td>Float</td>
+<td>Price at opening</td>
+</tr>
+<tr>
+<td>high</td>
+<td>Float</td>
+<td>Highest day price</td>
+</tr>
+<tr>
+<td>low</td>
+<td>Float</td>
+<td>Lowest day price</td>
+</tr>
+<tr>
+<td>close</td>
+<td>Float</td>
+<td>Price at closing</td>
+</tr>
+<tr>
+<td>volume</td>
+<td>Float</td>
+<td>Volume traded</td>
+</tr>
+<tr>
+<td>unadjustedVolume</td>
+<td>Float</td>
+<td>Unajusted volume traded</td>
+</tr>
+<tr>
+<td>change</td>
+<td>Float</td>
+<td>Price change for the day</td>
+</tr>
+<tr>
+<td>changePercent</td>
+<td>Float</td>
+<td>Percentage of price change for the day</td>
+</tr>
+<tr>
+<td>label</td>
+<td>String</td>
+<td>Stock label</td>
+</tr>
+<tr>
+<td>changeOverTime</td>
+<td>Float</td>
+<td>Amount of change over time</td>
+</tr>
+</tbody></table>
+<h1 id='portfolio'>Portfolio</h1>
+<p>The Portfolio object is defined by the following type definition:</p>
+
+<p><code>type Portfolio {</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>name: String!</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>purchaseValue: Float!</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>createdAt: String!</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>stock_list: [Stock_Purchase]!</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>agregate: [Agregate]</code>
+<code>}</code></p>
+<h3 id='object-fields-4'>Object Fields</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Name of the portfolio</td>
+</tr>
+<tr>
+<td>purchaseValue</td>
+<td>Float</td>
+<td>Cost at the time of purchase</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>String</td>
+<td>Number of seconds from Unix epoch to the time of creation</td>
+</tr>
+<tr>
+<td>stock_list</td>
+<td>[Stock_Purchase]</td>
+<td>List of stock symbols and corresponding amounts in the portfolio</td>
+</tr>
+<tr>
+<td>agregate</td>
+<td>[Agregate]</td>
+<td>List of prices of this porfolio at different points in history</td>
+</tr>
+</tbody></table>
+<h1 id='stock-purchase'>Stock Purchase</h1>
+<p>The Stock Purchase object is defined by the following type definition:</p>
+
+<p><code>type Stock_Purchase {</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>stock: Stock</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>shares: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>purchasePrice: Float</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>purchaseTime: String</code>
+<code>}</code></p>
+<h3 id='object-fields-5'>Object Fields</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>stock</td>
+<td>Stock</td>
+<td>Stock object representation</td>
+</tr>
+<tr>
+<td>shares</td>
+<td>Float</td>
+<td>Number of shares of the stock</td>
+</tr>
+<tr>
+<td>purchasePrice</td>
+<td>Float</td>
+<td>Price at the time of purchase</td>
+</tr>
+<tr>
+<td>purchaseTime</td>
+<td>String</td>
+<td>Number of seconds from Unix epoch to the time of purchase</td>
+</tr>
+</tbody></table>
+<h1 id='agregate'>Agregate</h1>
+<p>The Agregate object is defined by the following type definition:</p>
+
+<p><code>type Agregate {</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>value: Int</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>date: Int</code>
+<code>}</code></p>
+<h3 id='object-fields-6'>Object Fields</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>value</td>
+<td>Int</td>
+<td>Value of object in USD at data</td>
+</tr>
+<tr>
+<td>data</td>
+<td>Int</td>
+<td>Date represented as integer</td>
+</tr>
+</tbody></table>
+<h1 id='stock-description'>Stock Description</h1>
+<p>The Stock Description object is defined by the following type definition:</p>
+
+<p><code>type StockDescription {</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>symbol: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>name: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>currency: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>stockExchange: String</code>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>exchangeShortName: String</code>
+<code>}</code></p>
+<h3 id='object-fields-7'>Object Fields</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>symbol</td>
+<td>String</td>
+<td>Symbol identifiyng the stock (ex: TSLA)</td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Name of the company</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>String</td>
+<td>Currency the stock is traded in</td>
+</tr>
+<tr>
+<td>stockExchange</td>
+<td>String</td>
+<td>Name of the stock exchange, example New York Stock Exchange</td>
+</tr>
+<tr>
+<td>exchangeShortName</td>
+<td>String</td>
+<td>Abbreviation of stock exchange name, example NYSE</td>
+</tr>
+</tbody></table>
+<h1 id='errors'>Errors</h1>
 <aside class="notice">
 This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
 </aside>
 
-<p>The Kittn API uses the following error codes:</p>
+<p>Altern8 Value uses the following error codes: (Returned as part of GraphQL response)</p>
 
 <table><thead>
 <tr>
@@ -546,48 +1197,20 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
 </tr>
 </thead><tbody>
 <tr>
-<td>400</td>
-<td>Bad Request -- Your request is invalid.</td>
-</tr>
-<tr>
 <td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
+<td>Access Denied -- User is not authorized to perform this operation.</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found -- The specified kitten could not be found.</td>
+<td>Not Found -- Requested object does not exist.</td>
 </tr>
 <tr>
-<td>405</td>
-<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone -- The kitten requested has been removed from our servers.</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&#39;m a teapot.</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
+<td>409</td>
+<td>Conflict -- Object already exists.</td>
 </tr>
 <tr>
 <td>500</td>
-<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
+<td>Server Error -- Returned when Database error occured.</td>
 </tr>
 </tbody></table>
 
