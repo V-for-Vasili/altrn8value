@@ -76,7 +76,41 @@ this is a great way to try out our api and test your querries. You can
 
 
 # Authentication
-Authentication is implemented through use of JSON Webtokens. When a user signs in/signs up they recieve in the response a token in the form of an HTTPOnly cookie. When graphQL queries are made that are restricted for authourized users, the cookie containing this token should be contained within their request, its first checked for validation, if valid, then additonal context is passed into the graphql request specifying they are authorized.This conext value can only be set from within the server.Addiotnally the decoded payload of the token contains the user id which is used to locate data unqiue to that user and required required for the restriced queries. If no cookie is founud or the token fails validation then the context is set to unauthorized and the user will be restriced to queries for unauthorized users.  
+Authentication is implemented through use of JSON Webtokens. When a user signs in/signs up they recieve in the response a token in the form of an HTTPOnly cookie. When graphQL queries are made that are restricted for authourized users, the cookie containing this token should be contained within their request, its first checked for validation, if valid, then additonal context is passed into the graphql request specifying they are authorized.This conext value can only be set from within the server.Addiotnally the decoded payload of the token contains the user id which is used to locate data unqiue to that user and required required for the restriced queries. If no cookie is founud or the token fails validation then the context is set to unauthorized and the user will be restriced to queries for unauthorized users.
+
+
+## Request:  
+Method: POST  
+URL: https://altern8value.digital/api/signup/  
+Header: Content-Type: application/json  
+Body : {"username":"fred" , "password":"1234"}  
+
+## Response:  
+Status codes: 200:sucessful  
+Header: Content-Type: application/json  
+Header: Set-cookie : "token=s%3AiIKZetd8KuAjnUvRz1p8Qlv"  
+Body: "User  fred Signed Up & Logged On"  
+  
+## Example:
+```shell curl -H "Content-Type: application/json" -X POST -d '{"username":"alice","password":"1234"}' https://altern8value.digital/api/signup
+``` 
+
+## Request:
+Method: POST
+URL: https://altern8value.digital/api/signup/api/signin/  
+Header: Content-Type: application/json
+Body : {"username":"fred" , "password":"1234"}
+
+## Response:
+Status code: 200:sucessful 
+Header: Content-Type: application/json  
+Header: Set-cookie : "token=s%3AiIKZetd8KuAjnUvRz1p8Qlv"  
+Body: "User fred Logged On"  
+
+## Example:   
+```shell curl -H "Content-Type: application/json" -X POST -d '{"username":"alice","password":"1234"}' https://altern8value.digital/api/signup/api/signin/
+``` 
+
 
 
 # Stock
