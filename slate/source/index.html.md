@@ -227,7 +227,6 @@ history                     | List of HistoricalClosing  | The Historical Closin
 
 
 
-
 ## Cash Flow Statement
 Parameter                       | Type                      |  Description
 ------------------------------- | ------------------------- |  -----------
@@ -252,7 +251,42 @@ net_cash_marketcap              | String                    | The corresponding 
 
 ## Income Statement
 
-## History
+## Historical Closing
+
+The Historical Closing object is defined by the following type definition:
+
+`type HistoricalClosing {`
+&nbsp;&nbsp;&nbsp;&nbsp;`date: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`open: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`high: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`low: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`close: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`adjClose: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`volume: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`unadjustedVolume: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`change: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`changePercent: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`vwap: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`label: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`changeOverTime: Float`
+`}`
+
+### Object Fields
+
+Parameter                   | Type                      |  Description
+--------------------------- | ------------------------- |  -----------
+date                        | String                    | Date of the closing
+open                        | Float                     | Price at opening
+high                        | Float                     | Highest day price
+low                         | Float                     | Lowest day price
+close                       | Float                     | Price at closing
+volume                      | Float                     | Volume traded
+unadjustedVolume            | Float                     | Unajusted volume traded
+change                      | Float                     | Price change for the day
+changePercent               | Float                     | Percentage of price change for the day
+label                       | String                    | Stock label
+changeOverTime              | Float                     | Amount of change over time
+
 
 # Portfolio
 
@@ -266,6 +300,7 @@ The Portfolio object is defined by the following type definition:
 &nbsp;&nbsp;&nbsp;&nbsp;`agregate: [Agregate]`
 `}`
 
+### Object Fields
 
 Parameter                   | Type                      |  Description
 --------------------------- | ------------------------- |  -----------
@@ -286,6 +321,8 @@ The Stock Purchase object is defined by the following type definition:
 &nbsp;&nbsp;&nbsp;&nbsp;`purchaseTime: String`
 `}`
 
+### Object Fields
+
 Parameter                   | Type                      |  Description
 --------------------------- | ------------------------- |  -----------
 stock                       | Stock                     | Stock object representation
@@ -301,6 +338,8 @@ The Agregate object is defined by the following type definition:
 &nbsp;&nbsp;&nbsp;&nbsp;`value: Int`
 &nbsp;&nbsp;&nbsp;&nbsp;`date: Int`
 `}`
+
+### Object Fields
 
 Parameter                   | Type                      |  Description
 --------------------------- | ------------------------- |  -----------
@@ -318,6 +357,8 @@ The Stock Description object is defined by the following type definition:
 &nbsp;&nbsp;&nbsp;&nbsp;`stockExchange: String`
 &nbsp;&nbsp;&nbsp;&nbsp;`exchangeShortName: String`
 `}`
+
+### Object Fields
 
 Parameter                   | Type                      |  Description
 --------------------------- | ------------------------- |  -----------
