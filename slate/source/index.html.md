@@ -306,19 +306,19 @@ The Portfolio object is defined by the following type definition:
 
 ## Query
 
-The Stock object is returned by the following graphql query
+The Portfolio object is returned by the following graphql query
 
 ### Query TypeDef
 
-The Query to get Stock data is defined by the following type definition
+The Query to get Portfolio data is defined by the following type definition
 
-`stock(symbol: String!): Stock`  
+`portfolio(name: String!): Portfolio`  
 
 ### Query Parameters
 
 Parameter | Type| Required| Default | Description
 --------- | --- | ------- |-------- | -----------
-symbol | String | Yes| None | The Symbol of the Stock data to be querried.
+name | String | Yes| None | The name of the Portfolio retrieved.
 
 ## Portfolio Object
 
@@ -416,15 +416,13 @@ The Stock object is returned by the following graphql query
 
 ### Query TypeDef
 
-The Query to get Stock data is defined by the following type definition
-
-`stock(symbol: String!): Stock`  
+`stockList(searchStr: String!): [StockDescription]`
 
 ### Query Parameters
 
 Parameter | Type| Required| Default | Description
 --------- | --- | ------- |-------- | -----------
-symbol | String | Yes| None | The Symbol of the Stock data to be querried.
+String    | String | Yes  | None    | String to search stock symbol for.
 
 ## Stock Description Object
 
