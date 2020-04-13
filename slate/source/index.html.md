@@ -237,3 +237,74 @@ history                     | List of HistoricalClosing  | The Historical Closin
 ## History
 
 # Portfolio
+
+The Portfolio object is defined by the following type definition:
+
+`type Portfolio {`
+&nbsp;&nbsp;&nbsp;&nbsp;`name: String!`
+&nbsp;&nbsp;&nbsp;&nbsp;`purchaseValue: Float!`
+&nbsp;&nbsp;&nbsp;&nbsp;`createdAt: String!`
+&nbsp;&nbsp;&nbsp;&nbsp;`stock_list: [Stock_Purchase]!`
+&nbsp;&nbsp;&nbsp;&nbsp;`agregate: [Agregate]`
+`}`
+
+
+Parameter                   | Type                      |  Description
+--------------------------- | ------------------------- |  -----------
+name                        | String                    | Name of the portfolio
+purchaseValue               | Float                     | Cost at the time of purchase
+createdAt                   | String                    | Number of seconds from Unix epoch to the time of creation
+stock_list                  | [Stock_Purchase]          | List of stock symbols and corresponding amounts in the portfolio
+agregate                    | [Agregate]                | List of prices of this porfolio at different points in history
+
+# Stock Purchase
+
+The Stock Purchase object is defined by the following type definition:
+
+`type Stock_Purchase {`
+&nbsp;&nbsp;&nbsp;&nbsp;`stock: Stock`
+&nbsp;&nbsp;&nbsp;&nbsp;`shares: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`purchasePrice: Float`
+&nbsp;&nbsp;&nbsp;&nbsp;`purchaseTime: String`
+`}`
+
+Parameter                   | Type                      |  Description
+--------------------------- | ------------------------- |  -----------
+stock                       | Stock                     | Stock object representation
+shares                      | Float                     | Number of shares of the stock
+purchasePrice               | Float                     | Price at the time of purchase
+purchaseTime                | String                    | Number of seconds from Unix epoch to the time of purchase
+
+# Agregate
+
+The Agregate object is defined by the following type definition:
+
+`type Agregate {`
+&nbsp;&nbsp;&nbsp;&nbsp;`value: Int`
+&nbsp;&nbsp;&nbsp;&nbsp;`date: Int`
+`}`
+
+Parameter                   | Type                      |  Description
+--------------------------- | ------------------------- |  -----------
+value                       | Int                       | Value of object in USD at data
+data                        | Int                       | Date represented as integer
+
+# Stock Description
+
+The Stock Description object is defined by the following type definition:
+
+`type StockDescription {`
+&nbsp;&nbsp;&nbsp;&nbsp;`symbol: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`name: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`currency: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`stockExchange: String`
+&nbsp;&nbsp;&nbsp;&nbsp;`exchangeShortName: String`
+`}`
+
+Parameter                   | Type                      |  Description
+--------------------------- | ------------------------- |  -----------
+symbol                      | String                    | Symbol identifiyng the stock (ex: TSLA)
+name                        | String                    | Name of the company
+currency                    | String                    | Currency the stock is traded in
+stockExchange               | String                    | Name of the stock exchange, example New York Stock Exchange
+exchangeShortName           | String                    | Abbreviation of stock exchange name, example NYSE
