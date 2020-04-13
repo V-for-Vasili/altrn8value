@@ -181,35 +181,35 @@ net_cash_marketcap              | String                    | The corresponding 
 The Balance Sheed object is defined by the following type definition:
 
 `type IncomeStatement {`  
-&nbsp;&nbsp;&nbsp;&nbsp;`date: String`  
-&nbsp;&nbsp;&nbsp;&nbsp;`cash_and_cash_equivalents: String`  
-&nbsp;&nbsp;&nbsp;&nbsp;`short_term_investments: String
-&nbsp;&nbsp;&nbsp;&nbsp;`cash_and_short_term_investments: String
-&nbsp;&nbsp;&nbsp;&nbsp;`receivables: String
-&nbsp;&nbsp;&nbsp;&nbsp;`inventories: String
-&nbsp;&nbsp;&nbsp;&nbsp;`total_current_assets: String
-&nbsp;&nbsp;&nbsp;&nbsp;`property_plant_and_equipment_net: String
-&nbsp;&nbsp;&nbsp;&nbsp;`goodwill_and_intangible_assets: String
-&nbsp;&nbsp;&nbsp;&nbsp;`long_term_investments: String
-&nbsp;&nbsp;&nbsp;&nbsp;`tax_assets: String
-&nbsp;&nbsp;&nbsp;&nbsp;`total_non_current_assets: String
-&nbsp;&nbsp;&nbsp;&nbsp;`total_assets: String
-&nbsp;&nbsp;&nbsp;&nbsp;`payables: String
-&nbsp;&nbsp;&nbsp;&nbsp;`short_term_debt: String
-&nbsp;&nbsp;&nbsp;&nbsp;`total_current_liabilities: String
-&nbsp;&nbsp;&nbsp;&nbsp;`long_term_debt: String
-&nbsp;&nbsp;&nbsp;&nbsp;`total_debt: String
-&nbsp;&nbsp;&nbsp;&nbsp;`deferred_revenue: String
-&nbsp;&nbsp;&nbsp;&nbsp;`tax_liabilities: String
-&nbsp;&nbsp;&nbsp;&nbsp;`deposit_liabilities: String
-&nbsp;&nbsp;&nbsp;&nbsp;`total_non_current_liabilities: String
-&nbsp;&nbsp;&nbsp;&nbsp;`total_liabilities: String
-&nbsp;&nbsp;&nbsp;&nbsp;`other_comprehensive_income: String
-&nbsp;&nbsp;&nbsp;&nbsp;`retained_earnings_deficit: String
-&nbsp;&nbsp;&nbsp;&nbsp;`total_shareholders_equity: String
-&nbsp;&nbsp;&nbsp;&nbsp;`investments: String
-&nbsp;&nbsp;&nbsp;&nbsp;`net_debt: String
-&nbsp;&nbsp;&nbsp;&nbsp;`other_ssets: String
+&nbsp;&nbsp;&nbsp;&nbsp;`date: String`   
+&nbsp;&nbsp;&nbsp;&nbsp;`cash_and_cash_equivalents: String`   
+&nbsp;&nbsp;&nbsp;&nbsp;`short_term_investments: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`cash_and_short_term_investments: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`receivables: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`inventories: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_current_assets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`property_plant_and_equipment_net: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`goodwill_and_intangible_assets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`long_term_investments: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`tax_assets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_non_current_assets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_assets: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`payables: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`short_term_debt: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_current_liabilities: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`long_term_debt: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_debt: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`deferred_revenue: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`tax_liabilities: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`deposit_liabilities: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_non_current_liabilities: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_liabilities: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`other_comprehensive_income: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`retained_earnings_deficit: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`total_shareholders_equity: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`investments: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`net_debt: String`  
+&nbsp;&nbsp;&nbsp;&nbsp;`other_ssets: String`  
 &nbsp;&nbsp;&nbsp;&nbsp;`other_liabilities: String String`  
 &nbsp;&nbsp;&nbsp;&nbsp;`net_profit_margin: String`  
 `}`  
