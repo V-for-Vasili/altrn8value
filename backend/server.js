@@ -16,8 +16,8 @@ const {User} = require('./db/User.js');
 const graphqlHTTP = require('express-graphql');
 const {schema} = require('./schema.js');
 
-// Enviroment Variables, Deployment Envirment Variables sets this to  production values
-const PORT =  process.env.PORT || '8080';
+// Enviroment Variables, Deployment Envirment Variables sets this to production values
+const PORT =  process.env.PORT || '80';
 const CONNECTION_URL = process.env.CONNECTION_URL || "mongodb+srv://SeanDev:kcwAPZHBtrYQkidQ@cluster0-i5kqv.mongodb.net/test?retryWrites=true&w=majority";
 // JWT signature
 const JWT_SECRET = process.env.JWT_SECRET || "7bzkj0iMcFU9JMnnE6SB";
