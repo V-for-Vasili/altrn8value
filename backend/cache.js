@@ -1,6 +1,7 @@
 // Imports
 const Memcached = require('memcached');
 const axios = require('axios');
+const fs = require('fs');
 
 // init server at 11211
 let memcached = new Memcached('localhost:11211');
@@ -11,6 +12,16 @@ memcached.connect('localhost:11211', function(err, conn) {
     if (err) return console.log('error from memcached: ', err);
     console.log('memcached running.');
 });
+
+// Read api key from file ./API.key
+let API_KEY = null;
+try {
+    API_KEY = fs.readFileSync('./API.key', {encoding: 'utf8', flag: 'r'});
+} catch (e) {
+    console.log('\n\nError: Api key not provided. File ./API.key must contain' +
+                ' the api key from https://financialmodelingprep.com/\n\n');
+    process.exit(1);
+}
 
 /*
 Memcached key should be of the form:
