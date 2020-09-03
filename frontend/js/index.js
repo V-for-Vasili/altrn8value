@@ -16,7 +16,7 @@ window.onload = (function(){
     // Formats the options in the dropdown of the select bar
     function formatState (state) {
         if (!state.id) {
-          return state.text;
+            return state.text;
         }
         let baseUrl = "https://financialmodelingprep.com/stocks/" + state.text.toLowerCase();
         //<img src="' + baseUrl +'.png" class="search-icon" /> 
@@ -40,7 +40,8 @@ window.onload = (function(){
             processResults: function (ajaxData){
                 let data = $.map(ajaxData, function (obj,index){
                     obj.id = obj.id || index + 1;
-                    obj.text = obj.text || obj.symbol; // replace name with the property used for the text
+                    // replace name with the property used for the text
+                    obj.text = obj.text || obj.symbol;
                     obj.name = obj.name;
                     return obj;
                 });
@@ -87,7 +88,6 @@ window.onload = (function(){
                 reloadPageContent();
                 // Clear Graph if no stocks selected
                 Graphing.update(tsPlot,rs.stockDisplayList,rs.series);
-                //  
                 if ($("#StockSelections").children("tr").length == 0){
                     $("#savePortfolio").hide();
                     $("#chartHeader").css("visibility","hidden");
@@ -163,8 +163,8 @@ window.onload = (function(){
         }
     });
     $("#linePlot").click( function(e){
-        let ns =Graphing.changeLinePlot(tsPlot,"line");
-        rs =RS.changePlotType(rs,"line",ns);
+        let ns = Graphing.changeLinePlot(tsPlot,"line");
+        rs = RS.changePlotType(rs,"line",ns);
     });
     $("#areaPlot").click(function(e){
         let ns = Graphing.changeLinePlot(tsPlot,"area");

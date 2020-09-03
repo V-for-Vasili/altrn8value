@@ -50,117 +50,117 @@ mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: tru
 
 // User Log in
 app.post('/api/signup', function (req, res, next) {
-  let username = req.body.username;
-  let password = req.body.password;
-  User.findOne({username: username}, function(err, user){
-    if (err) return res.status(500).end(err);
-    if (user) return res.status(409).end("username " + username + " already exists");
-    // Set up password hash
-    let salt = crypto.randomBytes(16).toString('base64');
-    let hash = crypto.createHmac('sha512', salt);
-    hash.update(password);
-    let saltedHash = hash.digest('base64');
-    let _id = uuid();
-    // Build JWT
-    let secret = JWT_SECRET;
-    let token = jwt.sign({_id: _id , user:username},secret,{expiresIn:"7d"});
-    // Set token in cookie
-    let cookieArray = [];
-    cookieArray.push(
-      cookie.serialize('token', String(token), {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7 ,
-        httpOnly:true
-      })
-    );
-    cookieArray.push(
-      cookie.serialize('username', String(username), {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      })
-    );
-    cookieArray.push(
-      cookie.serialize('uID', String(_id), {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      })
-    );
-    res.setHeader('Set-Cookie', cookieArray);
-    // Add new user
-    let new_user = new User({_id, username, saltedHash, salt});
-    new_user.save(function (err) {
-     if (err) return res.status(500).end(err);
+    let username = req.body.username;
+    let password = req.body.password;
+    User.findOne({username: username}, function(err, user){
+        if (err) return res.status(500).end(err);
+        if (user) return res.status(409).end("username " + username + " already exists");
+        // Set up password hash
+        let salt = crypto.randomBytes(16).toString('base64');
+        let hash = crypto.createHmac('sha512', salt);
+        hash.update(password);
+        let saltedHash = hash.digest('base64');
+        let _id = uuid();
+        // Build JWT
+        let secret = JWT_SECRET;
+        let token = jwt.sign({_id: _id , user:username},secret,{expiresIn:"7d"});
+        // Set token in cookie
+        let cookieArray = [];
+        cookieArray.push(
+            cookie.serialize('token', String(token), {
+                path: '/',
+                maxAge: 60 * 60 * 24 * 7 ,
+                httpOnly:true
+            })
+        );
+        cookieArray.push(
+            cookie.serialize('username', String(username), {
+                path: '/',
+                maxAge: 60 * 60 * 24 * 7
+            })
+        );
+        cookieArray.push(
+            cookie.serialize('uID', String(_id), {
+                path: '/',
+                maxAge: 60 * 60 * 24 * 7
+            })
+        );
+        res.setHeader('Set-Cookie', cookieArray);
+        // Add new user
+        let new_user = new User({_id, username, saltedHash, salt});
+        new_user.save(function (err) {
+            if (err) return res.status(500).end(err);
+        });
+        return res.status(201).json("User "+ username + " Signed Up & Logged On");
     });
-   return res.status(201).json("User "+ username + " Signed Up & Logged On");
-  });
 });
 
 // Signin Pulled from Lab 6
 // curl -H "Content-Type: application/json" -X POST -d '{"username":"alice","password":"alice"}'  localhost:3000/api/signin/:ebf3c240-8c05-4195-9aec-83e850c8eda4
 app.post('/api/signin/', function (req, res, next) {
-  let username = req.body.username;
-  let password = req.body.password;
-  // retrieve user from the database
-  User.findOne({username: username}, function(err, user){
-    if (err) return res.status(500).end(err);
-    if (!user) return res.status(401).end("Invalid username");
-    //  Generate hash
-    let salt = user.salt;
-    let hash = crypto.createHmac('sha512', salt);
-    hash.update(password);
-    let saltedHash = hash.digest('base64');
-    // Compare password to the generated saltedHash
-    if (user.saltedHash !== saltedHash) return res.status(401).end("access denied");
-    // Build JWT
-    let secret = JWT_SECRET;
-    let token = jwt.sign({_id: user._id , user:username},secret,{expiresIn:"7d"});
-    // Set token in cookie
-    let cookieArray = [];
-    cookieArray.push(
-      cookie.serialize('token', String(token), {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7 ,
-        httpOnly:true
-      })
-    );
-    cookieArray.push(
-      cookie.serialize('username', String(username), {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      })
-    );
-    cookieArray.push(
-      cookie.serialize('uID', String(user._id), {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      })
-    );
-    res.setHeader('Set-Cookie', cookieArray);
-    return res.status(200).json("User " + username + " Logged On");
-  });
+    let username = req.body.username;
+    let password = req.body.password;
+    // retrieve user from the database
+    User.findOne({username: username}, function(err, user){
+        if (err) return res.status(500).end(err);
+        if (!user) return res.status(401).end("Invalid username");
+        // Generate hash
+        let salt = user.salt;
+        let hash = crypto.createHmac('sha512', salt);
+        hash.update(password);
+        let saltedHash = hash.digest('base64');
+        // Compare password to the generated saltedHash
+        if (user.saltedHash !== saltedHash) return res.status(401).end("access denied");
+        // Build JWT
+        let secret = JWT_SECRET;
+        let token = jwt.sign({_id: user._id , user:username},secret,{expiresIn:"7d"});
+        // Set token in cookie
+        let cookieArray = [];
+        cookieArray.push(
+            cookie.serialize('token', String(token), {
+                path: '/',
+                maxAge: 60 * 60 * 24 * 7 ,
+                httpOnly:true
+            })
+        );
+        cookieArray.push(
+            cookie.serialize('username', String(username), {
+                path: '/',
+                maxAge: 60 * 60 * 24 * 7
+            })
+        );
+        cookieArray.push(
+            cookie.serialize('uID', String(user._id), {
+                path: '/',
+                maxAge: 60 * 60 * 24 * 7
+            })
+        );
+        res.setHeader('Set-Cookie', cookieArray);
+        return res.status(200).json("User " + username + " Logged On");
+    });
 });
 
 // Set variables to correct values to be passed into context paramater of graphql
 app.use(function(req, res, next) {
-  req.username = null;
-  req.uid = null;
-  req.isAuth = false;
-  let cookies = cookie.parse(req.headers.cookie || '');
-  if (cookies.token){
-    let payload =  jwt.verify(cookies.token, JWT_SECRET);
-    if (!payload) return res.status(401).end("access denied");
-    User.findOne({_id: payload._id }, function(err, user){
-      if (err) return res.status(500).end(err);
-      if(!user) return res.status(401).end("access denied");
-      // set context params
-      req.username = payload.user;
-      req.uid = payload._id;
-      req.isAuth = true;
-      next();
-    });
-  } else {
-    next();
-  }
+    req.username = null;
+    req.uid = null;
+    req.isAuth = false;
+    let cookies = cookie.parse(req.headers.cookie || '');
+    if (cookies.token){
+        let payload =  jwt.verify(cookies.token, JWT_SECRET);
+        if (!payload) return res.status(401).end("access denied");
+        User.findOne({_id: payload._id }, function(err, user){
+            if (err) return res.status(500).end(err);
+            if(!user) return res.status(401).end("access denied");
+            // set context params
+            req.username = payload.user;
+            req.uid = payload._id;
+            req.isAuth = true;
+            next();
+        });
+    } else {
+        next();
+    }
 });
 
 /*
@@ -173,17 +173,16 @@ app.use('/graphql', graphqlHTTP((req, res, graphQLParams) => ({
     schema: schema,
     graphiql: true,
     context: {
-      username: req.username,
-      uid: req.uid,
-      isAuth: req.isAuth
+        username: req.username,
+        uid: req.uid,
+        isAuth: req.isAuth
     }
-  }))
-);
+})));
 
 // Routes
 // healthcheck Function
 app.get('/healthcheck/' ,async function (req, res) {
-  res.status(200).send("Api is running");
+    res.status(200).send("Api is running");
 });
 
 // Server is running
