@@ -15,13 +15,18 @@ memcached.connect('localhost:11211', function(err, conn) {
 
 // Read api key from file ./API.key
 let API_KEY = null;
-try {
-    API_KEY = fs.readFileSync('./API.key', {encoding: 'utf8', flag: 'r'});
-} catch (e) {
+let reportApiKeyErrorAndExit = function() {
     console.log('\n\nError: Api key not provided. File ./API.key must contain' +
                 ' the api key from https://financialmodelingprep.com/\n\n');
     process.exit(1);
 }
+
+try {
+    API_KEY = fs.readFileSync('./API.key', {encoding: 'utf8', flag: 'r'});
+} catch (e) {
+    reportApiKeyErrorAndExit();
+}
+if (API_KEY.length === 0) reportApiKeyErrorAndExit();
 
 /*
 Memcached key should be of the form:
@@ -51,6 +56,13 @@ historicalChart_${timeseries}_${symbol}
    warmed automatically by getting data from "url" and storing it under "key"
    for duration "lifetime" (in seconds). */
 let retrieveFromCache = async function(key, url, lifetime) {
+    // append api key to url for authentication.
+    // if url contains the "?" char, then it already has some params
+    if (url.includes('?')) {
+        url += `&apikey=${API_KEY}`;
+    } else {
+        url += `?apikey=${API_KEY}`;
+    }
     return new Promise((resolve, reject) => {
         memcached.get(key, function(err, data) {
             if (err) return reject(err);
