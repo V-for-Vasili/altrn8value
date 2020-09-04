@@ -23,6 +23,7 @@ window.onload = (function () {
 
     // Check if portfolio is stored in session storage, if so display it
     loadInfo((sessionStorage.getItem("newPortfolio"))? JSON.parse(sessionStorage.getItem("newPortfolio")): []); 
+
     // attach event to stock search selector
     $("#stockSelect").select2({
         placeholder: 'Select A Stock',
@@ -31,9 +32,13 @@ window.onload = (function () {
         minimumInputLength: 2,
         ajax: {
             delay: 250,
-            url: 'https://financialmodelingprep.com/api/v3/search',
+            url: '/financialmodelingprep_direct_resolver',
             data: function (params) {
-                let Q = { query: params.term };
+                let Q = {
+                    key: `stock_search_${params.term}`,
+                    url: `https://financialmodelingprep.com/api/v3/search?query=${params.term}`,
+                    lifetime: 60,
+                };
                 return Q;
             },
             processResults: function (ajaxData) {
@@ -54,13 +59,14 @@ window.onload = (function () {
     $("#stockSelect").on('select2:select', function (e) {
         let name = e.params.data.name;
         let symbol = e.params.data.symbol;
-        let url = "https://financialmodelingprep.com/api/v3/quote/" + symbol;
         api.getCompanyProfile(symbol, function (response) {
             response = response.data.stock;
             let name = (response.company_profile)?response.company_profile.company_name:"";
             let price = response.price;
             NP.addStock(name,symbol,price);
             let tr = document.createElement('tr');
+            // This call to https://financialmodelingprep.com does not need the
+            // API key
             tr.innerHTML = `
                 <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/></td>
                 <td class="tm-product-name"> ${symbol} | ${name}</td>
@@ -139,15 +145,16 @@ window.onload = (function () {
     });
 
     // Inital Loading of stock selections from current research session
-    function loadInfo(symbols){ 
+    function loadInfo(symbols) {
         symbols.forEach(function(symbol){
-
             api.getCompanyProfile(symbol, function (response) {
                 response = response.data.stock;
                 let name = (response.company_profile)?response.company_profile.company_name:"";
                 let price = response.price;
                 NP.addStock(name,symbol,price);
                 let tr = document.createElement('tr');
+                // This call to https://financialmodelingprep.com does not need
+                // the API key
                 tr.innerHTML = `
                 <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/></td>
                 <td class="tm-product-name"> ${symbol} | ${name}</td>
@@ -214,11 +221,7 @@ window.onload = (function () {
 
     // Formats options for select stock bar
     function formatState(state) {
-        if (!state.id) {
-            return state.text;
-        }
-        let baseUrl = "https://financialmodelingprep.com/stocks/" + state.text.toLowerCase();
-        //<img src="' + baseUrl +'.png" class="search-icon" /> 
+        if (!state.id) return state.text;
         let $state = $('<span>' + state.text + ' | ' + state.name + '</span>');
         return $state;
     }

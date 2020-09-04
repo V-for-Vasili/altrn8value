@@ -14,12 +14,8 @@ window.onload = (function(){
     populateStockSelections(rs);
 
     // Formats the options in the dropdown of the select bar
-    function formatState (state) {
-        if (!state.id) {
-            return state.text;
-        }
-        let baseUrl = "https://financialmodelingprep.com/stocks/" + state.text.toLowerCase();
-        //<img src="' + baseUrl +'.png" class="search-icon" /> 
+    function formatState(state) {
+        if (!state.id) return state.text;
         let $state = $('<span>' + state.text + ' | '+ state.name + '</span>');
         return $state;
     }
@@ -70,6 +66,8 @@ window.onload = (function(){
         let symbol = e.params.data.symbol;
         if (!rs.stockDisplayList.includes(symbol)){
             let tr = document.createElement('tr');
+            // This call to https://financialmodelingprep.com does not need the
+            // API key
             tr.innerHTML = `
                 <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${symbol.toLowerCase()}.png"/></td>
                 <td class="tm-product-name"> ${symbol} | ${name}</td>
