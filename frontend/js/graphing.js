@@ -119,7 +119,7 @@ let Graphing = (function(){
         let prevOption = chart.getOption();
         let names = [];
         let sereies = [];
-        if(prevOption){
+        if (prevOption){
             names = prevOption.legend[0].data.filter(obj => obj != sereiesName);
             sereies = prevOption.series.filter(obj => obj.name != sereiesName);
             module.update(chart,names,sereies);
@@ -159,25 +159,24 @@ let Graphing = (function(){
         }
         let portfolioDecomp = [];
         api.getPortfolioHistoryByName(portfolioName,seriesType,function(response) {
-           let portfolio = response.data.portfolio;
-           let stock_list = portfolio.stock_list;
-           let allStocksHistory = stock_list.map(obj => {
-               let rObj = {};
-               rObj.symbol = obj.stock.symbol;
-               rObj.historical = obj.stock.history;
-               return rObj;
-           });
-           // Find min date in which all stocks in porfolio existed
-           let minDate = new Date("1970-01-01");
-           allStocksHistory.forEach(function(obj){
-               if (seriesType == "line"){
-                   let date = new Date(obj.historical[0].date);
-                   if (date > minDate) minDate = date;
-               } else {
-                let date = new Date(obj.historical[obj.historical.length-1].date);
-                if (date > minDate) minDate = date;
-               }
-               
+            let portfolio = response.data.portfolio;
+            let stock_list = portfolio.stock_list;
+            let allStocksHistory = stock_list.map(obj => {
+                let rObj = {};
+                rObj.symbol = obj.stock.symbol;
+                rObj.historical = obj.stock.history;
+                return rObj;
+            });
+            // Find min date in which all stocks in porfolio existed
+            let minDate = new Date("1970-01-01");
+            allStocksHistory.forEach(function(obj){
+                if (seriesType == "line"){
+                    let date = new Date(obj.historical[0].date);
+                    if (date > minDate) minDate = date;
+                } else {
+                    let date = new Date(obj.historical[obj.historical.length-1].date);
+                    if (date > minDate) minDate = date;
+                }
             });
             let datesClose = {};
             allStocksHistory.forEach(function(ts,index){
