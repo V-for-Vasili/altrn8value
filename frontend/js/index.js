@@ -32,9 +32,13 @@ window.onload = (function(){
         minimumInputLength: 2,
         ajax: {
             delay: 250,
-            url:'https://financialmodelingprep.com/api/v3/search',
+            url: '/financialmodelingprep_direct_resolver',
             data: function(params){
-                let Q = {query: params.term};
+                let Q = {
+                    key: `stock_search_${params.term}`,
+                    url: `https://financialmodelingprep.com/api/v3/search?query=${params.term}`,
+                    lifetime: 60,
+                };
                 return Q;
             },
             processResults: function (ajaxData){

@@ -7,6 +7,7 @@ const cookie = require('cookie');
 const { v4: uuid } = require('uuid');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const {retrieveFromCache} = require('./cache.js');
 
 // Db imports
 const mongoose = require('mongoose');
@@ -180,6 +181,14 @@ app.use('/graphql', graphqlHTTP((req, res, graphQLParams) => ({
 })));
 
 // Routes
+
+// Direct resolver to get data from financialmodelingprep.com
+// Need to pass req.query.key, req.query.url, req.query.lifetime
+app.get('/financialmodelingprep_direct_resolver', async function(req, res) {
+    res.status(200).json(
+        await retrieveFromCache(req.query.key, req.query.url, parseInt(req.query.lifetime)));
+});
+
 // healthcheck Function
 app.get('/healthcheck/' ,async function (req, res) {
     res.status(200).send("Api is running");
