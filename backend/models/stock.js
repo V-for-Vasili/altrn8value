@@ -75,15 +75,14 @@ let stocksQueryDef = `stocks(symbols: [String!]!): [Stock!]!`;
 let stocksResolver = async (_, {symbols}) => {
     let response = {};
     try {
-        response = await axios.get(`https://financialmodelingprep.com/api/v3/quote/${symbols.toString()}`);
+        // get data from cache
+        let key = `stocks_${symbols.toString()}`;
+        let url = `https://financialmodelingprep.com/api/v3/quote/${symbols.toString()}`;
+        response = await retrieveFromCache(key, url, 60);
     } catch (err) {
         console.log(err);
     }
-    if(!response) {
-        return null;
-    } else {
-        return response.data;
-    }
+    return response || null;
 };
 
 

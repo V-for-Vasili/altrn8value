@@ -25,7 +25,6 @@ let historyResolver = async (obj, args, context, info) => {
     let to = args.to;
     let timeseries = args.timeseries;
     let response = {};
-    
 
     try {
         if (timeseries == "line") {
@@ -36,17 +35,17 @@ let historyResolver = async (obj, args, context, info) => {
             response = await retrieveFromCache(key, url, 60);
             response = response.historical;
         } else if (timeseries == "1min") {
-            // We do not cache this
-            response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-chart/${timeseries}/${obj.symbol}`);
-            response = response.data;
-            
+            // get data from cache
+            // Cache for 10s
+            let key = `historicalChart_${timeseries}_${obj.symbol}`;
+            let url = `https://financialmodelingprep.com/api/v3/historical-chart/${timeseries}/${obj.symbol}`;
+            response = await retrieveFromCache(key, url, 10);
         } else if (["5min","15min","30min","1hour"].includes(timeseries)) {
             // get data from cache
             // Cache for 60s
             let key = `historicalChart_${timeseries}_${obj.symbol}`;
             let url = `https://financialmodelingprep.com/api/v3/historical-chart/${timeseries}/${obj.symbol}`;
             response = await retrieveFromCache(key, url, 60);
-            
         } else if (to && from) {
             // We do not cache this because of key explosion
             response = await axios.get(`https://financialmodelingprep.com/api/v3/historical-price-full/${obj.symbol}?from=${from}&to=${to}`);
