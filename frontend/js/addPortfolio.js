@@ -85,7 +85,7 @@ window.onload = (function () {
                 let newCost = NP.updateStockPrice(price,symbol);
                 let newCostFormatted = api.formatNumeric(newCost, "$", 6, ".", ",");
                 $("#" + symbol + "Cost").text(newCostFormatted);
-                let totalCost = NP.getPorofolioCost();
+                let totalCost = NP.getPortfolioCost();
                 totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
                 $("#totalCost").text(totalCost);
             });
@@ -101,7 +101,7 @@ window.onload = (function () {
                     NP.updateStock(symbol,0,0);
                     $("#" + symbol + "Cost").text("-");
                 }
-                let totalCost = NP.getPorofolioCost();
+                let totalCost = NP.getPortfolioCost();
                 totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 4, ".", ",");
                 $("#totalCost").text(totalCost);
             });
@@ -118,7 +118,7 @@ window.onload = (function () {
                 NP.updateStock(symbol,0,0);
                 NP.removeStock(symbol);
                
-                let totalCost = NP.getPorofolioCost();
+                let totalCost = NP.getPortfolioCost();
                 totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
                 $("#totalCost").text(totalCost);
             });
@@ -178,7 +178,7 @@ window.onload = (function () {
                         NP.updateStock(symbol,0,0);
                         $("#" + symbol + "Cost").text("-");
                     }
-                    let totalCost = NP.getPorofolioCost();
+                    let totalCost = NP.getPortfolioCost();
                     totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
                     $("#totalCost").text(totalCost);
                 });
@@ -188,7 +188,7 @@ window.onload = (function () {
                     let newCost = NP.updateStockPrice(price,symbol);
                     let newCostFormatted = api.formatNumeric(newCost, "$", 4, ".", ",");
                     $("#" + symbol + "Cost").text(newCostFormatted);
-                    let totalCost = NP.getPorofolioCost();
+                    let totalCost = NP.getPortfolioCost();
                     totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
                     $("#totalCost").text(totalCost);
                 });
@@ -205,7 +205,7 @@ window.onload = (function () {
                     }
                     NP.updateStock(symbol,0,0);
                     NP.removeStock(symbol);
-                    let totalCost = NP.getPorofolioCost();
+                    let totalCost = NP.getPortfolioCost();
                     totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
                     $("#totalCost").text(totalCost);
                 });

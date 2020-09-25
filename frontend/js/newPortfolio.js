@@ -5,7 +5,7 @@ let NP = (function(){
             stock_list : [],
             purchaseValue : 0,
         },
-        getPorofolio: function(){
+        getPortfolio: function(){
             return this.portfolio;
         },
         // Will correctly formatt the object to be passed into API call and assign
@@ -50,7 +50,7 @@ let NP = (function(){
         UpdateportfolioCost : function(amount){
             this.portfolio.purchaseValue += amount;
         },
-        getPorofolioCost : function(){
+        getPortfolioCost : function(){
             return this.portfolio.purchaseValue;
         }
     };
