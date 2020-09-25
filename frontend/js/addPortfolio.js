@@ -1,6 +1,12 @@
 window.onload = (function () {
     "use strict";
 
+    /* True iff stock with given symbol exists in NP.portfolio.stock_list */
+    function checkIfStockSymbolExists(symbol) {
+        let idx = NP.getPortfolio().stock_list.findIndex(obj => symbol.localeCompare(obj.symbol) == 0);
+        return idx != -1;
+    }
+
     /* sets up a poll to pull stock quote data every second */
     function Subscription(symbol,callback) {
         this.on = false;
@@ -80,6 +86,12 @@ window.onload = (function () {
                 </td>`;
             $('#StockSelections').prepend(tr);
             let quote = new Subscription(symbol,function(response){
+                // if stock with given symbol no longer needs to be monitore,
+                // stop the refresh for that symbol
+                if (!checkIfStockSymbolExists(symbol)) {
+                    self.on = false;
+                    return;
+                }
                 let price = response.data.stock.price;
                 $("#" + symbol +"Price").text(api.formatNumeric(price, "$", 6, ".", ","));
                 let newCost = NP.updateStockPrice(price,symbol);
@@ -182,6 +194,12 @@ window.onload = (function () {
                     $("#totalCost").text(totalCost);
                 });
                 let quote = new Subscription(symbol,function(response){
+                    // if stock with given symbol no longer needs to be monitore,
+                    // stop the refresh for that symbol
+                    if (!checkIfStockSymbolExists(symbol)) {
+                        self.on = false;
+                        return;
+                    }
                     let price = response.data.stock.price;
                     $("#" + symbol +"Price").text(api.formatNumeric(price, "$", 6, ".", ","));
                     let newCost = NP.updateStockPrice(price,symbol);
