@@ -24,7 +24,11 @@ let NP = (function(){
             return result;
         },
         updateStockPrice: function(price,symbol){
-            let idx = this.portfolio.stock_list.findIndex(obj => obj.symbol == symbol);
+            let idx = this.portfolio.stock_list.findIndex(obj => symbol.localeCompare(obj.symbol) == 0);
+            if (idx == -1) {
+                api.notifyErrorListeners(`updateStockPrice: Stock with symbol ${symbol} DNE.`);
+                return;
+            }
             let oldCost = this.portfolio.stock_list[idx].cost;
             let newCost = this.portfolio.stock_list[idx].shares * price;
             this.portfolio.stock_list[idx].purchasePrice = price;
@@ -37,7 +41,7 @@ let NP = (function(){
             this.portfolio.stock_list.push(stockObj);
         },
         removeStock : function(symbol){
-            this.portfolio.stock_list = this.portfolio.stock_list.filter(stockObj => stockObj.symbol == symbol);
+            this.portfolio.stock_list = this.portfolio.stock_list.filter(stockObj => symbol.localeCompare(stockObj.symbol) != 0);
         },
         updateStock : function(symbol,newShares,newCost){
             let idx = this.portfolio.stock_list.findIndex(stockObj => stockObj.symbol == symbol);

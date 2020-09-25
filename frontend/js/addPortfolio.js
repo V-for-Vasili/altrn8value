@@ -106,21 +106,20 @@ window.onload = (function () {
                 $("#totalCost").text(totalCost);
             });
 
-            // Behaviour For When Stock is removed from selections
+            // Behaviour for when stock is removed from selections
             tr.querySelector('i').addEventListener('click', function (e) {
                 quote.disable();
                 tr.parentElement.removeChild(tr);
+                NP.updateStock(symbol,0,0);
+                NP.removeStock(symbol);
+                let totalCost = NP.getPortfolioCost();
+                totalCost = (totalCost == 0)? "-" : api.formatNumeric(totalCost, "$", 6, ".", ",");
+                $("#totalCost").text(totalCost);
+                // if no stocks left, do not display the table
                 if ($("#StockSelections").children("tr").length == 0){
                     $("#rowTotal").hide();
                     $("#saveBtn").hide();
-                    return;
                 }
-                NP.updateStock(symbol,0,0);
-                NP.removeStock(symbol);
-               
-                let totalCost = NP.getPortfolioCost();
-                totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
-                $("#totalCost").text(totalCost);
             });
             // Display Save Button if there is atleast one stock selected
             if ($("#StockSelections").children("tr").length > 0){
@@ -194,20 +193,20 @@ window.onload = (function () {
                 });
                 quote.activate();
 
-                // Behaviour For When Stock is removed from selections
+                // Behaviour for when stock is removed from selections
                 tr.querySelector('i').addEventListener('click', function (e) {
                     quote.disable();
                     tr.parentElement.removeChild(tr);
-                    if ($("#StockSelections").children("tr").length == 0){
-                        $("#rowTotal").hide();
-                        $("#saveBtn").hide();
-                        return;
-                    }
                     NP.updateStock(symbol,0,0);
                     NP.removeStock(symbol);
                     let totalCost = NP.getPortfolioCost();
-                    totalCost = (totalCost == 0)? "-" :  api.formatNumeric(totalCost, "$", 6, ".", ",");
+                    totalCost = (totalCost == 0)? "-" : api.formatNumeric(totalCost, "$", 6, ".", ",");
                     $("#totalCost").text(totalCost);
+                    // if no stocks left, do not display the table
+                    if ($("#StockSelections").children("tr").length == 0){
+                        $("#rowTotal").hide();
+                        $("#saveBtn").hide();
+                    }
                 });
                 if ($("#StockSelections").children("tr").length > 0){
                     $("#rowTotal").show();
