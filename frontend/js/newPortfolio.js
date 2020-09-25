@@ -33,7 +33,7 @@ let NP = (function(){
             let newCost = this.portfolio.stock_list[idx].shares * price;
             this.portfolio.stock_list[idx].purchasePrice = price;
             this.portfolio.stock_list[idx].cost = newCost;
-            this.UpdateportfolioCost(newCost - oldCost);
+            this.updatePortfolioCost(newCost - oldCost);
             return newCost;
         },
         addStock : function(name,symbol,price){
@@ -44,14 +44,18 @@ let NP = (function(){
             this.portfolio.stock_list = this.portfolio.stock_list.filter(stockObj => symbol.localeCompare(stockObj.symbol) != 0);
         },
         updateStock : function(symbol,newShares,newCost){
-            let idx = this.portfolio.stock_list.findIndex(stockObj => stockObj.symbol == symbol);
+            let idx = this.portfolio.stock_list.findIndex(stockObj => symbol.localeCompare(stockObj.symbol) == 0);
+            if (idx == -1) {
+                api.notifyErrorListeners(`updateStock: Stock with symbol ${symbol} DNE.`);
+                return;
+            }
             let oldCost = this.portfolio.stock_list[idx].cost;
             this.portfolio.stock_list[idx].shares = newShares;
             this.portfolio.stock_list[idx].cost = newCost;
-            this.UpdateportfolioCost(newCost - oldCost);
+            this.updatePortfolioCost(newCost - oldCost);
             return np;
         },
-        UpdateportfolioCost : function(amount){
+        updatePortfolioCost : function(amount){
             this.portfolio.purchaseValue += amount;
         },
         getPortfolioCost : function(){
