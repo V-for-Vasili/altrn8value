@@ -86,6 +86,7 @@ window.addEventListener('load', function(){
             Graphing.graphPortfolios(tsPlot,selections,"line");
             // get portfolios for current user and populate the table
             api.getUserPortfoliosList(function(code, err, respObj) {
+                if (code !== 200) return module.notifyErrorListeners(err);
                 populatePortfolioDecompTable(respObj.data.portfolioList,selections);
             });
         }
