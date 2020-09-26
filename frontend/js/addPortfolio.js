@@ -65,6 +65,8 @@ window.onload = (function () {
     $("#stockSelect").on('select2:select', function (e) {
         let name = e.params.data.name;
         let symbol = e.params.data.symbol;
+        // if stock symbol already exists in the table, do not add it again
+        if (checkIfStockSymbolExists(symbol)) return;
         api.getCompanyProfile(symbol, function (response) {
             response = response.data.stock;
             let name = (response.company_profile)?response.company_profile.company_name:"";
