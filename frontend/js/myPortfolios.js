@@ -76,7 +76,7 @@ window.addEventListener('load', function(){
             document.getElementById('tblsContainer').style.display = "none";
             document.getElementById('chartHeader').style.visibility = "hidden";
             document.getElementById('chartContainer').style.visibility = "hidden";
-       } else {
+        } else {
             if (!tsPlot || tsPlot.isDisposed)
             // show appropriate page elements
             document.getElementById('tblsContainer').style.display = "";
@@ -193,6 +193,7 @@ window.addEventListener('load', function(){
                 let shares = stockPurchase.shares;
                 let profit = (pricePerShare -purchasePrice)/purchasePrice;
                 let tr = document.createElement('tr');
+                // This call does not need to be routed through backend
                 tr.innerHTML = `
                 <td class="stockImgContainer"><img class="stockSelectImg" src="https://financialmodelingprep.com/stocks/${stockPurchase.stock.symbol.toLowerCase()}.png"/></td>
                 <td class="tm-product-name">${stockPurchase.stock.symbol}</td>

@@ -143,7 +143,7 @@ let portfolioFieldResolvers = {
                 console.log(err);
             }
             stock_list.push({stock: {
-                exchange: stock.exhange,
+                exchange: stock.exchange,
                 symbol: stock.symbol,
                 price: stock.price,
                 market_cap: stock.marketCap,

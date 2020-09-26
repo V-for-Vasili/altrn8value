@@ -60,7 +60,7 @@ let stockResolver = async (_, {symbol}) => {
         return null;
     } else {
         return {
-            exchange: response.exhange,
+            exchange: response.exchange,
             symbol: response.symbol,
             price: response.price,
             market_cap: response.marketCap,
