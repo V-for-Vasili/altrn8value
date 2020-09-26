@@ -47,13 +47,18 @@ window.addEventListener('load', function(){
             table.prepend(tr);
         });
     }
+
     let tsPlot = null;
     // call to backend to pull all portfolios for the user,
     // populate the table with portfolio list
-    api.getUserPortfoliosList(function(code, err, respObj) {
-        if (code !== 200) return api.notifyErrorListeners(err);
-        populatePortfolioTable(respObj.data.portfolioList);
-    });
+    setTimeout(function() {
+        // timeout is needed to make sure new portfolio is saved before we pull
+        // the list of existing portfolios for a user
+        api.getUserPortfoliosList(function(code, err, respObj) {
+            if (code !== 200) return api.notifyErrorListeners(err);
+            populatePortfolioTable(respObj.data.portfolioList);
+        });
+    }, 300);
 
     let graphData = {portfolioNames:[],porfotlioSeries:[]};
     // handle view selection event on viewSelectionsBtn
