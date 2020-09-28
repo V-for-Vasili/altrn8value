@@ -1,4 +1,6 @@
 // Imports
+const fs = require('fs');
+const https = require('https');
 const express = require('express');
 const morgan = require('morgan');
 const morganBody = require('morgan-body');
@@ -17,8 +19,9 @@ const {User} = require('./db/User.js');
 const graphqlHTTP = require('express-graphql');
 const {schema} = require('./schema.js');
 
-// Enviroment Variables, Deployment Envirment Variables sets this to production values
-const PORT =  process.env.PORT || '80';
+// Enviroment Variables; Deployment Envirment Variables set this to production
+// values
+const PORT =  process.env.PORT || '443';
 const CONNECTION_URL = process.env.CONNECTION_URL || "mongodb+srv://SeanDev:kcwAPZHBtrYQkidQ@cluster0-i5kqv.mongodb.net/test?retryWrites=true&w=majority";
 // JWT signature
 const JWT_SECRET = process.env.JWT_SECRET || "7bzkj0iMcFU9JMnnE6SB";
@@ -194,6 +197,11 @@ app.get('/healthcheck/' ,async function (req, res) {
     res.status(200).send("Api is running");
 });
 
-// Server is running
-console.log(`Service running on port ${PORT}`);
-app.listen(PORT);
+// Run the server on PORT over https
+https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app)
+.listen(PORT, function () {
+    console.log(`Service running on port ${PORT}`);
+})
