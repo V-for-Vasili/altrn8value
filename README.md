@@ -1,7 +1,7 @@
 # project-altrn8-value
 (Pronounced: "Alternate Value")
 
-**Url:** https://altern8value.digital/  
+**Url:** https://altrn8value.me/ 
 **Video:** https://youtu.be/eFVJnS1gllQ  
 **API Documentation:** https://altern8value.digital/docs/#introduction  
 
