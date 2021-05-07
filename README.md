@@ -3,7 +3,7 @@
 
 **Url:** https://altrn8value.me/   
 **Video:** https://youtu.be/eFVJnS1gllQ  
-**API Documentation:** https://altern8value.digital/docs/#introduction  
+**API Documentation:**https://altrn8value.me/docs/#introduction  
 
 ## Team Mebers: ##
 - Sean van Wyk, 1003228946, vanwykse
