@@ -199,9 +199,9 @@ app.get('/healthcheck/' ,async function (req, res) {
 
 // Run the server on PORT over https
 https.createServer({
-    cert: fs.readFileSync('/etc/letsencrypt/live/altern8value.digital/fullchain.pem'),
-    key: fs.readFileSync('/etc/letsencrypt/live/altern8value.digital/privkey.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/altern8value.digital/chain.pem')
+    cert: fs.readFileSync('/etc/letsencrypt/live/altrn8value.me/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/altrn8value.me/privkey.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/altrn8value.me/chain.pem')
 }, app)
 .listen(PORT, function () {
     console.log(`Service running on port ${PORT}`);
